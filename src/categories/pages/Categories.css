@@ -1,0 +1,9 @@
+#categories {
+    width: 100%;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(20, 1fr);
+    text-align: center;
+    margin-bottom: 100px;
+}

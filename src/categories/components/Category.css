@@ -1,0 +1,40 @@
+.category-overlay::after {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    font-size: 18pt;
+    font-weight: bold;
+    top: 40%;
+}
+
+#movies > .category-overlay::after {
+    content: "Movies";
+}
+
+#tv > .category-overlay::after {
+    content: "TV";
+}
+
+#games > .category-overlay::after {
+    content: "Games";
+}
+
+.category {
+    grid-column: 7/15;
+    width: 100%;
+    height: 40vw;
+    margin-top: 30px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    color: white;
+}
+
+.category-overlay {
+    width: 100%;
+    height: 100%;
+    border-radius: 22px;
+    background-color: rgba(0, 0, 0, 0.335);
+    border: solid 5px #FCB016;
+  }

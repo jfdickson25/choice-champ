@@ -1,0 +1,55 @@
+h3 {
+    margin-top: 0;
+}
+
+h4 {
+    margin-bottom: 10px;
+}
+
+form {
+    text-align: center;
+    width: 75vw;
+}
+
+#logo {
+    width: 60%;
+    margin-top: 10vh;
+}
+
+.seperator {
+    width: 80%;
+    border-bottom: solid 2px #FCB016;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.switch {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 10pt;
+}
+
+.switch-link {
+    color: #FCB016;
+}
+
+input {
+    width: 100%;
+    background-color: #312E2E;
+    color: white;
+    border-radius: 10px;
+    border: solid 1px white;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+::placeholder {
+    color: rgba(255, 255, 255, 0.698);
+}
+
+.error {
+    margin-top: 15px;
+    color: rgb(161, 161, 161);
+}

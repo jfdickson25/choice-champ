@@ -1,0 +1,36 @@
+.collections-content {
+    margin-top: 20px;
+}
+
+.collections-content {
+    box-sizing: border-box;
+    grid-column: 1/18;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    column-gap: 15px;
+    row-gap: 15px;
+    margin-top: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.collections-item {
+    width: 100%;
+    height: 20vh;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    border-radius: 5px;
+    background-color: rgb(27, 27, 27);
+    position: relative;
+    text-decoration: none;
+}
+
+.collection-text {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #FCB016;
+}
