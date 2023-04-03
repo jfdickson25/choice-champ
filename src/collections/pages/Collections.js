@@ -6,6 +6,7 @@ import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
 import remove from '../../shared/assets/img/remove.png';
 import edit from '../../shared/assets/img/edit.png';
+import editing from '../../shared/assets/img/editing.png';
 
 import './Collections.css';
 import { Link } from 'react-router-dom';
@@ -97,7 +98,7 @@ const Collections = props => {
                     <img src={back} alt="Back symbol" />
                 </Link>
                 <h2 className='title'>{title}</h2>
-                <img src={edit} className="edit" alt='Edit icon' onClick={isEditHandler} />
+                <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <img src={add} className='add' alt='Add icon' onClick={handleOpen} />
 
                 <div className='collections-content'>
@@ -105,7 +106,7 @@ const Collections = props => {
                         collections.length > 0 ? collections.map(collection => (
                             isEdit ? (
                                 <div className='collections-item' key={collection.id} onClick={() => { handleRemoveCollection(collection.id) }}>
-                                    <img className='remove' alt="Remove Icon" src={remove} />
+                                    <img className='item-action' alt="Remove Icon" src={remove} />
                                     <div className="collection-text">
                                         {collection.name}
                                     </div>

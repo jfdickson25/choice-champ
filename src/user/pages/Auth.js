@@ -1,6 +1,4 @@
 import React, {useContext, useState} from 'react';
-// TODO: Use elsewhere especially on movie items
-// import LazyLoad from 'react-lazyload';
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 

@@ -80,7 +80,7 @@ p {
   width: 90%;
 }
 
-.remove {
+.item-action {
   position: absolute;
   width: 25%;
   height: auto;
@@ -92,4 +92,8 @@ p {
     grid-column: 8/11;
     width: 70%;
     margin-top: 30px;
+}
+
+.add img {
+  width: 100%;
 }

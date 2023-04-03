@@ -1,0 +1,29 @@
+.create-party-collections {
+    grid-column: 3/16;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+.create-party-collection {
+    grid-column: 2/12;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+    border: solid 1px white;
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 15px;
+}
+
+.create-party-selectable {
+    grid-column: 1/5;
+    width: 100%;
+}
+
+.create-party-collection-name {
+    grid-column: 6/13;
+    width: 100%;
+}
