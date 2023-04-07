@@ -38,3 +38,11 @@
     background-color: rgba(0, 0, 0, 0.335);
     border: solid 5px #FCB016;
   }
+
+@media only screen and (min-width: 1200px) {
+    .category {
+        width: 100%;
+        grid-column: auto;
+        height: 20vw;
+    }
+}

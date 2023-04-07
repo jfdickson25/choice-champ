@@ -7,10 +7,12 @@ import './Categories.css';
 const CollectionsHome = props => {
     return (
         <React.Fragment>
-            <div id="categories">
-                <Category id="movies" title="MOVIES" />
-                <Category id="tv" title="TV" />
-                <Category id="games" title="GAMES" />
+            <div className="content">
+                <div id="categories">
+                    <Category id="movies" title="MOVIES" />
+                    <Category id="tv" title="TV" />
+                    <Category id="games" title="GAMES" />
+                </div>
             </div>
             <Footer />
         </React.Fragment>

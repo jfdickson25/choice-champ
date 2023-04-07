@@ -1,20 +1,20 @@
 .create-party-collections {
-    grid-column: 3/16;
+    grid-column: 2/17;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 5px;
 }
 
 .create-party-collection {
-    grid-column: 2/12;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     justify-items: center;
     align-items: center;
-    border: solid 1px white;
+    border: solid 2px rgba(255, 255, 255, 0.349);
     border-radius: 15px;
-    padding: 30px;
+    padding: 20px 10px;
     margin-top: 15px;
 }
 
@@ -25,5 +25,11 @@
 
 .create-party-collection-name {
     grid-column: 6/13;
+    width: 100%;
+    font-weight: 300;
+}
+
+.create-party-btn {
+    grid-column: 3/16;
     width: 100%;
 }

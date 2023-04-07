@@ -92,3 +92,13 @@ button {
         grid-column: 8/11;
     }
 }
+
+@media (min-width: 3000px) {
+    .welcome-img {
+        grid-column: 9/10;
+    }
+
+    button {
+        grid-column: 9/10;
+    }
+}

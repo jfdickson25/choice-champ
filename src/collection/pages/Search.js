@@ -48,7 +48,8 @@ const Category = props => {
                     setItems(prevState => [...prevState, {
                         id: movie.id,
                         title: movie.title,
-                        poster: movie.poster_path
+                        poster: movie.poster_path,
+                        selected: false
                     }]);
                 });
             });
@@ -62,21 +63,16 @@ const Category = props => {
         updateDebounce(event.target.value);
     }
 
-    const addRemoveItem = (itemId) => {
-        // Works but there has to be a better way
-        let item = document.getElementById(itemId);
+    const checkUncheckItem = (itemId) => {
+        // Find the item in the array and toggle the selected value
+        const updatedItems = items.map(item => {
+            if(item.id === itemId) {
+                item.selected = !item.selected;
+            }
+            return item;
+        });
 
-        if(item.classList.contains('unselected')) {
-            item.classList.remove('unselected');
-            item.classList.add('selected');
-
-            item.src = check;
-        } else {
-            item.classList.remove('selected');
-            item.classList.add('unselected');
-
-            item.src = circle;
-        }
+        setItems(updatedItems);
     }
 
     return (
@@ -90,8 +86,12 @@ const Category = props => {
                 {items.map(item => (
                     <div className='item-section' key={item.id}>
                         <div className='item-img' style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                        <img id={item.id} src={circle} alt={`${item.title} poster`} className='item-action unselected' onClick={() => { addRemoveItem(item.id) }} />
-                    </div>
+                        {
+                            item.selected 
+                            ? (<img id={item.id} src={check} alt={`${item.title} poster`} className='item-action unselected' onClick={() => { checkUncheckItem(item.id) }} />)
+                            : (<img id={item.id} src={circle} alt={`${item.title} poster`} className='item-action selected' onClick={() => { checkUncheckItem(item.id) }} />)
+                        }
+                        </div>
                 ))}
             </div>
         </div>

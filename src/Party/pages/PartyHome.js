@@ -11,10 +11,10 @@ const PartyHome = props => {
             <div className='content'>
                 <div className='party-home'>
                     <NavLink to="/party/createParty">
-                        <Button type="button" className='party-create-btn'>Create Party</Button>
+                        <Button type="button">Create Party</Button>
                     </NavLink>
                     <NavLink to="/party/joinParty">
-                        <Button type="button" className='party-join-btn'>Join Party</Button>
+                        <Button type="button">Join Party</Button>
                     </NavLink>
                 </div>
             </div>

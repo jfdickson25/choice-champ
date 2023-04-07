@@ -7,8 +7,6 @@ import Button from '../../shared/components/FormElements/Button';
 
 import { AuthContext } from '../../shared/context/auth-context';
 
-import './Auth.css';
-
 const Auth = props => {
     const auth = useContext(AuthContext);
     const history = useHistory();

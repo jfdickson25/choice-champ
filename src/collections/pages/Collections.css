@@ -34,3 +34,9 @@
     font-weight: bold;
     color: #FCB016;
 }
+
+@media screen and (min-width: 768px) {
+    .collections-content {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
