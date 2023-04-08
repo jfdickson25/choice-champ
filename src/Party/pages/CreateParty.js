@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import Footer from '../../shared/components/Navigation/Footer';
 
 import circle from '../../shared/assets/img/circle.png';
@@ -14,6 +14,7 @@ import Button from '../../shared/components/FormElements/Button';
 const CreateParty = props => {
 
     const [collections, setCollections] = useState([]);
+    let history = useHistory();
 
     useEffect(() => {
         // TODO: This will be replaced by searching the collections from the backend
@@ -54,6 +55,35 @@ const CreateParty = props => {
         setCollections(updatedCollections);
     }
 
+    const navToParty = () => {
+        // Generate a random 4 digit party code
+        const partyCode = Math.floor(1000 + Math.random() * 9000);
+
+        // Route to the party page and pass the selected collections
+        history.push({
+            pathname: `/party/${partyCode}/owner`,
+        });
+
+        // TODO: Update to send the selected collections to the backend to create party with join code and then route to the party page
+        // make a post request to the backend to create the party with the join code and then route to the party page
+        // fetch('http://localhost:5000/api/createParty', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         collections: collections.filter(collection => collection.selected)
+        //     })
+        // })
+        // .then(response => response.json())
+        // .then(res => {
+        //     // Route to the party page
+        //     history.push({
+        //         pathname: `/party/${res.partyCode}/owner`,
+        //     });
+        // });
+    }
+
     return (
         <React.Fragment>
             <div className='content'>
@@ -75,7 +105,7 @@ const CreateParty = props => {
                     ))
                 }
                 </div>
-                <Button type="button" className='create-party-btn'>Create Party</Button>
+                <Button type="button" className='create-party-btn' onClick={navToParty}>Create Party</Button>
             </div>
             <Footer />
         </React.Fragment>

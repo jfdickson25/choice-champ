@@ -1,4 +1,5 @@
-import React, { lazy, Suspense, useCallback, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import { socket } from './socket';
 import {
   BrowserRouter as Router,
   Route, 
@@ -18,6 +19,8 @@ const Auth = lazy(() => import('./user/pages/Auth'));
 const Welcome = lazy(() => import('./welcome/pages/Welcome'));
 const PartyHome = lazy(() => import('./Party/pages/PartyHome'));
 const CreateParty = lazy(() => import('./Party/pages/CreateParty'));
+const Party = lazy(() => import('./Party/pages/Party'));
+const JoinParty = lazy(() => import('./Party/pages/JoinParty'));
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -61,6 +64,13 @@ function App() {
           <Route path="/party/createParty" exact>
             <CreateParty />
           </Route>
+          <Route path="/party/joinParty" exact>
+            <JoinParty />
+          </Route>
+          <Route path="/party/:code/:userType" exact>
+            <Party />
+          </Route>
+
 
           <Redirect to="/collections" />
         </Switch>

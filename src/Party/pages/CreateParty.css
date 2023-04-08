@@ -30,6 +30,21 @@
 }
 
 .create-party-btn {
-    grid-column: 3/16;
+    grid-column: 2/17;
     width: 100%;
 }
+
+@media screen and (min-width: 1024px) {
+    .create-party-collections {
+        grid-column: 6/13;
+    }
+
+    .create-party-selectable {
+        grid-column: 1/3;
+    }
+
+    .create-party-btn {
+        grid-column: 6/13;
+    }
+}
+
