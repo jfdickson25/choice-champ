@@ -7,7 +7,11 @@ import Button from '../../shared/components/FormElements/Button';
 
 import { AuthContext } from '../../shared/context/auth-context';
 
+import './Auth.css';
+
 const Auth = props => {
+    // useContext is used to access the context object created in auth-context.js
+    // with this we can access the isLoggedIn state and the login and logout functions
     const auth = useContext(AuthContext);
     const history = useHistory();
     // State to change between login and create
@@ -16,14 +20,62 @@ const Auth = props => {
     // Allow for validation of input
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    // TODO: Add context to validate which pages are valid after login
     const onSubmit = data => {
-        console.log(data);
-        auth.login();
+        let status; 
+
+        // Either login or create account
         if(isLoginMode) {
-            history.push('/collections');
+            fetch('http://localhost:5000/user/signIn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: data.usernameRequired,
+                    password: data.passwordRequired
+                })
+            })
+            .then(response => {
+                status = response.status;
+                return response.json()
+            })
+            .then(body => {
+                if(status === 200) {
+                    auth.login();
+                    // Save user id to context so it can be used in other backend calls
+                    auth.userIdSetter(body.userId);
+                    history.push('/collections');
+                } else {
+                    // TODO: Update to display error message on page
+                    // TODO: Update backend to return error message
+                    console.log('Invalid username or password');
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
         } else {
-            history.push('/welcome/info');
+            fetch('http://localhost:5000/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: data.usernameRequired,
+                    password: data.passwordRequired
+                })
+            })
+            .then(response => response.json())
+            .then(body => {
+                auth.login();
+                console.log(body.userId);
+                auth.userIdSetter(body.userId);
+                history.push('/welcome/info');
+            })
+            .catch(err => {
+                // TODO: Update to display error message on page
+                console.log(err);
+            });
         }
     }
 
@@ -55,10 +107,10 @@ const Auth = props => {
                         </div>
                     )
                 }
-                <input id="username" placeholder="Username" {...register("usernameRequired", { required: true, minLength: 5, maxLength: 15 }) }/>
-                {errors.usernameRequired && <p className='error'>A username is of at least 5 characters is required</p>}
+                <input id="username" placeholder="Username" {...register("usernameRequired", { required: true, minLength: 5, maxLength: 20 }) }/>
+                {errors.usernameRequired && <p className='error'>A username of at least 5 characters is required</p>}
                 <input id="password" placeholder="Password" {...register("passwordRequired", { required: true, minLength: 5 }) }/>
-                {errors.passwordRequired && <p className='error'>A password is required</p>}
+                {errors.passwordRequired && <p className='error'>A password of at lease 5 characters is required</p>}
                 {
                     isLoginMode && (
                         <Button type="submit">Login</Button>

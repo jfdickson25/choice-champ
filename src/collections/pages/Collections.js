@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import Footer from '../../shared/components/Navigation/Footer';
 
@@ -11,8 +11,11 @@ import editing from '../../shared/assets/img/editing.png';
 import './Collections.css';
 import { Link } from 'react-router-dom';
 import ModalComp from '../../shared/components/ModalComp';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const Collections = props => {
+    const auth = useContext(AuthContext);
+
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
      * from the params and set edit and our collections list
@@ -32,13 +35,18 @@ const Collections = props => {
         switch(collectionsType) {
             case('movies'):
                 setTitle('Movie Collections');
-                // TODO: Replace with call to backend
-                setCollections([
-                    { id: "1", name: 'Watchlist' },
-                    { id: "2", name: 'Netflix' },
-                    { id: "3", name: 'HBO Max' },
-                    { id: "4", name: 'Disney Plus' }
-                ]);
+                // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
+                fetch(`http://localhost:5000/collections/${auth.userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    setCollections(data.collections);
+                })
+
                 break;
             case('tv'):
                 setTitle('TV Collections');
@@ -57,9 +65,21 @@ const Collections = props => {
      const isEditHandler = () => isEdit ? setIsEdit(false) : setIsEdit(true);
 
      const handleRemoveCollection = (id) => {
-         setCollections(collections.filter(collection => collection.id !== id));
- 
-         // TODO: Add backend call to remove from collection
+         // Send a fetch delete request to localhost:5000/collections with the userId and the collection id
+            fetch(`http://localhost:5000/collections/${auth.userId}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(data => {
+                // Remove the collection from the collections array
+                setCollections(collections.filter(collection => collection._id !== id));
+            })
+            .catch(err => {
+                console.log(err);
+            }
+        )
      }
 
 
@@ -83,9 +103,31 @@ const Collections = props => {
     }
 
     const handleAddCollection = () => {
-        setCollections(prevState => [...prevState, {id: Math.random() * 100, name: inputRef.current.value}]);
 
-        // TODO: Send backend call to add category to users collections
+        // Only add if the input is not empty and the collection does not already exist
+        if(inputRef.current.value === '' || collections.find(collection => collection.name === inputRef.current.value)) {
+            return;
+        }
+
+        // Send a fetch post request to localhost:5000/collections with the userId and the new collection name
+        fetch(`http://localhost:5000/collections/${auth.userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: inputRef.current.value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Add the new collection to the collections array
+            setCollections([...collections, data.collection]);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
 
         // Close the modal
         handleClose();
@@ -105,20 +147,20 @@ const Collections = props => {
                     {
                         collections.length > 0 ? collections.map(collection => (
                             isEdit ? (
-                                <div className='collections-item' key={collection.id} onClick={() => { handleRemoveCollection(collection.id) }}>
+                                <div className='collections-item' key={collection._id} onClick={() => { handleRemoveCollection(collection._id) }}>
                                     <img className='item-action' alt="Remove Icon" src={remove} />
                                     <div className="collection-text">
                                         {collection.name}
                                     </div>
                                 </div>
                             ) : (
-                                <Link to={`/collections/${collectionsType}/${collection.name}/${collection.id}`} className='collections-item' key={collection.id} >
+                                <Link to={`/collections/${collectionsType}/${collection.name}/${collection._id}`} className='collections-item' key={collection._id} >
                                     <div className="collection-text">
                                         {collection.name}
                                     </div>
                                 </Link>
                             )
-                        )) : <div>No Collections</div>
+                        )) : <div style={{textAlign: 'center', gridColumn: '1/4', fontWeight: 'bold'}}>No Collections</div>
                     }
                 </div>
             </div>

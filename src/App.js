@@ -1,5 +1,4 @@
 import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
-import { socket } from './socket';
 import {
   BrowserRouter as Router,
   Route, 
@@ -24,6 +23,7 @@ const JoinParty = lazy(() => import('./Party/pages/JoinParty'));
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   const login = useCallback(() => {
     setIsLoggedIn(true);
@@ -33,9 +33,13 @@ function App() {
     setIsLoggedIn(false);
   }, []);
 
+  const userIdSetter = useCallback((id) => {
+    setUserId(id);
+  }, []);
+
   let routes;
   // TODO: Add logic back in once we implement authentication
-  // if(isLoggedIn) {
+  if(isLoggedIn) {
     routes = (
       // Using Suspense inside a switch caused issues with redirecting. Solution found in this stack overflow article:
       // https://stackoverflow.com/questions/62193855/react-lazy-loaded-route-makes-redirecting-non-matching-routes-to-404-not-work
@@ -76,22 +80,22 @@ function App() {
         </Switch>
       </Suspense>
     )
-  // } else {
-  //   routes = (
-  //     <Suspense fallback={<Loading />}>
-  //       <Switch>
-  //           <Route path="/" exact>
-  //             <Auth />
-  //           </Route>
-  //           <Redirect to="/" />
-  //       </Switch>
-  //     </Suspense>
-  //   )
-  // }
+  } else {
+    routes = (
+      <Suspense fallback={<Loading />}>
+        <Switch>
+            <Route path="/" exact>
+              <Auth />
+            </Route>
+            <Redirect to="/" />
+        </Switch>
+      </Suspense>
+    )
+  }
 
 
   return (
-    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, login: login, logout: logout}}>
+    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userId: userId, userIdSetter: userIdSetter, login: login, logout: logout}}>
       <Router>
         <main>
           {routes}

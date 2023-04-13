@@ -27,55 +27,17 @@ const Collection = props => {
     const [isEdit, setIsEdit] = useState(false);
 
     useEffect(() => {
-        // TODO: This will be replaced by searching the collection from the backend
-
-        setItems([
-            {
-                id: 268,
-                title: 'Batman',
-                poster: '/cij4dd21v2Rk2YtUQbV5kW69WB2.jpg'
-            },
-            {
-               id:  2661,
-               title: 'Batman',
-               poster: '/zzoPxWHnPa0eyfkMLgwbNvdEcVF.jpg'
-            },
-            {
-                id: 125249,
-                title: 'Batman',
-                poster: '/6XYL5JRHxaLLd0ZwsBugaAuGHTa.jpg'
-            },
-            {
-                id: 1003579,
-                title: 'Batman: The Doom That Came to Gotham',
-                poster: '/hrATQE8ScQceohwInaMluluNEaf.jpg'
-            },
-            {
-                id: 414906,
-                title: 'The Batman',
-                poster: '/74xTEgt7R36Fpooo50r9T25onhq.jpg'
-            },
-            {
-                id: 886396,
-                title: 'Batman and Superman: Battle of the Super Sons',
-                poster: '/mvffaexT5kA3chOnGxwBSlRoshh.jpg'
-            },
-            {
-                id: 209112,
-                title: 'Batman v Superman: Dawn of Justice',
-                poster: '/5UsK3grJvtQrtzEgqNlDljJW96w.jpg'
-            },
-            {
-                id: 485942,
-                title: 'Batman Ninja',
-                poster: '/5xSB0Npkc9Fd9kahKBsq9P4Cdzp.jpg'
-            },
-            {
-                id: 272,
-                title: 'Batman Begins',
-                poster: '/8RW2runSEc34IwKN2D1aPcJd2UL.jpg'
+        // Make a fetch get request to get all the items in a collection
+        fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
             }
-        ])
+        })
+        .then(res => res.json())
+        .then(data => {
+            setItems(data.items);
+        });
     }, []);
 
     /************************************************************
@@ -84,9 +46,16 @@ const Collection = props => {
     const isEditHandler = () => isEdit ? setIsEdit(false) : setIsEdit(true);
 
     const removeItem = (id) => {
-        setItems(items.filter(item => item.id !== id));
-
-        // TODO: Add backend call to remove from collection
+        // Make a fetch delete request to remove an item from a collection
+        fetch(`http://localhost:5000/collections/items/${collectionId}/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            setItems(items.filter(item => item._id !== id));
+        });
     }
 
     /************************************************************
@@ -122,12 +91,15 @@ const Collection = props => {
                         to modify it
                     */ 
                     }
-                    {[...filteredItems].reverse().map(item => (
-                        <div className='item-section' key={item.id} >
-                            <div className='item-img' style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                            { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item.id) }} />) : null }
-                        </div>
-                    ))}
+                    {
+                        // Add a message if there are no items in the collection
+                        filteredItems.length === 0 ? <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p> :
+                        [...filteredItems].reverse().map(item => (
+                            <div className='item-section' key={item.itemId} >
+                                <div className='item-img' style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                            </div>
+                        ))}
                 </div>
             </div>
             <Footer />

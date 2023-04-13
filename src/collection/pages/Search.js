@@ -1,13 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import './Search.css';
 
 import back from '../../shared/assets/img/back.svg';
+import save from '../../shared/assets/img/save.png';
 import circle from '../../shared/assets/img/circle.png';
+import filledCircle from '../../shared/assets/img/filled-circle.png';
 import check from '../../shared/assets/img/check.png';
-
-// TODO: Add some kind of functionality to save to library (saving as you click doesn't fell weighted)
 
 const Category = props => {
     /************************************************************
@@ -20,10 +20,29 @@ const Category = props => {
     let collectionId = useParams().id;
 
     const [items, setItems] = useState([]);
+    const [collection, setCollection] = useState([]);
 
     // Input ref grabs value from input when search is entered
     const inputRef = useRef();
 
+    useEffect(() => {
+        // Get all the items in the collection to check if any items in the search are already in the collection
+        fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Verify that data.items is not undefined
+            if(data.items) {
+                setCollection(data.items);
+            }
+        });
+    }, []);
+
+    // Debounce is used to prevent the search from being called on every key press
     function debounce(cb, delay = 500) {
         let timeout;
 
@@ -35,21 +54,39 @@ const Category = props => {
         }
     }
 
-    const updateDebounce = debounce((search) => {
+    const updateDebounce = debounce(async (search) => {
+        // Check if the collection type is movies
+        // TODO: Add tv shows and games
         if(collectionType === 'movies') {
-            // TODO: Update to be a backend call
-            fetch(`https://api.themoviedb.org/3/search/movie?api_key=c12d4979283eb8eb2b9dd58aa91c99e2&query=${search}`)
-            .then(response => response.json())
+
+            if (search === '') {
+                setItems([]);
+                return;
+            }
+
+            // Make a fetch request to get all movies that match the search
+            fetch(`http://localhost:5000/movies/${search}/1`)
+            .then(res => res.json())
             .then(res => {
                 // Reset the items to populate with updated value
                 setItems([]);
-                
-                res.results.forEach(movie => {
+
+                res.movies.results.forEach(movie => {
+
+                    // Make sure the movie isn't already in the collection
+                    let inCollection = false;
+                    collection.forEach(item => {
+                        if(item.itemId === movie.id) {
+                            inCollection = true;
+                        }
+                    });
+
                     setItems(prevState => [...prevState, {
                         id: movie.id,
                         title: movie.title,
                         poster: movie.poster_path,
-                        selected: false
+                        selected: false,
+                        inCollection: inCollection
                     }]);
                 });
             });
@@ -75,21 +112,53 @@ const Category = props => {
         setItems(updatedItems);
     }
 
+    const addItems = () => {
+        // Filter the items to only get the selected ones
+        const selectedItems = items.filter(item => item.selected === true);
+
+        // Check to make sure selectedItems is not empty
+        if(selectedItems.length !== 0) {
+            // Send the selected items to the backend to be added to the collection
+            fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(selectedItems)
+            });
+
+            // Update to set selected to false and set inCollection to true in selectedItems then setItems to selectedItems
+            const updatedItems = items.map(item => {
+                if(item.selected === true) {
+                    item.selected = false;
+                    item.inCollection = true;
+                }
+                return item;
+            });
+
+            setItems(updatedItems);
+        }
+    }
+
     return (
         <div className='content'>
             <Link to={`/collections/${collectionType}/${collectionName}/${collectionId}`} className="back">
                 <img src={back} alt="Back symbol" />
             </Link>
             <h2 className='title'>{collectionName}</h2>
+            <img src={save} className="edit" alt='Save icon' onClick={addItems} />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} ref={inputRef} />
             <div className='collection-content'>
                 {items.map(item => (
                     <div className='item-section' key={item.id}>
                         <div className='item-img' style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
                         {
-                            item.selected 
-                            ? (<img id={item.id} src={check} alt={`${item.title} poster`} className='item-action unselected' onClick={() => { checkUncheckItem(item.id) }} />)
-                            : (<img id={item.id} src={circle} alt={`${item.title} poster`} className='item-action selected' onClick={() => { checkUncheckItem(item.id) }} />)
+                            item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} className='item-action' />) :
+                            (
+                                item.selected 
+                                ? (<img id={item.id} src={check} alt={`${item.title} poster`} className='item-action' onClick={() => { checkUncheckItem(item.id) }} />)
+                                : (<img id={item.id} src={circle} alt={`${item.title} poster`} className='item-action' onClick={() => { checkUncheckItem(item.id) }} />)
+                            )
                         }
                         </div>
                 ))}

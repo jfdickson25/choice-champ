@@ -1,13 +1,15 @@
 
 import React, { useEffect, useState }  from 'react';
-import { useParams, NavLink } from 'react-router-dom';
+import { useParams, NavLink, useHistory } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
-
 import back from '../../shared/assets/img/back.svg';
 
-import './Party.css';
+import './Party.css';  
+
+// TODO: Add functionality to randomly select one of the items in the collection and display it on the screen
 
 const Party = (props) => {
+    let history = useHistory();
 
     // Get the party code and user type from the url
     const { code, userType } = useParams();
@@ -16,113 +18,97 @@ const Party = (props) => {
 
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
-        // TODO: This will be replaced by searching the collections from the backend
         // Make a fetch request to the backend to get all the collectionItems for the party
-        // fetch('http://localhost:5000/api/getCollectionItems')
-        // .then(response => response.json())
-        // .then(res => {
-        //     // Add selected to each collection
-        //     res.collections.forEach(collection => {
-        //         collection.selected = false;
-        //     });
+        fetch(`http://localhost:5000/party/${code}`,
+        {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(body => {
+            let items = body.items.map(item => {
+                return {
+                    id: item._id,
+                    itemId: item.itemId,
+                    title: item.title,
+                    poster: item.poster,
+                    votes: 0,
+                    voted: false
+                }
+            });
 
-        //     setCollections(res.collections);
-        // });
+            // Find if there are any duplicate itemIds and remove them
+            items = items.filter((item, index, self) => {
+                return index === self.findIndex((t) => (
+                    t.itemId === item.itemId
+                ));
+            });
 
-        // Set the collections to the default values
-        setCollectionItems([
-          {
-            id: 268,
-            title: 'Batman',
-            poster: '/cij4dd21v2Rk2YtUQbV5kW69WB2.jpg',
-            votes: 0,
-            voted: false
-        },
-        {
-           id:  2661,
-           title: 'Batman',
-           poster: '/zzoPxWHnPa0eyfkMLgwbNvdEcVF.jpg',
-           votes: 0,
-           voted: false
-        },
-        {
-            id: 125249,
-            title: 'Batman',
-            poster: '/6XYL5JRHxaLLd0ZwsBugaAuGHTa.jpg',
-            votes: 0,
-            voted: false
-        },
-        {
-            id: 1003579,
-            title: 'Batman: The Doom That Came to Gotham',
-            poster: '/hrATQE8ScQceohwInaMluluNEaf.jpg',
-            votes: 0,
-            voted: false
-        },
-        {
-            id: 414906,
-            title: 'The Batman',
-            poster: '/74xTEgt7R36Fpooo50r9T25onhq.jpg',
-            votes: 0,
-            voted: false
-        },
-        {
-            id: 886396,
-            title: 'Batman and Superman: Battle of the Super Sons',
-            poster: '/mvffaexT5kA3chOnGxwBSlRoshh.jpg',
-            votes: 0,
-            voted: false
-        },
-        {
-            id: 209112,
-            title: 'Batman v Superman: Dawn of Justice',
-            poster: '/5UsK3grJvtQrtzEgqNlDljJW96w.jpg',
-            votes: 0,
-            voted: false
-        },
-        {
-            id: 485942,
-            title: 'Batman Ninja',
-            poster: '/5xSB0Npkc9Fd9kahKBsq9P4Cdzp.jpg',
-            votes: 0,
-            voted: false
-        },
-        {
-            id: 272,
-            title: 'Batman Begins',
-            poster: '/8RW2runSEc34IwKN2D1aPcJd2UL.jpg',
-            votes: 0,
-            voted: false
-        }
-        ]);
-
+            setCollectionItems(items);
+        });
     }, []);
 
-    const incrementCount = (id) => {
+    const changeCount = (id) => {
         // Find the item with the id and increment vote by one and save it to the state
         const item = collectionItems.find(item => item.id === id);
         // Only increment if the user has not voted
-        if (item.voted) return;
-        item.voted = true;        
-        item.votes += 1;
-        setCollectionItems([...collectionItems]);
+        if (item.voted) {
+            item.voted = false;
+            item.votes -= 1;
+            setCollectionItems([...collectionItems]);
+        } else {
+            item.voted = true;        
+            item.votes += 1;
+            setCollectionItems([...collectionItems]);
+        }
     }
 
-
+    const navToParty = () => {
+        if(userType === 'owner') {
+            // Make a fetch request to the backend to get all the collectionItems for the party
+            fetch(`http://localhost:5000/party/${code}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                // Redirect to the home page
+                history.push('/party');
+            });
+        } else {
+            history.push('/party');
+        }
+    }
 
   return (
     <div className='content'>
-        <NavLink to={'/party'} className="back">
-            <img src={back} alt="Back symbol" />
-        </NavLink>
+        <img src={back} alt="Home symbol" onClick={navToParty} className='back'/>
         <h2 className='title'>Party Code: {code}</h2>
         <div className='collection-content'>
             {[...collectionItems].reverse().map(item => (
                 <div className='item-section' key={item.id} >
                     <div 
                       className='item-img' 
-                      style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}
-                      onClick={incrementCount.bind(this, item.id)}
+                      style={
+                            item.voted ?
+                            {
+                                backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
+                                backgroundRepeat: 'no-repeat', 
+                                backgroundSize: 'cover',
+                                border: '5px solid #FCB016'
+                            }
+                            :
+                            {
+                                backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
+                                backgroundRepeat: 'no-repeat', 
+                                backgroundSize: 'cover'
+                            }
+                        }
+                      onClick={changeCount.bind(this, item.id)}
                     >
                       <p>{item.title}</p>
                       { item.votes > 0 && <div className='item-votes'>{item.votes}</div> }

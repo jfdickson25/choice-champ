@@ -33,6 +33,7 @@
     font-size: 12pt;
     font-weight: bold;
     color: #FCB016;
+    text-align: center;
 }
 
 @media screen and (min-width: 768px) {
