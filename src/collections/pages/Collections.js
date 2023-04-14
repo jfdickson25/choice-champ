@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import Footer from '../../shared/components/Navigation/Footer';
 
 import back from '../../shared/assets/img/back.svg';
@@ -9,12 +9,12 @@ import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
 
 import './Collections.css';
-import { Link } from 'react-router-dom';
 import ModalComp from '../../shared/components/ModalComp';
 import { AuthContext } from '../../shared/context/auth-context';
 
 const Collections = props => {
     const auth = useContext(AuthContext);
+    let history = useHistory();
 
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
@@ -133,12 +133,14 @@ const Collections = props => {
         handleClose();
     }
 
+    const navBack = () => {
+        history.push('/collections');
+    }
+
     return (
         <React.Fragment>
             <div className='content'>
-                <Link to='/collections' className="back">
-                    <img src={back} alt="Back symbol" />
-                </Link>
+                <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
                 <h2 className='title'>{title}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <img src={add} className='add' alt='Add icon' onClick={handleOpen} />

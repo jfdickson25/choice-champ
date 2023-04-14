@@ -76,7 +76,7 @@ input {
   margin-top: 20px;
 }
 
-.back {
+.top-right {
   grid-column: 2/4;
   width: 90%;
 }

@@ -33,11 +33,13 @@ const JoinParty = (props) => {
         inputRef.current.value = value;
     }
 
+    const navBack = () => {
+        history.push('/party');
+    }
+
   return (
     <div className='content'>
-        <NavLink to={'/party'} className="back">
-            <img src={back} alt="Back symbol" />
-        </NavLink>
+        <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
         <h2 className='title'>Join Party</h2>
         <div id='join-party-page'>
             <input type="number" min="0" max="9999" placeholder="Join Code" ref={inputRef} onChange={changeHandler} />

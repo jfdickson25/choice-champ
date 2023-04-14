@@ -6,6 +6,8 @@ import {
   Switch 
 } from 'react-router-dom';
 
+import io from 'socket.io-client';
+
 import Loading from './shared/components/Loading';
 
 import { AuthContext } from './shared/context/auth-context';
@@ -24,6 +26,14 @@ const JoinParty = lazy(() => import('./Party/pages/JoinParty'));
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const newSocket = io('http://localhost:5000');
+    setSocket(newSocket);
+
+    return () => newSocket.close();
+  }, [setSocket]);
 
   const login = useCallback(() => {
     setIsLoggedIn(true);
@@ -72,7 +82,7 @@ function App() {
             <JoinParty />
           </Route>
           <Route path="/party/:code/:userType" exact>
-            <Party />
+            <Party socket={socket} />
           </Route>
 
 

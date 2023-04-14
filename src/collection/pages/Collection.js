@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import Footer from '../../shared/components/Navigation/Footer';
 
 import back from '../../shared/assets/img/back.svg';
@@ -14,6 +14,7 @@ import './Collection.css';
 // such as alphabetically and by date added
 
 const Collection = props => {
+    let history = useHistory();
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
      * from the params and set edit and our items list
@@ -58,6 +59,14 @@ const Collection = props => {
         });
     }
 
+    const navBack = () => {
+        history.push(`/collections/${collectionType}`);
+    }
+
+    const navAdd = () => {
+        history.push(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
+    }
+
     /************************************************************
      * Logic for creating a query from the search bar. I received
      * help and direction from this youtube video Web dev simplified
@@ -75,15 +84,11 @@ const Collection = props => {
         <React.Fragment>
             <div className='content'>
                 { /* TODO: Look up difference between Link and NavLink */ }
-                <Link to={`/collections/${collectionType}`} className="back">
-                    <img src={back} alt="Back symbol" />
-                </Link>
+                <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
                 <h2 className='title'>{collectionName}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
-                <Link to={`/collections/${collectionType}/${collectionName}/${collectionId}/add`} className='add'>
-                    <img src={add} alt='Add icon' />
-                </Link>
+                <img src={add} alt='Add icon' className='add' onClick={navAdd} />
                 <div className='collection-content'>
                     { /* 
                         Received help from this article: https://bobbyhadz.com/blog/react-map-array-reverse 

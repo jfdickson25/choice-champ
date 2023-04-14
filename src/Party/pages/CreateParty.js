@@ -72,12 +72,14 @@ const CreateParty = props => {
         });
     }
 
+    const navBack = () => {
+        history.push('/party');
+    }
+
     return (
         <React.Fragment>
             <div className='content'>
-                <NavLink to={'/party'} className="back">
-                    <img src={back} alt="Back symbol" />
-                </NavLink>
+                <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
                 <h2 className='title'>Create Party</h2>
                 <div className='create-party-collections'>
                 { 
