@@ -68,7 +68,6 @@ const Auth = props => {
             .then(response => response.json())
             .then(body => {
                 auth.login();
-                console.log(body.userId);
                 auth.userIdSetter(body.userId);
                 history.push('/welcome/info');
             })
@@ -83,6 +82,10 @@ const Auth = props => {
         setIsLoginMode(prevMode => !prevMode);
     }
 
+    const navJoin = () => {
+        history.push('/party/joinParty');
+    }
+
     return (
         <div className='center'>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -95,7 +98,7 @@ const Auth = props => {
                     isLoginMode && (
                         <div>
                             <h3>Welcome Back</h3>
-                            <h4>Login back to account</h4>
+                            <h4>Login to account</h4>
                         </div>
                     )
                 }
@@ -126,6 +129,7 @@ const Auth = props => {
                         <div>
                             <p>Don't have an account?</p>
                             <p onClick={switchModeHandler} className="switch-link">Create Account</p>
+                            <p onClick={navJoin} className="switch-link">Join Code</p>
                         </div>
                     )}
                     { !isLoginMode && (

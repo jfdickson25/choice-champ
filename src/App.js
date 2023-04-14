@@ -97,6 +97,12 @@ function App() {
             <Route path="/" exact>
               <Auth />
             </Route>
+            <Route path="/party/joinParty" exact>
+              <JoinParty />
+            </Route>
+            <Route path="/party/:code/:userType" exact>
+              <Party socket={socket} />
+            </Route>
             <Redirect to="/" />
         </Switch>
       </Suspense>

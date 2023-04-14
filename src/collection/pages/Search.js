@@ -11,7 +11,7 @@ import check from '../../shared/assets/img/check.png';
 
 const Category = props => {
     let history = useHistory();
-    
+
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
      * from the params and set edit and our movies list
@@ -148,7 +148,7 @@ const Category = props => {
 
     return (
         <div className='content'>
-            <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
+            <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
             <h2 className='title'>{collectionName}</h2>
             <img src={save} className="edit" alt='Save icon' onClick={addItems} />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} ref={inputRef} />

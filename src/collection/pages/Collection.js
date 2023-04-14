@@ -84,7 +84,7 @@ const Collection = props => {
         <React.Fragment>
             <div className='content'>
                 { /* TODO: Look up difference between Link and NavLink */ }
-                <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
+                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>{collectionName}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>

@@ -6,6 +6,8 @@ import back from '../../shared/assets/img/back.svg';
 
 import './JoinParty.css';
 
+// TODO: Add validation that the party exists otherwise display an error message
+
 const JoinParty = (props) => {
 
     const [isError, setIsError] = useState(false);
@@ -39,7 +41,7 @@ const JoinParty = (props) => {
 
   return (
     <div className='content'>
-        <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
+        <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
         <h2 className='title'>Join Party</h2>
         <div id='join-party-page'>
             <input type="number" min="0" max="9999" placeholder="Join Code" ref={inputRef} onChange={changeHandler} />

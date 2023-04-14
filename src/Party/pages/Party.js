@@ -59,8 +59,6 @@ const Party = ({ socket }) => {
         socket.on('vote-increment', (id) => {
             // Find item with the id and increment the vote count
             const item = collectionPointRef.current.find(item => item.id == id);
-            console.log(collectionPointRef.current);
-            console.log(item);
             item.votes += 1;
             setCollectionItems([...collectionPointRef.current]);
         });
@@ -86,10 +84,24 @@ const Party = ({ socket }) => {
             collectionPointRef.current = filteredItems;
         });
 
+        socket.on('random-selected', (id) => {
+            // Find the item with the id and set it to the state
+            const item = collectionPointRef.current.find(item => item.id === id);
+            setCollectionItems([item]);
+            collectionPointRef.current = [item];
+        });
+
+        socket.on('party-deleted', () => {
+            // Redirect to the party page
+            history.push('/party');
+        });
+
         return () => {
             socket.off('vote-increment');
             socket.off('vote-decrement');
             socket.off('vote-selected');
+            socket.off('random-selected');
+            socket.off('party-deleted');
         }
     }, [socket]);
 
@@ -115,6 +127,12 @@ const Party = ({ socket }) => {
     const filterVoted = () => {
         // Filter out the items that have been voted for
         const filteredItems = collectionItems.filter(item => item.votes >= votesNeededRef.current);
+
+        // Check to make sure there are items left in the collection
+        if (filteredItems.length === 0) {
+            return;
+        }
+
         // Reset votes and voted for all filtered items
         filteredItems.forEach(item => {
             item.votes = 0;
@@ -124,11 +142,23 @@ const Party = ({ socket }) => {
         setCollectionItems(filteredItems);
         collectionPointRef.current = filteredItems;
 
+        // Check if there is only one item left in the collection and delete party from the database
+        if (filteredItems.length === 1) {
+            // Make a fetch request to the backend to get all the collectionItems for the party
+            fetch(`http://localhost:5000/party/${code}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
         socket.emit('vote-remote-selected', votesNeededRef.current);
     }
 
     const navToParty = () => {
-        if(userType === 'owner') {
+        if(userType === 'owner' && collectionItems.length > 1) {
             // Make a fetch request to the backend to get all the collectionItems for the party
             fetch(`http://localhost:5000/party/${code}`,
             {
@@ -138,6 +168,7 @@ const Party = ({ socket }) => {
                 }
             })
             .then(response => {
+                socket.emit('party-remote-deleted');
                 // Redirect to the home page
                 history.push('/party');
             });
@@ -146,11 +177,30 @@ const Party = ({ socket }) => {
         }
     }
 
+    const selectRandom = () => {
+        // Don't do anything if there is only one item in the collection
+        if (collectionItems.length === 1) {
+            return;
+        }
+
+        // Randomly select on of the items in the collection and remove the rest
+        const randomIndex = Math.floor(Math.random() * collectionItems.length);
+        const randomItem = collectionItems[randomIndex];
+        // Reset votes and voted for all filtered items
+        randomItem.votes = 0;
+        randomItem.voted = false;
+
+        setCollectionItems([randomItem]);
+        collectionPointRef.current = [randomItem];
+
+        socket.emit('random-remote-selected', randomItem.id);
+    }
+
   return (
     <div className='content'>
-        <img src={back} alt="Home symbol" onClick={navToParty} className='back'/>
-        <h2 className='title'>Party Code: {code}</h2>
-        <img src={dice} className="edit" alt='Dice' />
+        <img src={back} alt="Home symbol" onClick={navToParty} className='top-left'/>
+        <h2 className='title'>Code: {code}</h2>
+        <img src={dice} className="edit" alt='Dice' onClick={selectRandom} />
             { userType === 'owner' && (
                 <div className='votes-needed-section'>
                     <p className='votes-needed-title'>Votes Needed</p>
@@ -168,32 +218,49 @@ const Party = ({ socket }) => {
                 </div>
             )}
         <div className='collection-content'>
-            {[...collectionItems].reverse().map(item => (
-                <div className='item-section' key={item.id} >
-                    <div 
-                      className='item-img' 
-                      style={
-                            item.voted ?
-                            {
-                                backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
-                                backgroundRepeat: 'no-repeat', 
-                                backgroundSize: 'cover',
-                                border: '5px solid #FCB016'
-                            }
-                            :
-                            {
-                                backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
+            { 
+                collectionItems.length === 1 ? (
+                    <div className='winner'>
+                        <div
+                            className='winner-img'
+                            style={{
+                                backgroundImage: `url(https://image.tmdb.org/t/p/w500${collectionItems[0].poster})`, 
                                 backgroundRepeat: 'no-repeat', 
                                 backgroundSize: 'cover'
-                            }
-                        }
-                      onClick={changeCount.bind(this, item.id)}
-                    >
-                      <p>{item.title}</p>
-                      { item.votes > 0 && <div className='item-votes'>{item.votes}</div> }
+                            }}
+                        >
+                        </div>
+                        <p className='winner-title'>
+                            Winner - <i>{collectionItems[0].title}</i>!
+                        </p>
                     </div>
-                </div>
-            ))}
+                ) : [...collectionItems].reverse().map(item => (
+                    <div className='item-section' key={item.id} >
+                        <div 
+                        className='item-img' 
+                        style={
+                                item.voted ?
+                                {
+                                    backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
+                                    backgroundRepeat: 'no-repeat', 
+                                    backgroundSize: 'cover',
+                                    border: '5px solid #FCB016'
+                                }
+                                :
+                                {
+                                    backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
+                                    backgroundRepeat: 'no-repeat', 
+                                    backgroundSize: 'cover'
+                                }
+                            }
+                        onClick={changeCount.bind(this, item.id)}
+                        >
+                        <p>{item.title}</p>
+                        { item.votes > 0 && <div className='item-votes'>{item.votes}</div> }
+                        </div>
+                    </div>
+                ))
+            }
         </div>
         { userType === 'owner' && <Button className='filter-collection-btn' onClick={filterVoted}>Filter Selected</Button> }
     </div>

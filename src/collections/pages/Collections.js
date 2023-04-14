@@ -140,7 +140,7 @@ const Collections = props => {
     return (
         <React.Fragment>
             <div className='content'>
-                <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
+                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>{title}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <img src={add} className='add' alt='Add icon' onClick={handleOpen} />

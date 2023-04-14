@@ -79,7 +79,7 @@ const CreateParty = props => {
     return (
         <React.Fragment>
             <div className='content'>
-                <img src={back} alt="Back symbol" className="top-right" onClick={navBack} />
+                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>Create Party</h2>
                 <div className='create-party-collections'>
                 { 

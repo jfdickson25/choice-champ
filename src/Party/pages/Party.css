@@ -32,6 +32,32 @@
     position: relative;
 }
 
+.winner {
+    width: 100%;
+    grid-column: 1/3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    font-weight: bold;
+    align-items: center;
+    justify-items: center;
+    position: relative;
+}
+
+.winner-img {
+    height: 50vh;
+    width: 80%;
+    grid-column: 1/4;
+}
+
+.winner-title {
+    grid-column: 1/4;
+    width: 100%;
+    text-align: center;
+    font-size: 16pt;
+    color: #FCB016;
+    font-weight: bold;
+}
+
 .item-img {
     height: 30vh;
     width: 100%;

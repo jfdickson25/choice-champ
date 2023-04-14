@@ -76,13 +76,14 @@ input {
   margin-top: 20px;
 }
 
-.top-right {
+.top-left {
   grid-column: 2/4;
   width: 90%;
 }
 
 .title {
   grid-column: 4/15;
+  font-weight: 300;
 }
 
 .edit {
