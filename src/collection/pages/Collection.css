@@ -70,3 +70,11 @@
     margin: 0;
     padding: 0;
 }
+
+.share-code {
+    width: 100%;
+    grid-column: 1/18;
+    text-align: center;
+    font-size: 10pt;
+    color: #FCB016;
+}

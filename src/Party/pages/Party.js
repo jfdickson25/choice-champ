@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef }  from 'react';
 import { useParams, NavLink, useHistory } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
+import Confetti from 'react-confetti';
 import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
 
@@ -172,7 +173,8 @@ const Party = ({ socket }) => {
                 // Redirect to the home page
                 history.push('/party');
             });
-        } else {
+        }
+        else {
             history.push('/party');
         }
     }
@@ -193,14 +195,23 @@ const Party = ({ socket }) => {
         setCollectionItems([randomItem]);
         collectionPointRef.current = [randomItem];
 
+        fetch(`http://localhost:5000/party/${code}`,
+        {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
         socket.emit('random-remote-selected', randomItem.id);
     }
 
   return (
     <div className='content'>
-        <img src={back} alt="Home symbol" onClick={navToParty} className='top-left'/>
+        { collectionItems.length === 1 && ( <Confetti /> )}
+        <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
         <h2 className='title'>Code: {code}</h2>
-        <img src={dice} className="edit" alt='Dice' onClick={selectRandom} />
+        { userType === 'owner' && (<img src={dice} className="edit" alt='Dice' onClick={selectRandom} />) }
             { userType === 'owner' && (
                 <div className='votes-needed-section'>
                     <p className='votes-needed-title'>Votes Needed</p>
@@ -231,7 +242,7 @@ const Party = ({ socket }) => {
                         >
                         </div>
                         <p className='winner-title'>
-                            Winner - <i>{collectionItems[0].title}</i>!
+                            CHOICE CHAMPION!
                         </p>
                     </div>
                 ) : [...collectionItems].reverse().map(item => (

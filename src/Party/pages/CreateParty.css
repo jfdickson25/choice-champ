@@ -34,6 +34,37 @@
     width: 100%;
 }
 
+.radio-btns {
+    grid-column: 1/18;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: repeat(12, 1fr);
+    row-gap: 20px;
+    margin: 50px 50px
+}
+
+.radio-btns label {
+    grid-column: 3/9;
+    text-align: right;
+}
+
+.radio-btns input {
+    grid-column: 9;
+    margin: 0;
+    transform: scale(1.5);
+    accent-color: #FCB016;
+}
+
+.no-collections-found {
+    grid-column: 1/3;
+    text-align: center;
+    font-size: 16pt;
+    font-weight: 300;
+    color: #FCB016;
+}
+
 @media screen and (min-width: 1024px) {
     .create-party-collections {
         grid-column: 6/13;

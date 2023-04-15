@@ -7,7 +7,7 @@
     top: 40%;
 }
 
-#movies > .category-overlay::after {
+#movie > .category-overlay::after {
     content: "Movies";
 }
 
@@ -15,7 +15,7 @@
     content: "TV";
 }
 
-#games > .category-overlay::after {
+#game > .category-overlay::after {
     content: "Games";
 }
 

@@ -26,6 +26,7 @@ const Collection = props => {
 
     const [items, setItems] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [shareCode, setShareCode] = useState(0);
 
     useEffect(() => {
         // Make a fetch get request to get all the items in a collection
@@ -38,6 +39,7 @@ const Collection = props => {
         .then(res => res.json())
         .then(data => {
             setItems(data.items);
+            setShareCode(data.shareCode);
         });
     }, []);
 
@@ -87,6 +89,7 @@ const Collection = props => {
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>{collectionName}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
+                <div className='share-code'>share code: {shareCode}</div>
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
                 <img src={add} alt='Add icon' className='add' onClick={navAdd} />
                 <div className='collection-content'>

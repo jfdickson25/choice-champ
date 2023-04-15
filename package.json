@@ -12,6 +12,7 @@
     "@mui/material": "^5.10.14",
     "@types/react-transition-group": "^4.4.5",
     "react": "^16.11.0",
+    "react-confetti": "^6.1.0",
     "react-dom": "^16.11.0",
     "react-hook-form": "^7.39.4",
     "react-lazyload": "^3.2.0",

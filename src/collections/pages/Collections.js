@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
+import { Dialog } from '@mui/material';
 import Footer from '../../shared/components/Navigation/Footer';
 
 import back from '../../shared/assets/img/back.svg';
@@ -9,7 +10,6 @@ import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
 
 import './Collections.css';
-import ModalComp from '../../shared/components/ModalComp';
 import { AuthContext } from '../../shared/context/auth-context';
 
 const Collections = props => {
@@ -31,32 +31,26 @@ const Collections = props => {
 
     // Empty array will only run on the initial render
     useEffect(() => {
-        // Switch content based on the type received in the url params
-        switch(collectionsType) {
-            case('movies'):
-                setTitle('Movie Collections');
-                // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
-                fetch(`http://localhost:5000/collections/${auth.userId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    setCollections(data.collections);
-                })
-
-                break;
-            case('tv'):
-                setTitle('TV Collections');
-                break;
-            case('games'):
-                setTitle('Game Collections');
-                break;
-            default:
-                setTitle('Invalid Collections Type');
+        // Set the title depending on the type
+        if(collectionsType === 'movie') {
+            setTitle('Movie Collections')
+        } else if(collectionsType === 'tv') {
+            setTitle('TV Collections')
+        } else if(collectionsType === 'game') {
+            setTitle('Game Collections')
         }
+        
+        // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
+        fetch(`http://localhost:5000/collections/${collectionsType}/${auth.userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setCollections(data.collections);
+        });
     }, [collectionsType]);
 
     /************************************************************
@@ -89,23 +83,32 @@ const Collections = props => {
     // Modal state and functions
     const [open, setOpen] = useState(false);
     // Modal input state and function
-    const inputRef = useRef();
+    const inputCollectionRef = useRef();
+    const inputJoinRef = useRef();
     const handleOpen = () => setOpen(true);
+
     const handleClose = () => {
         // Reset the value in the input
-        inputRef.current.value = '';
+        inputCollectionRef.current.value = '';
+        inputJoinRef.current.value = null;
         setOpen(false);
     }
-    const changeHandler = (event) => {
+    const changeCollectionHandler = (event) => {
         const value = event.target.value;
 
-        inputRef.current.value = value;
+        inputCollectionRef.current.value = value;
+    }
+
+    const changeJoinCodeHandler = (event) => {
+        const value = event.target.value;
+
+        inputJoinRef.current.value = value;
     }
 
     const handleAddCollection = () => {
 
         // Only add if the input is not empty and the collection does not already exist
-        if(inputRef.current.value === '' || collections.find(collection => collection.name === inputRef.current.value)) {
+        if(inputCollectionRef.current.value === '' || collections.find(collection => collection.name === inputCollectionRef.current.value)) {
             return;
         }
 
@@ -116,7 +119,8 @@ const Collections = props => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: inputRef.current.value
+                name: inputCollectionRef.current.value,
+                type: collectionsType
             })
         })
         .then(res => res.json())
@@ -132,6 +136,31 @@ const Collections = props => {
         // Close the modal
         handleClose();
     }
+
+    const handleJoinCollection = () => {
+
+        // Send a fetch post request to localhost:5000/collections with the userId and the new collection name
+        fetch(`http://localhost:5000/collections/join/${inputJoinRef.current.value}/${auth.userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Add the new collection to the collections array
+            setCollections([...collections, data.collection]);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+
+        // Close the modal
+        handleClose();
+    }
+
+    
 
     const navBack = () => {
         history.push('/collections');
@@ -166,15 +195,17 @@ const Collections = props => {
                     }
                 </div>
             </div>
-            <ModalComp 
-                open={open} 
-                handleClose={handleClose} 
-                placeholder="New collection" 
-                changeHandler={changeHandler} 
-                inputRef={inputRef} 
-                handleInput={handleAddCollection} 
-                buttonText="Add Collection"
-            />
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth='lg'>
+                <div className='dialog-content'>
+                    <div className='dialog-sub-content'>
+                        <input type="text" placeholder={"New Collection"} onChange={changeCollectionHandler} ref={inputCollectionRef}/>
+                        <button onClick={handleAddCollection}>Create Collection</button>
+                        <p className='or'>OR</p>
+                        <input type="number" min={10000} max={99999} placeholder={12345} onChange={changeJoinCodeHandler} ref={inputJoinRef}/>
+                        <button onClick={handleJoinCollection}>Join Collection</button>
+                    </div>
+                </div>
+            </Dialog>
             <Footer />
         </React.Fragment>
     );

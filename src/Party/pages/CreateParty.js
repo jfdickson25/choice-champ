@@ -17,11 +17,14 @@ const CreateParty = props => {
     const auth = useContext(AuthContext);
 
     const [collections, setCollections] = useState([]);
+    const [mediaType, setMediaType] = useState('movie');
+    const [selectAlert, setSelectAlert] = useState(false);
     let history = useHistory();
 
     useEffect(() => {
+        // TODO: Update to only search for collection after radio button is selected
         // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
-        fetch(`http://localhost:5000/collections/${auth.userId}`, {
+        fetch(`http://localhost:5000/collections/movie/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,6 +37,10 @@ const CreateParty = props => {
     }, []);
 
     const addRemoveItem = (itemId) => {
+        if(selectAlert) {
+            setSelectAlert(false);
+        }
+
         // Find the item in the array and toggle the selected value
         const updatedCollections = collections.map(collection => {
             if(collection._id === itemId) {
@@ -46,9 +53,15 @@ const CreateParty = props => {
     }
 
     const navToParty = () => {
+        const selectedCollections = collections.filter(collection => collection.selected);
+
+        if (selectedCollections.length === 0) {
+            setSelectAlert(true);
+            return;
+        }
+
         // Generate a random 4 digit party code
         const partyCode = Math.floor(1000 + Math.random() * 9000);
-        const selectedCollections = collections.filter(collection => collection.selected);
 
         const collectionIds = selectedCollections.map(collection => collection._id);
 
@@ -76,13 +89,38 @@ const CreateParty = props => {
         history.push('/party');
     }
 
+    const mediaTypeHandler = (event) => {
+
+        setMediaType(event.target.value);
+
+        // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
+        fetch(`http://localhost:5000/collections/${event.target.value}/${auth.userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setCollections(data.collections);
+        })
+    }
+
     return (
         <React.Fragment>
             <div className='content'>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>Create Party</h2>
+                <div className='radio-btns'>
+                    <label htmlFor="movie">Movies</label>
+                    <input type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 
+                    <label htmlFor="tv">TV Shows</label>
+                    <input type='radio' name='mediaType' id='tv' value='tv' onChange={mediaTypeHandler} checked={mediaType === 'tv'} />
+                    <label htmlFor="games">Video Games</label>
+                    <input type='radio' name='mediaType' it='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
+                </div>
                 <div className='create-party-collections'>
-                { 
+                { collections.length > 0 ?
                     collections.map(collection => (
                         <div key={collection._id} className='create-party-collection'>
                             {
@@ -93,9 +131,12 @@ const CreateParty = props => {
                             <div className='create-party-collection-name'>{collection.name}</div>
                         </div>
                     ))
+
+                    : <div className='no-collections-found'>No collections found for this media type</div>
                 }
                 </div>
                 <Button type="button" className='create-party-btn' onClick={navToParty}>Create Party</Button>
+                { selectAlert && <div className='select-alert'>Please select at least one collection</div> }
             </div>
             <Footer />
         </React.Fragment>

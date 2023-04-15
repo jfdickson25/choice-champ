@@ -9,9 +9,9 @@ const CollectionsHome = props => {
         <React.Fragment>
             <div className="content">
                 <div id="categories">
-                    <Category id="movies" title="MOVIES" />
+                    <Category id="movie" title="MOVIES" />
                     <Category id="tv" title="TV" />
-                    <Category id="games" title="GAMES" />
+                    <Category id="game" title="GAMES" />
                 </div>
             </div>
             <Footer />

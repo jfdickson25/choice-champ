@@ -59,7 +59,7 @@ const Category = props => {
     const updateDebounce = debounce(async (search) => {
         // Check if the collection type is movies
         // TODO: Add tv shows and games
-        if(collectionType === 'movies') {
+        if(collectionType === 'movie' || collectionType === 'tv') {
 
             if (search === '') {
                 setItems([]);
@@ -67,29 +67,39 @@ const Category = props => {
             }
 
             // Make a fetch request to get all movies that match the search
-            fetch(`http://localhost:5000/movies/${search}/1`)
+            fetch(`http://localhost:5000/moviesTv/${collectionType}/${search}/1`)
             .then(res => res.json())
             .then(res => {
                 // Reset the items to populate with updated value
                 setItems([]);
 
-                res.movies.results.forEach(movie => {
+                res.media.results.forEach(mediaItem => {
 
                     // Make sure the movie isn't already in the collection
                     let inCollection = false;
                     collection.forEach(item => {
-                        if(item.itemId === movie.id) {
+                        if(item.itemId === mediaItem.id) {
                             inCollection = true;
                         }
                     });
 
-                    setItems(prevState => [...prevState, {
-                        id: movie.id,
-                        title: movie.title,
-                        poster: movie.poster_path,
-                        selected: false,
-                        inCollection: inCollection
-                    }]);
+                    if (collectionType === 'movie') {
+                        setItems(prevState => [...prevState, {
+                            id: mediaItem.id,
+                            title: mediaItem.title,
+                            poster: mediaItem.poster_path,
+                            selected: false,
+                            inCollection: inCollection
+                        }]);
+                        } else if (collectionType === 'tv') {
+                        setItems(prevState => [...prevState, {
+                            id: mediaItem.id,
+                            title: mediaItem.name,
+                            poster: mediaItem.poster_path,
+                            selected: false,
+                            inCollection: inCollection
+                        }]);
+                    }
                 });
             });
         }
