@@ -30,7 +30,7 @@ const Collection = props => {
 
     useEffect(() => {
         // Make a fetch get request to get all the items in a collection
-        fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ const Collection = props => {
 
     const removeItem = (id) => {
         // Make a fetch delete request to remove an item from a collection
-        fetch(`http://localhost:5000/collections/items/${collectionId}/${id}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

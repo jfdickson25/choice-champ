@@ -24,7 +24,7 @@ const Party = ({ socket }) => {
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
         // Make a fetch request to the backend to get all the collectionItems for the party
-        fetch(`http://localhost:5000/party/${code}`,
+        fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
         {
             method: 'GET',
             headers: {
@@ -146,7 +146,7 @@ const Party = ({ socket }) => {
         // Check if there is only one item left in the collection and delete party from the database
         if (filteredItems.length === 1) {
             // Make a fetch request to the backend to get all the collectionItems for the party
-            fetch(`http://localhost:5000/party/${code}`,
+            fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
             {
                 method: 'DELETE',
                 headers: {
@@ -161,7 +161,7 @@ const Party = ({ socket }) => {
     const navToParty = () => {
         if(userType === 'owner' && collectionItems.length > 1) {
             // Make a fetch request to the backend to get all the collectionItems for the party
-            fetch(`http://localhost:5000/party/${code}`,
+            fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
             {
                 method: 'DELETE',
                 headers: {
@@ -195,7 +195,7 @@ const Party = ({ socket }) => {
         setCollectionItems([randomItem]);
         collectionPointRef.current = [randomItem];
 
-        fetch(`http://localhost:5000/party/${code}`,
+        fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
         {
             method: 'DELETE',
             headers: {

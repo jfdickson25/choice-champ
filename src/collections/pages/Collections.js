@@ -41,7 +41,7 @@ const Collections = props => {
         }
         
         // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
-        fetch(`http://localhost:5000/collections/${collectionsType}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/${collectionsType}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ const Collections = props => {
 
      const handleRemoveCollection = (id) => {
          // Send a fetch delete request to localhost:5000/collections with the userId and the collection id
-            fetch(`http://localhost:5000/collections/${auth.userId}/${id}`, {
+            fetch(`https://choice-champ-backend.glitch.me/collections/${auth.userId}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -113,7 +113,7 @@ const Collections = props => {
         }
 
         // Send a fetch post request to localhost:5000/collections with the userId and the new collection name
-        fetch(`http://localhost:5000/collections/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/${auth.userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -140,7 +140,7 @@ const Collections = props => {
     const handleJoinCollection = () => {
 
         // Send a fetch post request to localhost:5000/collections with the userId and the new collection name
-        fetch(`http://localhost:5000/collections/join/${inputJoinRef.current.value}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/join/${inputJoinRef.current.value}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

@@ -24,7 +24,7 @@ const CreateParty = props => {
     useEffect(() => {
         // TODO: Update to only search for collection after radio button is selected
         // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
-        fetch(`http://localhost:5000/collections/movie/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/movie/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ const CreateParty = props => {
 
         // TODO: Update to send the selected collections to the backend to create party with join code and then route to the party page
         // make a post request to the backend to create the party with the join code and then route to the party page
-        fetch('http://localhost:5000/party', {
+        fetch('https://choice-champ-backend.glitch.me/party', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ const CreateParty = props => {
         setMediaType(event.target.value);
 
         // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
-        fetch(`http://localhost:5000/collections/${event.target.value}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/${event.target.value}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

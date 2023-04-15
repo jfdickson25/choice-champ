@@ -25,7 +25,7 @@ const Auth = props => {
 
         // Either login or create account
         if(isLoginMode) {
-            fetch('http://localhost:5000/user/signIn', {
+            fetch('https://choice-champ-backend.glitch.me/user/signIn', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ const Auth = props => {
                 console.log(err);
             });
         } else {
-            fetch('http://localhost:5000/user', {
+            fetch('https://choice-champ-backend.glitch.me/user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -29,7 +29,7 @@ const Category = props => {
 
     useEffect(() => {
         // Get all the items in the collection to check if any items in the search are already in the collection
-        fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +67,7 @@ const Category = props => {
             }
 
             // Make a fetch request to get all movies that match the search
-            fetch(`http://localhost:5000/moviesTv/${collectionType}/${search}/1`)
+            fetch(`https://choice-champ-backend.glitch.me/moviesTv/${collectionType}/${search}/1`)
             .then(res => res.json())
             .then(res => {
                 // Reset the items to populate with updated value
@@ -131,7 +131,7 @@ const Category = props => {
         // Check to make sure selectedItems is not empty
         if(selectedItems.length !== 0) {
             // Send the selected items to the backend to be added to the collection
-            fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+            fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

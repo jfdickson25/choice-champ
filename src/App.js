@@ -29,7 +29,7 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io('https://choice-champ-backend.glitch.me');
     setSocket(newSocket);
 
     return () => newSocket.close();
