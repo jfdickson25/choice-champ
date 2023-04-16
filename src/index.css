@@ -27,7 +27,7 @@ h4 {
 
 p {
   font-weight: 300;
-  font-size: 10;
+  font-size: 12pt;
 }
 
 input {
@@ -38,6 +38,7 @@ input {
   border: solid 1px white;
   padding: 15px;
   margin-top: 20px;
+  font-size: 14pt;
 }
 
 .slide-in-left-enter {

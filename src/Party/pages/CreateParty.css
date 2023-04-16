@@ -53,8 +53,8 @@
 .radio-btns input {
     grid-column: 9;
     margin: 0;
-    transform: scale(1.5);
     accent-color: #FCB016;
+    font-size: 18pt;
 }
 
 .no-collections-found {
@@ -63,6 +63,15 @@
     font-size: 16pt;
     font-weight: 300;
     color: #FCB016;
+}
+
+.select-alert {
+    grid-column: 1/18;
+    width: 100%;
+    text-align: center;
+    font-size: 14pt;
+    font-weight: 300;
+    margin-top: 20px;
 }
 
 @media screen and (min-width: 1024px) {

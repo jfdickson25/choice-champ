@@ -112,7 +112,7 @@ const Auth = props => {
                 }
                 <input id="username" placeholder="Username" {...register("usernameRequired", { required: true, minLength: 5, maxLength: 20 }) }/>
                 {errors.usernameRequired && <p className='error'>A username of at least 5 characters is required</p>}
-                <input id="password" placeholder="Password" {...register("passwordRequired", { required: true, minLength: 5 }) }/>
+                <input type='password' id="password" placeholder="Password" {...register("passwordRequired", { required: true, minLength: 5 }) }/>
                 {errors.passwordRequired && <p className='error'>A password of at lease 5 characters is required</p>}
                 {
                     isLoginMode && (
