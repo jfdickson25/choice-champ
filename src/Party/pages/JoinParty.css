@@ -2,5 +2,10 @@
 #join-party-page {
     grid-column: 3/16;
     width: 100%;
-    margin-top: 25vh;
+}
+
+.join-img {
+    width: 100%;
+    margin-top: 30px;
+    grid-column: 2/17;
 }

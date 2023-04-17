@@ -59,50 +59,56 @@ const Category = props => {
     const updateDebounce = debounce(async (search) => {
         // Check if the collection type is movies
         // TODO: Add tv shows and games
-        if(collectionType === 'movie' || collectionType === 'tv') {
 
             if (search === '') {
                 setItems([]);
                 return;
             }
 
-            // Make a fetch request to get all movies that match the search
-            fetch(`https://choice-champ-backend.glitch.me/moviesTv/${collectionType}/${search}/1`)
-            .then(res => res.json())
-            .then(res => {
-                // Reset the items to populate with updated value
-                setItems([]);
+        // Make a fetch request to get all movies that match the search
+        fetch(`https://choice-champ-backend.glitch.me/media/${collectionType}/${search}/1`)
+        .then(res => res.json())
+        .then(res => {
+            // Reset the items to populate with updated value
+            setItems([]);
 
-                res.media.results.forEach(mediaItem => {
+            res.media.results.forEach(mediaItem => {
 
-                    // Make sure the movie isn't already in the collection
-                    let inCollection = false;
-                    collection.forEach(item => {
-                        if(item.itemId === mediaItem.id) {
-                            inCollection = true;
-                        }
-                    });
-
-                    if (collectionType === 'movie') {
-                        setItems(prevState => [...prevState, {
-                            id: mediaItem.id,
-                            title: mediaItem.title,
-                            poster: mediaItem.poster_path,
-                            selected: false,
-                            inCollection: inCollection
-                        }]);
-                        } else if (collectionType === 'tv') {
-                        setItems(prevState => [...prevState, {
-                            id: mediaItem.id,
-                            title: mediaItem.name,
-                            poster: mediaItem.poster_path,
-                            selected: false,
-                            inCollection: inCollection
-                        }]);
+                // Make sure the movie isn't already in the collection
+                let inCollection = false;
+                collection.forEach(item => {
+                    if(item.itemId === mediaItem.id) {
+                        inCollection = true;
                     }
                 });
+
+                if (collectionType === 'movie') {
+                    setItems(prevState => [...prevState, {
+                        id: mediaItem.id,
+                        title: mediaItem.title,
+                        poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
+                        selected: false,
+                        inCollection: inCollection
+                    }]);
+                } else if (collectionType === 'tv') {
+                    setItems(prevState => [...prevState, {
+                        id: mediaItem.id,
+                        title: mediaItem.name,
+                        poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
+                        selected: false,
+                        inCollection: inCollection
+                    }]);
+                } else if (collectionType === 'game') {
+                    setItems(prevState => [...prevState, {
+                        id: mediaItem.id,
+                        title: mediaItem.name,
+                        poster: mediaItem.background_image,
+                        selected: false,
+                        inCollection: inCollection
+                    }]);
+                }
             });
-        }
+        });
     });
 
     // Functions for handling change to input
@@ -162,16 +168,15 @@ const Category = props => {
             <h2 className='title'>{collectionName}</h2>
             <img src={save} className="edit" alt='Save icon' onClick={addItems} />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} ref={inputRef} />
-            <div className='collection-content'>
+            <div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
                 {items.map(item => (
                     <div className='item-section' key={item.id}>
-                        <div className='item-img' style={{backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                        {
-                            item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} className='item-action' />) :
+                            <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>                       {
+                            item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' && {width: '15%'}} className='item-action' />) :
                             (
                                 item.selected 
-                                ? (<img id={item.id} src={check} alt={`${item.title} poster`} className='item-action' onClick={() => { checkUncheckItem(item.id) }} />)
-                                : (<img id={item.id} src={circle} alt={`${item.title} poster`} className='item-action' onClick={() => { checkUncheckItem(item.id) }} />)
+                                ? (<img id={item.id} src={check} alt={`${item.title} poster`} className='item-action' style={collectionType === 'game' && {width: '15%'}} onClick={() => { checkUncheckItem(item.id) }} />)
+                                : (<img id={item.id} src={circle} alt={`${item.title} poster`} className='item-action' style={collectionType === 'game' && {width: '15%'}} onClick={() => { checkUncheckItem(item.id) }} />)
                             )
                         }
                         </div>

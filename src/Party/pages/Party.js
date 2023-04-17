@@ -235,7 +235,7 @@ const Party = ({ socket }) => {
                         <div
                             className='winner-img'
                             style={{
-                                backgroundImage: `url(https://image.tmdb.org/t/p/w500${collectionItems[0].poster})`, 
+                                backgroundImage: `url(${collectionItems[0].poster})`, 
                                 backgroundRepeat: 'no-repeat', 
                                 backgroundSize: 'cover'
                             }}
@@ -252,14 +252,14 @@ const Party = ({ socket }) => {
                         style={
                                 item.voted ?
                                 {
-                                    backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
+                                    backgroundImage: `url(${item.poster})`, 
                                     backgroundRepeat: 'no-repeat', 
                                     backgroundSize: 'cover',
                                     border: '5px solid #FCB016'
                                 }
                                 :
                                 {
-                                    backgroundImage: `url(https://image.tmdb.org/t/p/w500${item.poster})`, 
+                                    backgroundImage: `url(${item.poster})`, 
                                     backgroundRepeat: 'no-repeat', 
                                     backgroundSize: 'cover'
                                 }
