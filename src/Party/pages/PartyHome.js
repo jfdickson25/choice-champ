@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import Footer from '../../shared/components/Navigation/Footer';
-
-import discussion from '../assets/img/Group discussion-rafiki.svg';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import './PartyHome.css';
 import Button from '../../shared/components/FormElements/Button';
 
 const PartyHome = props => {
+    const auth = useContext(AuthContext);
+
+    useEffect(() => {
+        auth.showFooterHandler(true);
+    }, []);
+
     return (
         <React.Fragment>
             <div className='content'>
@@ -21,7 +25,6 @@ const PartyHome = props => {
                     </NavLink>
                 </div>
             </div>
-            <Footer />
         </React.Fragment>
     );
 }

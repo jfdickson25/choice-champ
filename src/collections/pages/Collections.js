@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { Dialog } from '@mui/material';
-import Footer from '../../shared/components/Navigation/Footer';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -31,6 +30,8 @@ const Collections = props => {
 
     // Empty array will only run on the initial render
     useEffect(() => {
+        auth.showFooterHandler(true);
+        
         // Set the title depending on the type
         if(collectionsType === 'movie') {
             setTitle('Movie Collections')
@@ -206,7 +207,6 @@ const Collections = props => {
                     </div>
                 </div>
             </Dialog>
-            <Footer />
         </React.Fragment>
     );
 }

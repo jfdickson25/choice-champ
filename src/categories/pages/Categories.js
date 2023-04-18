@@ -1,10 +1,16 @@
-import React from 'react';
-import Footer from '../../shared/components/Navigation/Footer';
+import React, { useContext, useEffect } from 'react';
 import Category from '../components/Category';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import './Categories.css';
 
 const CollectionsHome = props => {
+    const auth = useContext(AuthContext);
+
+    useEffect(() => {
+        auth.showFooterHandler(true);
+    }, []);
+
     return (
         <React.Fragment>
             <div className="content">
@@ -14,7 +20,6 @@ const CollectionsHome = props => {
                     <Category id="game" title="GAMES" />
                 </div>
             </div>
-            <Footer />
         </React.Fragment>
     );
 }

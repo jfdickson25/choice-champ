@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
-import Footer from '../../shared/components/Navigation/Footer';
+import { useHistory } from 'react-router-dom';
 
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
@@ -22,6 +21,7 @@ const CreateParty = props => {
     let history = useHistory();
 
     useEffect(() => {
+        auth.showFooterHandler(true);
         // TODO: Update to only search for collection after radio button is selected
         // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
         fetch(`https://choice-champ-backend.glitch.me/collections/movie/${auth.userId}`, {
@@ -138,7 +138,6 @@ const CreateParty = props => {
                 <Button type="button" className='create-party-btn' onClick={navToParty}>Create Party</Button>
                 { selectAlert && <div className='select-alert'>Please select at least one collection</div> }
             </div>
-            <Footer />
         </React.Fragment>
     );
 }

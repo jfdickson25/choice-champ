@@ -1,5 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import './Search.css';
 
@@ -9,7 +10,8 @@ import circle from '../../shared/assets/img/circle.png';
 import filledCircle from '../../shared/assets/img/filled-circle.png';
 import check from '../../shared/assets/img/check.png';
 
-const Category = props => {
+const Search = props => {
+    const auth = useContext(AuthContext);
     let history = useHistory();
 
     /************************************************************
@@ -28,6 +30,7 @@ const Category = props => {
     const inputRef = useRef();
 
     useEffect(() => {
+        auth.showFooterHandler(false);
         // Get all the items in the collection to check if any items in the search are already in the collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'GET',
@@ -186,4 +189,4 @@ const Category = props => {
     );
 }
 
-export default Category;
+export default Search;

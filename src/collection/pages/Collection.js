@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Link, useParams, useHistory } from 'react-router-dom';
-import Footer from '../../shared/components/Navigation/Footer';
+import React, { useEffect, useMemo, useState, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -14,6 +14,7 @@ import './Collection.css';
 // such as alphabetically and by date added
 
 const Collection = props => {
+    const auth = useContext(AuthContext);
     let history = useHistory();
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
@@ -29,6 +30,7 @@ const Collection = props => {
     const [shareCode, setShareCode] = useState(0);
 
     useEffect(() => {
+        auth.showFooterHandler(true);
         // Make a fetch get request to get all the items in a collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'GET',
@@ -110,7 +112,6 @@ const Collection = props => {
                         ))}
                 </div>
             </div>
-            <Footer />
         </React.Fragment>
     );
 }

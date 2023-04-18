@@ -1,16 +1,19 @@
 
-import React, { useEffect, useState, useRef }  from 'react';
+import React, { useEffect, useState, useRef, useContext }  from 'react';
 import { useParams, NavLink, useHistory } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import Confetti from 'react-confetti';
 import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
 
+import { AuthContext } from '../../shared/context/auth-context';
+
 import './Party.css';  
 
 // TODO: Add functionality to randomly select one of the items in the collection and display it on the screen
 
 const Party = ({ socket }) => {
+    const auth = useContext(AuthContext);
     let history = useHistory();
     // Get the party code and user type from the url
     const { code, userType } = useParams();
@@ -23,6 +26,7 @@ const Party = ({ socket }) => {
 
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
+        auth.showFooterHandler(false);
         // Make a fetch request to the backend to get all the collectionItems for the party
         fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
         {

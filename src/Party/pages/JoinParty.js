@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { NavLink, useHistory } from 'react-router-dom';
+import React, { useRef, useState, useContext, useEffect } from 'react'
+import { useHistory } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import back from '../../shared/assets/img/back.svg';
 
@@ -9,11 +10,16 @@ import './JoinParty.css';
 // TODO: Add validation that the party exists otherwise display an error message
 
 const JoinParty = (props) => {
+    const auth = useContext(AuthContext);
 
     const [isError, setIsError] = useState(false);
 
     let history = useHistory();
     const inputRef = useRef();
+
+    useEffect(() => {
+        auth.showFooterHandler(true);
+    }, []);
 
     const navToParty = () => {
         // Grab the join code from the input and validate it is 4 digits if it is 4 digits, navigate to the party page if it is not 4 digits, display an error message

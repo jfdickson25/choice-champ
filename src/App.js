@@ -3,12 +3,13 @@ import {
   BrowserRouter as Router,
   Route, 
   Redirect,
-  Switch 
+  Switch
 } from 'react-router-dom';
 
 import io from 'socket.io-client';
 
 import Loading from './shared/components/Loading';
+import Footer from './shared/components/Navigation/Footer';
 
 import { AuthContext } from './shared/context/auth-context';
 
@@ -27,6 +28,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
   const [socket, setSocket] = useState(null);
+
+  const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
     const newSocket = io('https://choice-champ-backend.glitch.me');
@@ -47,13 +50,17 @@ function App() {
     setUserId(id);
   }, []);
 
+  const showFooterHandler = useCallback((show) => {
+    setShowFooter(show);
+  }, []);
+
   let routes;
   // TODO: Add logic back in once we implement authentication
   if(isLoggedIn) {
     routes = (
       // Using Suspense inside a switch caused issues with redirecting. Solution found in this stack overflow article:
       // https://stackoverflow.com/questions/62193855/react-lazy-loaded-route-makes-redirecting-non-matching-routes-to-404-not-work
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading size={100} />}>
         <Switch>
           <Route path="/welcome/info" exact>
             <Welcome />
@@ -109,12 +116,19 @@ function App() {
     )
   }
 
+  let footer;
+
+  if(showFooter && isLoggedIn) {
+    footer = <Footer />
+  }
+
 
   return (
-    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userId: userId, userIdSetter: userIdSetter, login: login, logout: logout}}>
+    <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userId: userId, userIdSetter: userIdSetter, login: login, logout: logout, showFooterHandler: showFooterHandler}}>
       <Router>
         <main>
           {routes}
+          {footer}
         </main>
       </Router>
     </AuthContext.Provider>
