@@ -60,7 +60,7 @@ function App() {
     routes = (
       // Using Suspense inside a switch caused issues with redirecting. Solution found in this stack overflow article:
       // https://stackoverflow.com/questions/62193855/react-lazy-loaded-route-makes-redirecting-non-matching-routes-to-404-not-work
-      <Suspense fallback={<Loading size={100} />}>
+      <Suspense fallback={<Loading className='page-loading' size={100} />}>
         <Switch>
           <Route path="/welcome/info" exact>
             <Welcome />

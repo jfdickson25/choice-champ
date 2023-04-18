@@ -1,12 +1,27 @@
 import React from 'react';
-import { BounceLoader } from 'react-spinners';
+import { BounceLoader, BeatLoader, SyncLoader } from 'react-spinners';
 
 import './Loading.css';
 
 const Loading = props => {
+    let type = props.type || 'bounce';
+    let size = props.size || 100;
+    let color = props.color || '#FCB016';
+    let speed = props.speed || 1;
+    let loading;
+
+    if (type === 'bounce') {
+        loading = <BounceLoader color={color} size={size}   speedMultiplier={speed} />;
+    } else if (type === 'beat') {
+        loading = <BeatLoader color={color} size={size} speedMultiplier={speed} />;
+    } else if (type === 'sync') {
+        loading = <SyncLoader color={color} size={size} speedMultiplier={speed} />;
+    }
+
+
     return (
-        <div className='loading'>
-            <BounceLoader color="#FCB016" size={props.size} />
+        <div className={props.className}>
+            {loading}
         </div>
     );
 }

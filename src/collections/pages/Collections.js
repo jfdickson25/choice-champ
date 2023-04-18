@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import { Dialog } from '@mui/material';
+import Loading from '../../shared/components/Loading';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -27,6 +28,7 @@ const Collections = props => {
     // State for collections
     const [collections, setCollections] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     // Empty array will only run on the initial render
     useEffect(() => {
@@ -51,6 +53,7 @@ const Collections = props => {
         .then(res => res.json())
         .then(data => {
             setCollections(data.collections);
+            setIsLoading(false);
         });
     }, [collectionsType]);
 
@@ -175,26 +178,29 @@ const Collections = props => {
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <img src={add} className='add' alt='Add icon' onClick={handleOpen} />
 
-                <div className='collections-content'>
-                    {
-                        collections.length > 0 ? collections.map(collection => (
-                            isEdit ? (
-                                <div className='collections-item' key={collection._id} onClick={() => { handleRemoveCollection(collection._id) }}>
-                                    <img className='item-action' alt="Remove Icon" src={remove} />
-                                    <div className="collection-text">
-                                        {collection.name}
+                {
+                    isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
+                    (<div className='collections-content'>
+                        {
+                            collections.length > 0 ? collections.map(collection => (
+                                isEdit ? (
+                                    <div className='collections-item' key={collection._id} onClick={() => { handleRemoveCollection(collection._id) }}>
+                                        <img className='item-action' alt="Remove Icon" src={remove} />
+                                        <div className="collection-text">
+                                            {collection.name}
+                                        </div>
                                     </div>
-                                </div>
-                            ) : (
-                                <Link to={`/collections/${collectionsType}/${collection.name}/${collection._id}`} className='collections-item' key={collection._id} >
-                                    <div className="collection-text">
-                                        {collection.name}
-                                    </div>
-                                </Link>
-                            )
-                        )) : <div style={{textAlign: 'center', gridColumn: '1/4', fontWeight: 'bold'}}>No Collections</div>
-                    }
-                </div>
+                                ) : (
+                                    <Link to={`/collections/${collectionsType}/${collection.name}/${collection._id}`} className='collections-item' key={collection._id} >
+                                        <div className="collection-text">
+                                            {collection.name}
+                                        </div>
+                                    </Link>
+                                )
+                            )) : <div style={{textAlign: 'center', gridColumn: '1/4', fontWeight: 'bold'}}>No Collections</div>
+                        }
+                    </div>)
+                }
             </div>
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth='lg'>
                 <div className='dialog-content'>

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
+import Loading from '../../shared/components/Loading';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -28,6 +29,7 @@ const Collection = props => {
     const [items, setItems] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [shareCode, setShareCode] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -42,6 +44,7 @@ const Collection = props => {
         .then(data => {
             setItems(data.items);
             setShareCode(data.shareCode);
+            setIsLoading(false);
         });
     }, []);
 
@@ -94,23 +97,26 @@ const Collection = props => {
                 <div className='share-code'>share code: {shareCode}</div>
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
                 <img src={add} alt='Add icon' className='add' onClick={navAdd} />
-                <div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
-                    { /* 
-                        Received help from this article: https://bobbyhadz.com/blog/react-map-array-reverse 
-                        We use the spread operator here because we want to make a copy of filteredItems. We don't want
-                        to modify it
-                    */ 
-                    }
-                    {
-                        // Add a message if there are no items in the collection
-                        filteredItems.length === 0 ? <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p> :
-                        [...filteredItems].reverse().map(item => (
-                            <div className='item-section' key={item.itemId} >
-                                <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                                { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                            </div>
-                        ))}
-                </div>
+                {
+                    isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
+                        (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
+                            { /* 
+                                Received help from this article: https://bobbyhadz.com/blog/react-map-array-reverse 
+                                We use the spread operator here because we want to make a copy of filteredItems. We don't want
+                                to modify it
+                            */ 
+                            }
+                            {
+                                // Add a message if there are no items in the collection
+                                filteredItems.length === 0 ? <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p> :
+                                [...filteredItems].reverse().map(item => (
+                                    <div className='item-section' key={item.itemId} >
+                                        <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                        { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                    </div>
+                                ))}
+                        </div>)
+                }
             </div>
         </React.Fragment>
     );

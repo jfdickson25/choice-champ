@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
+import Loading from '../../shared/components/Loading';
 
 import './Search.css';
 
@@ -25,6 +26,7 @@ const Search = props => {
 
     const [items, setItems] = useState([]);
     const [collection, setCollection] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     // Input ref grabs value from input when search is entered
     const inputRef = useRef();
@@ -48,7 +50,7 @@ const Search = props => {
     }, []);
 
     // Debounce is used to prevent the search from being called on every key press
-    function debounce(cb, delay = 500) {
+    function debounce(cb, delay = 2000) {
         let timeout;
 
         return(...args) => {
@@ -111,11 +113,14 @@ const Search = props => {
                     }]);
                 }
             });
+
+            setIsLoading(false);
         });
     });
 
     // Functions for handling change to input
     const changeHandler = (event) => {
+        setIsLoading(true);
         // Debounce example from web dev simplified (TODO: Watch rest on throttle)
         // https://www.youtube.com/watch?v=cjIswDCKgu0
         updateDebounce(event.target.value);
@@ -171,20 +176,23 @@ const Search = props => {
             <h2 className='title'>{collectionName}</h2>
             <img src={save} className="edit" alt='Save icon' onClick={addItems} />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} ref={inputRef} />
-            <div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
-                {items.map(item => (
-                    <div className='item-section' key={item.id}>
-                            <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>                       {
-                            item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
-                            (
-                                item.selected 
-                                ? (<img id={item.id} src={check} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
-                                : (<img id={item.id} src={circle} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
-                            )
-                        }
-                        </div>
-                ))}
-            </div>
+            {
+                isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
+                (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
+                    {items.map(item => (
+                        <div className='item-section' key={item.id}>
+                                <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>                       {
+                                item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
+                                (
+                                    item.selected 
+                                    ? (<img id={item.id} src={check} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                    : (<img id={item.id} src={circle} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                )
+                            }
+                            </div>
+                    ))}
+                </div>)
+            }
         </div>
     );
 }
