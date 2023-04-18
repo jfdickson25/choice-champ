@@ -100,6 +100,14 @@ input {
   right: 5px;
 }
 
+.item-action-game {
+  position: absolute;
+  width: 15%;
+  height: auto;
+  top: 5px;
+  right: 5px;
+}
+
 .add {
     grid-column: 8/11;
     width: 70%;

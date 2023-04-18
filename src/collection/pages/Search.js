@@ -172,11 +172,11 @@ const Category = props => {
                 {items.map(item => (
                     <div className='item-section' key={item.id}>
                             <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>                       {
-                            item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' && {width: '15%'}} className='item-action' />) :
+                            item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
                             (
                                 item.selected 
-                                ? (<img id={item.id} src={check} alt={`${item.title} poster`} className='item-action' style={collectionType === 'game' && {width: '15%'}} onClick={() => { checkUncheckItem(item.id) }} />)
-                                : (<img id={item.id} src={circle} alt={`${item.title} poster`} className='item-action' style={collectionType === 'game' && {width: '15%'}} onClick={() => { checkUncheckItem(item.id) }} />)
+                                ? (<img id={item.id} src={check} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                : (<img id={item.id} src={circle} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
                             )
                         }
                         </div>
