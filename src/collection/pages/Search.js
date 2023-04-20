@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
+import _ from 'lodash';
 
 import './Search.css';
 
@@ -28,9 +29,6 @@ const Search = props => {
     const [collection, setCollection] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Input ref grabs value from input when search is entered
-    const inputRef = useRef();
-
     useEffect(() => {
         auth.showFooterHandler(false);
         // Get all the items in the collection to check if any items in the search are already in the collection
@@ -49,26 +47,12 @@ const Search = props => {
         });
     }, []);
 
-    // Debounce is used to prevent the search from being called on every key press
-    function debounce(cb, delay = 2000) {
-        let timeout;
-
-        return(...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                cb(...args);
-            }, delay);
+    const updateList = (search) => {
+        if (search === '' || search === undefined || search === null) {
+            setItems([]);
+            setIsLoading(false);
+            return;
         }
-    }
-
-    const updateDebounce = debounce(async (search) => {
-        // Check if the collection type is movies
-        // TODO: Add tv shows and games
-
-            if (search === '') {
-                setItems([]);
-                return;
-            }
 
         // Make a fetch request to get all movies that match the search
         fetch(`https://choice-champ-backend.glitch.me/media/${collectionType}/${search}/1`)
@@ -116,14 +100,19 @@ const Search = props => {
 
             setIsLoading(false);
         });
-    });
+    };
+
+    // useRef is used to create a mutable ref object whose .current property is initialized 
+    // to the passed argument (initialValue). The returned object will persist for the full lifetime of the component.
+    // Debounce is a function to limit the number of times a function can be called in a given time period
+    let debounced = useRef(_.debounce(updateList, 2000, {'search' : ''})).current;
 
     // Functions for handling change to input
     const changeHandler = (event) => {
         setIsLoading(true);
         // Debounce example from web dev simplified (TODO: Watch rest on throttle)
         // https://www.youtube.com/watch?v=cjIswDCKgu0
-        updateDebounce(event.target.value);
+        debounced(event.target.value);
     }
 
     const checkUncheckItem = (itemId) => {
@@ -175,7 +164,7 @@ const Search = props => {
             <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
             <h2 className='title'>{collectionName}</h2>
             <img src={save} className="edit" alt='Save icon' onClick={addItems} />
-            <input className='search-bar' placeholder='Search' onChange={changeHandler} ref={inputRef} />
+            <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
                 (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
