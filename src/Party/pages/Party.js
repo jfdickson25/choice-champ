@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef, useContext }  from 'react';
-import { useParams, NavLink, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import Confetti from 'react-confetti';
 import back from '../../shared/assets/img/back.svg';
@@ -19,7 +19,10 @@ const Party = ({ socket }) => {
     const { code, userType } = useParams();
 
     const [collectionItems, setCollectionItems] = useState([]);
+    const [mediaType, setMediaType] = useState('movie');
     const [votesNeeded, setVotesNeeded] = useState(1);
+
+    const [runnerUps, setRunnerUps] = useState([]);
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
@@ -37,7 +40,7 @@ const Party = ({ socket }) => {
         })
         .then(response => response.json())
         .then(body => {
-            let items = body.items.map(item => {
+            let items = body.party.items.map(item => {
                 return {
                     id: item._id,
                     itemId: item.itemId,
@@ -55,6 +58,7 @@ const Party = ({ socket }) => {
                 ));
             });
 
+            setMediaType(body.party.mediaType);
             setCollectionItems(items);
             collectionPointRef.current = items;
         });
@@ -133,6 +137,12 @@ const Party = ({ socket }) => {
         // Filter out the items that have been voted for
         const filteredItems = collectionItems.filter(item => item.votes >= votesNeededRef.current);
 
+        if(filteredItems.length === 1) {
+            // Set runners up to the remaining items
+            const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
+            setRunnerUps(runnerUps);
+        }
+
         // Check to make sure there are items left in the collection
         if (filteredItems.length === 0) {
             return;
@@ -196,6 +206,10 @@ const Party = ({ socket }) => {
         randomItem.votes = 0;
         randomItem.voted = false;
 
+        // Set the rest of the items that are not the random item to be the runner ups
+        const runnerUps = collectionItems.filter(item => item.id !== randomItem.id);
+        setRunnerUps(runnerUps);
+
         setCollectionItems([randomItem]);
         collectionPointRef.current = [randomItem];
 
@@ -232,12 +246,12 @@ const Party = ({ socket }) => {
                     />
                 </div>
             )}
-        <div className='collection-content'>
+        <div className='collection-content' style={mediaType !== 'game' ? { gridTemplateColumns: 'repeat(2, 1fr)'} : null }>
             { 
                 collectionItems.length === 1 ? (
                     <div className='winner'>
                         <div
-                            className='winner-img'
+                            className={ mediaType === 'game' ? 'winner-img-game' :'winner-img' }
                             style={{
                                 backgroundImage: `url(${collectionItems[0].poster})`, 
                                 backgroundRepeat: 'no-repeat', 
@@ -245,9 +259,20 @@ const Party = ({ socket }) => {
                             }}
                         >
                         </div>
-                        <p className='winner-title'>
+                        <p className='winner-title'>{collectionItems[0].title}</p>
+                        <p className='winner-banner'>
                             CHOICE CHAMPION!
                         </p>
+                        <p className='runner-up-title'>
+                            Runner Ups
+                        </p>
+                        { runnerUps.length > 0 && (
+                            runnerUps.map(item => (
+                                <p className='runner-up' key={item.id}>
+                                    { item.title }
+                                </p>
+                            ))
+                        )}
                     </div>
                 ) : [...collectionItems].reverse().map(item => (
                     <div className='item-section' key={item.id} >

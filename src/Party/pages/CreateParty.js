@@ -74,7 +74,8 @@ const CreateParty = props => {
             },
             body: JSON.stringify({
                     collections: collectionIds,
-                    partyCode: partyCode
+                    partyCode: partyCode,
+                    mediaType: mediaType,
             })
         })
         .then(res => {

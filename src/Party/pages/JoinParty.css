@@ -9,3 +9,7 @@
     margin-top: 30px;
     grid-column: 2/17;
 }
+
+.join-party-error-msg {
+    text-align: center;
+}

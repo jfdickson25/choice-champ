@@ -12,7 +12,8 @@ import './JoinParty.css';
 const JoinParty = (props) => {
     const auth = useContext(AuthContext);
 
-    const [isError, setIsError] = useState(false);
+    // Enum for the error state 0 = no error, 1 = join code must be 4 digits, 2 = party does not exist
+    const [errorMessage, setErrorMessage] = useState('');
 
     let history = useHistory();
     const inputRef = useRef();
@@ -26,12 +27,31 @@ const JoinParty = (props) => {
         const joinCode = inputRef.current.value;
 
         if(joinCode.length === 4) {
-            // Navigate to the party page
-            history.push(`/party/${joinCode}/guest`);
+            fetch(`https://choice-champ-backend.glitch.me/party/exists/${joinCode}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.code) {
+                    // Navigate to the party page
+                    history.push(`/party/${data.code}/guest`);
+                }
+                else {
+                    // Display an error message
+                    setErrorMessage(data.errorMsg);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
         }
         else {
             // Display an error message
-            setIsError(true);
+            setErrorMessage('Join code must be 4 digits');
         }
     }
 
@@ -53,7 +73,7 @@ const JoinParty = (props) => {
         <div id='join-party-page'>
             <input type="number" min="0" max="9999" placeholder="Join Code" ref={inputRef} onChange={changeHandler} />
             <Button onClick={navToParty}>Join Party</Button>
-            { isError && <p>Join code must be 4 digits</p> }
+            <p className='join-party-error-msg'>{errorMessage}</p>
         </div>
     </div>
   )

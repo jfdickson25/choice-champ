@@ -11,22 +11,6 @@
     grid-column: 1/18;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-items: center;
-    align-items: center;
-    column-gap: 15px;
-    row-gap: 20px;
-    margin-top: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.collection-content-game {
-    box-sizing: border-box;
-    grid-column: 1/18;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
     justify-items: center;
     align-items: center;
     column-gap: 15px;
@@ -66,12 +50,48 @@
     border-radius: 22px;
 }
 
+.winner-img-game {
+    height: 35vh;
+    width: 100%;
+    grid-column: 1/4;
+    border: #FCB016 solid 5px;
+    border-radius: 22px;
+}
+
 .winner-title {
+    grid-column: 1/4;
+    width: 100%;
+    text-align: center;
+    font-size: 14pt;
+    color: white;
+}
+
+.winner-banner {
     grid-column: 1/4;
     width: 100%;
     text-align: center;
     font-size: 21pt;
     color: #FCB016;
+    margin: 0;
+    margin-bottom: 150px;
+}
+
+.runner-up-title {
+    grid-column: 1/4;
+    width: 100%;
+    text-align: center;
+    font-size: 18pt;
+    color: #FCB016;
+    font-weight: 300;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.runner-up {
+    text-align: center;
+    grid-column: 1/4;
+    font-size: 10pt;
+    margin: 0;
 }
 
 .item-img {
