@@ -89,6 +89,12 @@ const Party = ({ socket }) => {
                 item.voted = false;
             });
 
+            if(filteredItems.length === 1) {
+                // Set runners up to the remaining items
+                const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeeded);
+                setRunnerUps(runnerUps);
+            }
+
             setCollectionItems(filteredItems);
             collectionPointRef.current = filteredItems;
         });
@@ -96,6 +102,11 @@ const Party = ({ socket }) => {
         socket.on('random-selected', (id) => {
             // Find the item with the id and set it to the state
             const item = collectionPointRef.current.find(item => item.id === id);
+
+            // Set the rest of the items that are not the random item to be the runner ups
+            const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
+            setRunnerUps(runnerUps);
+
             setCollectionItems([item]);
             collectionPointRef.current = [item];
         });

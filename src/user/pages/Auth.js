@@ -16,9 +16,10 @@ const Auth = props => {
     const history = useHistory();
     // State to change between login and create
     const [isLoginMode, setIsLoginMode] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
     // Allow for validation of input
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
     const onSubmit = data => {
         let status; 
@@ -46,9 +47,7 @@ const Auth = props => {
                     auth.userIdSetter(body.userId);
                     history.push('/collections');
                 } else {
-                    // TODO: Update to display error message on page
-                    // TODO: Update backend to return error message
-                    console.log('Invalid username or password');
+                    setErrorMessage(body.errMsg);
                 }
             })
             .catch(err => {
@@ -65,14 +64,20 @@ const Auth = props => {
                     password: data.passwordRequired
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                status = response.status;
+                return response.json()
+            })
             .then(body => {
+                if(status === 200) {
                 auth.login();
                 auth.userIdSetter(body.userId);
                 history.push('/welcome/info');
+                } else {
+                    setErrorMessage(body.errMsg);
+                }
             })
             .catch(err => {
-                // TODO: Update to display error message on page
                 console.log(err);
             });
         }
@@ -80,6 +85,13 @@ const Auth = props => {
 
     const switchModeHandler = () => {
         setIsLoginMode(prevMode => !prevMode);
+        setErrorMessage('');
+        setValue('usernameRequired', '');
+        setValue('passwordRequired', '');
+
+        // Clean useForm errors
+        errors.usernameRequired = false;
+        errors.passwordRequired = false;
     }
 
     const navJoin = () => {
@@ -124,6 +136,7 @@ const Auth = props => {
                         <Button type="submit">Create</Button>
                     )
                 }
+                <p className='auth-error-msg'>{errorMessage}</p>
                 <div className='switch'>
                     { isLoginMode && (
                         <div>
