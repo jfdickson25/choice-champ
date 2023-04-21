@@ -9,6 +9,7 @@ import './CreateParty.css';
 import Button from '../../shared/components/FormElements/Button';
 
 import { AuthContext } from '../../shared/context/auth-context';
+import Loading from '../../shared/components/Loading';
 
 // TODO: Update to use radio button to select media type. Based on current media type fetch the collections
 
@@ -18,6 +19,7 @@ const CreateParty = props => {
     const [collections, setCollections] = useState([]);
     const [mediaType, setMediaType] = useState('movie');
     const [selectAlert, setSelectAlert] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     let history = useHistory();
 
     useEffect(() => {
@@ -33,6 +35,7 @@ const CreateParty = props => {
         .then(res => res.json())
         .then(data => {
             setCollections(data.collections);
+            setIsLoading(false);
         })
     }, []);
 
@@ -92,6 +95,7 @@ const CreateParty = props => {
 
     const mediaTypeHandler = (event) => {
 
+        setIsLoading(true);
         setMediaType(event.target.value);
 
         // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
@@ -104,6 +108,7 @@ const CreateParty = props => {
         .then(res => res.json())
         .then(data => {
             setCollections(data.collections);
+            setIsLoading(false);
         })
     }
 
@@ -121,19 +126,19 @@ const CreateParty = props => {
                     <input type='radio' name='mediaType' it='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
                 </div>
                 <div className='create-party-collections'>
-                { collections.length > 0 ?
-                    collections.map(collection => (
-                        <div key={collection._id} className='create-party-collection'>
-                            {
-                                collection.selected 
-                                    ? (<img id={ collection._id } src={check} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />) 
-                                    : (<img id={ collection._id } src={circle} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />)
-                            }
-                            <div className='create-party-collection-name'>{collection.name}</div>
-                        </div>
-                    ))
-
-                    : <div className='no-collections-found'>No collections found for this media type</div>
+                { isLoading ? <Loading type='beat' className='list-loading-create' size={20} /> : 
+                        collections.length > 0 ?
+                            collections.map(collection => (
+                                <div key={collection._id} className='create-party-collection'>
+                                    {
+                                        collection.selected 
+                                            ? (<img id={ collection._id } src={check} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />) 
+                                            : (<img id={ collection._id } src={circle} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />)
+                                    }
+                                    <div className='create-party-collection-name'>{collection.name}</div>
+                                </div>
+                        ))
+                        : <div className='no-collections-found'>No collections found for this media type</div>
                 }
                 </div>
                 <Button type="button" className='create-party-btn' onClick={navToParty}>Create Party</Button>

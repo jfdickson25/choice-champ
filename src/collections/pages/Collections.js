@@ -30,6 +30,10 @@ const Collections = props => {
     const [isEdit, setIsEdit] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
+    // State for error messages
+    const [nameError, setNameError] = useState(null);
+    const [joinError, setJoinError] = useState('');
+
     // Empty array will only run on the initial render
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -95,6 +99,8 @@ const Collections = props => {
         // Reset the value in the input
         inputCollectionRef.current.value = '';
         inputJoinRef.current.value = null;
+        setNameError(false);
+        setJoinError('');
         setOpen(false);
     }
     const changeCollectionHandler = (event) => {
@@ -113,6 +119,7 @@ const Collections = props => {
 
         // Only add if the input is not empty and the collection does not already exist
         if(inputCollectionRef.current.value === '' || collections.find(collection => collection.name === inputCollectionRef.current.value)) {
+            setNameError(true);
             return;
         }
 
@@ -143,8 +150,14 @@ const Collections = props => {
 
     const handleJoinCollection = () => {
 
+        // Check that the code is five digits long
+        if(inputJoinRef.current.value.length !== 5) {
+            setJoinError('Code must be 5 digits long');
+            return;
+        }
+
         // Send a fetch post request to localhost:5000/collections with the userId and the new collection name
-        fetch(`https://choice-champ-backend.glitch.me/collections/join/${inputJoinRef.current.value}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/join/${inputJoinRef.current.value}/${collectionsType}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -152,16 +165,19 @@ const Collections = props => {
         })
         .then(res => res.json())
         .then(data => {
-            // Add the new collection to the collections array
-            setCollections([...collections, data.collection]);
+            if (data.errMsg) {
+                setJoinError(data.errMsg);
+                return;
+            } else {
+                // Add the new collection to the collections array
+                setCollections([...collections, data.collection]);
+                // Close the modal
+                handleClose();
+            }
         })
         .catch(err => {
             console.log(err);
         });
-
-
-        // Close the modal
-        handleClose();
     }
 
     
@@ -207,9 +223,11 @@ const Collections = props => {
                     <div className='dialog-sub-content'>
                         <input type="text" placeholder={"New Collection"} onChange={changeCollectionHandler} ref={inputCollectionRef}/>
                         <button onClick={handleAddCollection}>Create Collection</button>
+                        {nameError && <p className='error' style={{textAlign: 'center'}}>Collection must have a name</p>}
                         <p className='or'>OR</p>
                         <input type="number" min={10000} max={99999} placeholder={12345} onChange={changeJoinCodeHandler} ref={inputJoinRef}/>
                         <button onClick={handleJoinCollection}>Join Collection</button>
+                        <p className='error' style={{textAlign: 'center'}}>{joinError}</p>
                     </div>
                 </div>
             </Dialog>
