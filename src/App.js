@@ -23,6 +23,7 @@ const PartyHome = lazy(() => import('./Party/pages/PartyHome'));
 const CreateParty = lazy(() => import('./Party/pages/CreateParty'));
 const Party = lazy(() => import('./Party/pages/Party'));
 const JoinParty = lazy(() => import('./Party/pages/JoinParty'));
+const Settings = lazy(() => import('./settings/pages/Settings'));
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -90,6 +91,9 @@ function App() {
           </Route>
           <Route path="/party/:code/:userType" exact>
             <Party socket={socket} />
+          </Route>
+          <Route path="/settings" exact>
+            <Settings />
           </Route>
 
 
