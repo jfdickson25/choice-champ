@@ -47,7 +47,7 @@
     justify-items: center;
     grid-template-columns: repeat(12, 1fr);
     row-gap: 20px;
-    margin: 50px 50px
+    margin-bottom: 20px;
 }
 
 .radio-btns label {
@@ -77,6 +77,58 @@
     font-size: 14pt;
     font-weight: 300;
     margin-top: 20px;
+}
+
+.secret-mode {
+    grid-column: 1/18;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: center;
+    justify-items: center;
+    margin-top: 20px;
+}
+
+.secret-mode p {
+    grid-column: 3/9;
+    text-align: center;
+    font-weight: bold;
+}
+
+.secret-mode img {
+    grid-column: 9;
+    width: 100%;
+    cursor: pointer;
+}
+
+.include-watched {
+    grid-column: 1/18;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: center;
+    justify-items: center;
+}
+
+.include-watched p {
+    grid-column: 3/9;
+    text-align: center;
+    font-weight: bold;
+}
+
+.include-watched img {
+    grid-column: 9;
+    width: 100%;
+    cursor: pointer;
+}
+
+.divider {
+    width: 100%;
+    grid-column: 2/17;
+    height: 1px;
+    background-color: #FCB016;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 @media screen and (min-width: 1024px) {

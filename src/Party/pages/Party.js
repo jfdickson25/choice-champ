@@ -21,6 +21,7 @@ const Party = ({ socket }) => {
     const [collectionItems, setCollectionItems] = useState([]);
     const [mediaType, setMediaType] = useState('movie');
     const [votesNeeded, setVotesNeeded] = useState(1);
+    const [secretMode, setSecretMode] = useState(false);
 
     const [runnerUps, setRunnerUps] = useState([]);
 
@@ -46,6 +47,7 @@ const Party = ({ socket }) => {
                     itemId: item.itemId,
                     title: item.title,
                     poster: item.poster,
+                    watched: item.watched,
                     votes: 0,
                     voted: false
                 }
@@ -58,7 +60,13 @@ const Party = ({ socket }) => {
                 ));
             });
 
+            // If body.party.IncludeWatched is false then filter out the items that have been watched
+            if(!body.party.includeWatched) {
+                items = items.filter(item => !item.watched);
+            }
+
             setMediaType(body.party.mediaType);
+            setSecretMode(body.party.secretMode);
             setCollectionItems(items);
             collectionPointRef.current = items;
         });
@@ -307,7 +315,7 @@ const Party = ({ socket }) => {
                         onClick={changeCount.bind(this, item.id)}
                         >
                         <p>{item.title}</p>
-                        { item.votes > 0 && <div className='item-votes'>{item.votes}</div> }
+                        { (item.votes > 0 && !secretMode) && <div className='item-votes'>{item.votes}</div> }
                         </div>
                     </div>
                 ))

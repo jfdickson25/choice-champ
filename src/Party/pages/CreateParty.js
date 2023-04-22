@@ -20,6 +20,8 @@ const CreateParty = props => {
     const [mediaType, setMediaType] = useState('movie');
     const [selectAlert, setSelectAlert] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [secretMode, setSecretMode] = useState(false);
+    const [includeWatched, setIncludeWatched] = useState(false);
     let history = useHistory();
 
     useEffect(() => {
@@ -79,6 +81,8 @@ const CreateParty = props => {
                     collections: collectionIds,
                     partyCode: partyCode,
                     mediaType: mediaType,
+                    secretMode: secretMode,
+                    includeWatched: includeWatched,
             })
         })
         .then(res => {
@@ -117,6 +121,15 @@ const CreateParty = props => {
             <div className='content'>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>Create Party</h2>
+                <div className='secret-mode'>
+                    <p>Secret Mode</p>
+                    <img src={ secretMode ? check : circle } onClick={() => { setSecretMode(!secretMode) }} />
+                </div>
+                <div className='include-watched'>
+                    <p>Include Watched</p>
+                    <img src={ includeWatched ? check : circle } onClick={() => { setIncludeWatched(!includeWatched) }} />
+                </div>
+                <div className='divider'></div>
                 <div className='radio-btns'>
                     <label htmlFor="movie">Movies</label>
                     <input type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 
@@ -130,11 +143,7 @@ const CreateParty = props => {
                         collections.length > 0 ?
                             collections.map(collection => (
                                 <div key={collection._id} className='create-party-collection'>
-                                    {
-                                        collection.selected 
-                                            ? (<img id={ collection._id } src={check} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />) 
-                                            : (<img id={ collection._id } src={circle} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />)
-                                    }
+                                    <img id={ collection._id } src={ collection.selected ? check : circle} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />
                                     <div className='create-party-collection-name'>{collection.name}</div>
                                 </div>
                         ))
