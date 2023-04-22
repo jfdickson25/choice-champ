@@ -8,6 +8,8 @@ import add from '../../shared/assets/img/add.png';
 import remove from '../../shared/assets/img/remove.png';
 import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
+import unwatched from '../../shared/assets/img/unwatched.png';
+import watched from '../../shared/assets/img/watched.png';
 
 import './Collection.css';
 
@@ -74,6 +76,31 @@ const Collection = props => {
         history.push(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
     }
 
+    const updateWatched = (id, watched) => {
+        // Make a fetch post request to update the watched status of an item
+        fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                watched: !watched
+            })
+        })
+        .then(res => {
+            // Update the item with the given id to be watched
+            setItems(items.map(item => {
+                if(item._id === id && item.watched === false) {
+                    item.watched = true;
+                } else if(item._id === id && item.watched === true) {
+                    item.watched = false;
+                }
+
+                return item;
+            }));
+        });
+    }
+
     /************************************************************
      * Logic for creating a query from the search bar. I received
      * help and direction from this youtube video Web dev simplified
@@ -99,23 +126,51 @@ const Collection = props => {
                 <img src={add} alt='Add icon' className='add' onClick={navAdd} />
                 {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
-                        (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
-                            { /* 
-                                Received help from this article: https://bobbyhadz.com/blog/react-map-array-reverse 
-                                We use the spread operator here because we want to make a copy of filteredItems. We don't want
-                                to modify it
-                            */ 
-                            }
-                            {
-                                // Add a message if there are no items in the collection
-                                filteredItems.length === 0 ? <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p> :
-                                [...filteredItems].reverse().map(item => (
-                                    <div className='item-section' key={item.itemId} >
-                                        <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                                        { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                    </div>
-                                ))}
-                        </div>)
+                        (
+                            <div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
+                                { /* 
+                                    Received help from this article: https://bobbyhadz.com/blog/react-map-array-reverse 
+                                    We use the spread operator here because we want to make a copy of filteredItems. We don't want
+                                    to modify it
+                                */ 
+                                }
+                                {
+                                    // Add a message if there are no items in the collection
+                                    filteredItems.length === 0 && <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p>
+                                }
+                                {
+                                    [...filteredItems].reverse().map(item => (
+                                        // Only show if the item is not watched
+                                        !item.watched ?
+                                            (<div className='item-section' key={item.itemId} >
+                                                <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                { isEdit ? (<img src={item.watched ? watched : unwatched } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
+                                            </div>
+                                            )
+                                        : null
+                                    ))
+                                }
+                                { 
+                                    // Add a divider if there are watched items
+                                    filteredItems.filter(item => item.watched).length > 0 ? <div className='divider'></div> : null 
+                                }
+                                {
+                                    [...filteredItems].reverse().map(item => (
+                                        // Only show if the item is watched
+                                        item.watched ?
+                                            (
+                                                <div className='item-section' key={item.itemId} >
+                                                    <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                    { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                    { isEdit ? (<img src={item.watched ? watched : unwatched } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                </div>
+                                            )
+                                        : null
+                                    ))
+                                }
+                            </div>
+                        )
                 }
             </div>
         </React.Fragment>
