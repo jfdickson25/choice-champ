@@ -5,11 +5,8 @@ import Loading from '../../shared/components/Loading';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
-import remove from '../../shared/assets/img/remove.png';
 import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
-import unwatched from '../../shared/assets/img/unwatched.png';
-import watched from '../../shared/assets/img/watched.png';
 
 import './Collection.css';
 
@@ -144,8 +141,8 @@ const Collection = props => {
                                         !item.watched ?
                                             (<div className='item-section' key={item.itemId} >
                                                 <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                                                { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                { isEdit ? (<img src={item.watched ? watched : unwatched } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
+                                                { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
                                             </div>
                                             )
                                         : null
@@ -162,8 +159,8 @@ const Collection = props => {
                                             (
                                                 <div className='item-section' key={item.itemId} >
                                                     <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                                                    { isEdit ? (<img src={remove} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                    { isEdit ? (<img src={item.watched ? watched : unwatched } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                 </div>
                                             )
                                         : null
