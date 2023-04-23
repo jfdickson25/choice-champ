@@ -111,6 +111,7 @@ const CreateParty = props => {
         })
         .then(res => res.json())
         .then(data => {
+            setSelectAlert(false);
             setCollections(data.collections);
             setIsLoading(false);
         })
