@@ -65,6 +65,9 @@ const Party = ({ socket }) => {
                 items = items.filter(item => !item.watched);
             }
 
+            // Randomize the order of the items
+            items = items.sort(() => Math.random() - 0.5);
+
             setMediaType(body.party.mediaType);
             setSecretMode(body.party.secretMode);
             setCollectionItems(items);
@@ -265,7 +268,7 @@ const Party = ({ socket }) => {
                     />
                 </div>
             )}
-        <div className='collection-content' style={mediaType !== 'game' ? { gridTemplateColumns: 'repeat(2, 1fr)'} : null }>
+        <div className='collection-content' style={mediaType === 'game' ? { gridTemplateColumns: 'repeat(1, 1fr)'} : { gridTemplateColumns: 'repeat(2, 1fr)'} }>
             { 
                 collectionItems.length === 1 ? (
                     <div className='winner'>

@@ -150,7 +150,7 @@ const Collection = props => {
                                 }
                                 { 
                                     // Add a divider if there are watched items
-                                    filteredItems.filter(item => item.watched).length > 0 ? <div className='divider'></div> : null 
+                                    filteredItems.filter(item => item.watched).length > 0 ? <div className='divider' style={ collectionType === 'game' ? { gridColumn: '1' } : { gridColumn: '1/3'}}></div> : null 
                                 }
                                 {
                                     [...filteredItems].reverse().map(item => (
