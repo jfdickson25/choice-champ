@@ -30,3 +30,28 @@
     background-color: rgb(241, 48, 48);
     color: white;
 }
+
+.settings-attribution {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(17, 1fr);
+    grid-row-gap: 10px;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    align-items: center;
+    justify-items: center;
+}
+
+.settings-attribution-logo {
+    grid-column: 1/7;
+    width: 100%;
+}
+
+.settings-attribution-text {
+    margin: 0;
+    padding: 0;
+    grid-column: 8/18;
+    font-size: 10pt;
+}
