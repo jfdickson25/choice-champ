@@ -9,7 +9,8 @@ import editing from '../../shared/assets/img/editing.png';
 import circle from '../../shared/assets/img/circle.png';
 import filledCircle from '../../shared/assets/img/filled-circle.png';
 import check from '../../shared/assets/img/check.png';
-import save from '../../shared/assets/img/save.png';
+import movieNight from '../../welcome/assets/img/movie-night.svg';
+import watch from '../../welcome/assets/img/watch.svg';
 
 import './Settings.css';
 import { Dialog } from '@mui/material';
@@ -18,6 +19,7 @@ const Settings = props => {
     const auth = useContext(AuthContext);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showFlaticonModal, setShowFlaticonModal] = useState(false);
+    const [showStorySetModal, setShowStorySetModal] = useState(false);
 
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -37,6 +39,14 @@ const Settings = props => {
 
     const handleCloseFlaticon = () => {
         setShowFlaticonModal(false);
+    }
+
+    const openStorySetModal = () => {
+        setShowStorySetModal(true);
+    }
+
+    const handleCloseStorySet = () => {
+        setShowStorySetModal(false);
     }
 
     const deleteAccount = () => {
@@ -70,13 +80,14 @@ const Settings = props => {
                             onClick={openFlaticonModal}
                         />
                         <p className='settings-attribution-text'>
-                            All icons for this application were used from flaticon. For an exteded list of all icons please press te flaticon icon to the left.
+                            Many of the icons for this application were used from flaticon. For an exteded list of all icons please press the flaticon image to the left.
                         </p>
                         <img 
                             src='https://design.freepikcompany.com/media/img/logo/storyset/iso.svg' 
                             className='settings-attribution-logo' 
+                            onClick={openStorySetModal}
                         />
-                        <p className='settings-attribution-text'>All illustrated imagery was used from Storyset. For an extensive list of all the illustrations used please press the icon to the left.</p>
+                        <p className='settings-attribution-text'>All illustrated imagery was used from Storyset. For an extensive list of all the illustrations used please press the image to the left.</p>
                         <img 
                             src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAdVBMVEUAAAD////u7u6Ojo7W1taSkpKoqKj7+/va2tr4+Pi7u7uGhoacnJwtLS3z8/Ojo6MVFRVhYWHf398QEBB3d3ckJCRoaGg1NTXIyMh/f3+zs7POzs4cHBwwMDBRUVFXV1dGRkZmZmY7Ozu4uLhKSkpTU1Pn5+fAXMcuAAAEpElEQVR4nO3Ze3eiPBDAYbHesJZaL/VS21rb1+//Ed/CTEJCBvZU3T275/yev5plwAwZksD2egAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAf8Ty9eHm11zdBXYfx2V3+NqHdlxt+Ozbw7LpTx7K4Y157tv+nFUW+/dLMmkzyWLF9qkrfOcDzcNTOXZ27X7VdAl/6KkH48ynRdiL88fFCSUGWWLbEf7io8xBfI7T30hrpM1HaU6ME0fNTnxek1TEyDDrt5bqug56MQP04FFau3hIt9KcpadN004MrsurZmVo3uWwy6Xx2grQor+LOz6XptRs9l9y1t7qRFcp/YRmmPe/5f7q9jwSFmlLjFbbPkopW1WtubaSk578NYvJ5PzLTvyQZjjszefz9bubd9oGMbzHZplqZ89x+Cg8lp7nbkTxXA720d3G/i3yCzKMmpm9LN1Xx6YyY4ytmHUhJVE9yb6mJeHH+Ke8XRRVB/o5+DqNDN/14l8dwav3jirSKqhWNP945a9lUyeaU0sXsk3zIvsrc4su72/sWNrmeiQz6XjT6yjTmRy7L/+uH6lqNAq79h7yJJ/nyaD05zOUIl340bBi9GGbfv+5HvsMywdRJ5pkinTzzE03MoFGhu7nju2xM5eqDFRT7m5Db1X9VZ1UzlzPLbU9zOyxvZVGhvoEFHMjdCNj8r2cPUiUuSjLTFisdeV4kYf24Ov32DxBn9bF7XKKaYaz3uFw2Ozc5nBqhcrI5eWfGmdtMHVIvjRodqjuy5Mr7XNywjaq3uVs5O1v8qJh7mnsqXRQJ68L+50RdXIVLDPIScpi71a99N5to5u6LIJuHH9bho9WpO5Jq/2JPq7mxmCsHa5iCq3ORW8jD2i6xDTGsB/047dlaM/Sd3JQGtKPsfWmt9XkR9pvuRu9Dzk9LbxpdLf+RIb9VVdkf1Yaaj+s2VQnWokvh6yquye5QcaMqTsYPTIPqzTZHFyR4TjP3b67ZU+6NAbbnE11oj35Plaz60yGapTGr+IBW+12u5XeQPtjwGUZlquFTueZPYZ3Vobm/lW2MtVMevZn9mVsjK3mUS8Vvjbq9sdas34syHCuo5hO6KXm5w5hzabB62z1RL8G8daVdXOX1/l8yb/cZokMV3y3p7cGcWMmaJb0qj4sVyo6w/3P1vtcfX8ySvoC0Z5Gf8raQGmRDj6nwr3EGR88Tn4/OpYtwafP0OyzH+MX+Wxw0PUje7t9hu5uGu9FWqSv/h+y8MSYf6fQMnPfp9p21/4zVD69X+2mbsq70ZeaKMODXjt9EjfJgUWURMS/F+rOwV02y61tXq9+yY8dr0rMi3fe7m4m69ww6nIYaqxZ/kF0ZeYW3bZR2dRfiGrmm8sF4gwf9BFKnsRJ3OVvb1l0Zsgvne4fHttjxSkdRWuWvsgk/u293Rf3nTRMQztllalWsJ8c3beR9pfceeOLab/zy/uPbIvyO2LhSuKhLxpP4r1ERRvWaSGhRpnOJNwPw2FRRS66/lPkK8jxfKMPiX+dt+Fovx/NWvbFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIDI/xvlKvVeLz38AAAAAElFTkSuQmCC' 
                             className='settings-attribution-logo' 
@@ -94,6 +105,29 @@ const Settings = props => {
                         <div className='dialog-buttons'>
                             <Button onClick={handleClose}>Cancel</Button>
                             <Button className='btn-delete' onClick={deleteAccount}>Delete</Button>
+                        </div>
+                    </div>
+                </div>
+            </Dialog>
+            <Dialog open={showStorySetModal} onClose={handleCloseStorySet} fullWidth maxWidth='lg' scroll='body'>
+                <div className='dialog-content'>
+                    <div className='dialog-sub-content'>
+                        <h2 className='modal-header'>Storyset Attribution</h2>
+                        <div className='storyset-link'>
+                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/choice-party.svg?v=1681657279405' />
+                            <a href="https://storyset.com/people">People illustrations by Storyset</a>
+                        </div>
+                        <div className='storyset-link'>
+                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032' />
+                            <a href="https://storyset.com/user">User illustrations by Storyset</a>
+                        </div>
+                        <div className='storyset-link'>
+                            <img src={movieNight} />
+                            <a href="https://storyset.com/people">People illustrations by Storyset</a>
+                        </div>
+                        <div className='storyset-link'>
+                            <img src={watch} />
+                            <a href="https://storyset.com/people">People illustrations by Storyset</a>
                         </div>
                     </div>
                 </div>
