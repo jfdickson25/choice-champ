@@ -7,7 +7,6 @@ import _ from 'lodash';
 import './Search.css';
 
 import back from '../../shared/assets/img/back.svg';
-import save from '../../shared/assets/img/save.png';
 import circle from '../../shared/assets/img/circle.png';
 import filledCircle from '../../shared/assets/img/filled-circle.png';
 import check from '../../shared/assets/img/check.png';
@@ -163,7 +162,7 @@ const Search = props => {
         <div className='content'>
             <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
             <h2 className='title'>{collectionName}</h2>
-            <img src={save} className="edit" alt='Save icon' onClick={addItems} />
+            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682394809855' className="edit" alt='Save icon' onClick={addItems} />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :

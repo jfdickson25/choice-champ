@@ -201,7 +201,7 @@ const Collections = props => {
                             collections.length > 0 ? collections.map(collection => (
                                 isEdit ? (
                                     <div className='collections-item' key={collection._id} onClick={() => { handleRemoveCollection(collection._id) }}>
-                                        <img className='item-action' alt="Remove Icon" src={remove} />
+                                        <img className='item-action' alt="Remove Icon" src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433' />
                                         <div className="collection-text">
                                             {collection.name}
                                         </div>
