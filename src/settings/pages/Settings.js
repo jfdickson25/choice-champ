@@ -1,6 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../../shared/context/auth-context';
 import Button from '../../shared/components/FormElements/Button';
+import { useHistory } from 'react-router-dom';
+
+import { useSwipeable } from 'react-swipeable';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -20,6 +23,8 @@ const Settings = props => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showFlaticonModal, setShowFlaticonModal] = useState(false);
     const [showStorySetModal, setShowStorySetModal] = useState(false);
+
+    const history = useHistory();
 
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -49,6 +54,12 @@ const Settings = props => {
         setShowStorySetModal(false);
     }
 
+    const handlers = useSwipeable({
+        onSwipedRight: () => history.push('/party'),
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true
+    });
+
     const deleteAccount = () => {
         fetch(`https://choice-champ-backend.glitch.me/user/${auth.userId}`, {
             method: 'DELETE',
@@ -64,7 +75,7 @@ const Settings = props => {
 
     return (
         <React.Fragment>
-            <div className="content">
+            <div className="content" {...handlers}>
                 <div className='settings-home'>
                     <div className='settings-attribution'>
                         <img 
