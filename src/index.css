@@ -73,8 +73,8 @@ input {
   grid-template-columns: repeat(17, 1fr);
   justify-items: center;
   align-items: center;
-  margin-bottom: 100px;
   margin-top: 20px;
+  padding-bottom: 200px;
 }
 
 .top-left {

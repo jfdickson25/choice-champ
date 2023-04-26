@@ -14,7 +14,8 @@ const CollectionsHome = props => {
     const handlers = useSwipeable({
         onSwipedLeft: () => history.push('/party'),
         preventDefaultTouchmoveEvent: true,
-        trackMouse: true
+        trackMouse: true,
+        delta: 100
     });
 
     useEffect(() => {

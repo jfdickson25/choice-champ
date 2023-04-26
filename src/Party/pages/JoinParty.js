@@ -2,6 +2,7 @@ import React, { useRef, useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import { AuthContext } from '../../shared/context/auth-context';
+import { useSwipeable } from 'react-swipeable';
 
 import back from '../../shared/assets/img/back.svg';
 
@@ -65,8 +66,24 @@ const JoinParty = (props) => {
         history.push('/party');
     }
 
+    const handlers = useSwipeable({
+        onSwipedLeft: () => {
+            if(auth.isLoggedIn) {
+                history.push('/settings')
+            }
+        },
+        onSwipedRight: () => {
+            if(auth.isLoggedIn) {
+                history.push('/collections')
+            }
+        },
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true,
+        delta: 100
+    });
+
   return (
-    <div className='content'>
+    <div className='content' {...handlers}>
         <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
         <h2 className='title'>Join Party</h2>
         <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032" className="join-img" alt='Join Code Image'/>

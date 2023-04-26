@@ -57,7 +57,8 @@ const Settings = props => {
     const handlers = useSwipeable({
         onSwipedRight: () => history.push('/party'),
         preventDefaultTouchmoveEvent: true,
-        trackMouse: true
+        trackMouse: true,
+        delta: 100
     });
 
     const deleteAccount = () => {

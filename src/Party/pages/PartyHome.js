@@ -16,7 +16,8 @@ const PartyHome = props => {
         onSwipedLeft: () => history.push('/settings'),
         onSwipedRight: () => history.push('/collections'),
         preventDefaultTouchmoveEvent: true,
-        trackMouse: true
+        trackMouse: true,
+        delta: 100
     });
 
     useEffect(() => {

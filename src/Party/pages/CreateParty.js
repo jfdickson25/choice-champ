@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
@@ -117,9 +118,17 @@ const CreateParty = props => {
         })
     }
 
+    const handlers = useSwipeable({
+        onSwipedLeft: () => history.push('/settings'),
+        onSwipedRight: () => history.push('/collections'),
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true,
+        delta: 100
+    });
+
     return (
         <React.Fragment>
-            <div className='content'>
+            <div className='content' {...handlers}>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>Create Party</h2>
                 <div className='secret-mode'>

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState, useContext } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
+import { useSwipeable } from 'react-swipeable';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -111,9 +112,16 @@ const Collection = props => {
         })
     }, [items, query]);
 
+    const handlers = useSwipeable({
+        onSwipedLeft: () => history.push('/party'),
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true,
+        delta: 100
+    });
+
     return (
         <React.Fragment>
-            <div className='content'>
+            <div className='content' {...handlers}>
                 { /* TODO: Look up difference between Link and NavLink */ }
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>{collectionName}</h2>
