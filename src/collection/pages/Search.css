@@ -1,0 +1,29 @@
+.Toastify__toast {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    justify-items: center;
+    align-items: center;
+}
+
+.Toastify__toast-body {
+    align-items: center;
+    grid-column: 1/10;
+}
+
+.Toastify__close-button {
+    margin: 0;
+    grid-column: 10/13;
+    align-self: center;
+}
+
+:root {
+    --toastify-color-success: #FCB016;
+}
+
+.save-icon {
+    width: 50px;
+    position: fixed;
+    top: 30px;
+    right: 20px;
+    z-index: 100;
+}

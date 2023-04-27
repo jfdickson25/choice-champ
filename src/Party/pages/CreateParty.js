@@ -139,7 +139,7 @@ const CreateParty = props => {
                     <p>Include Watched</p>
                     <img src={ includeWatched ? check : circle } onClick={() => { setIncludeWatched(!includeWatched) }} />
                 </div>
-                <div className='divider'></div>
+                <div className='create-divider'></div>
                 <div className='radio-btns'>
                     <label htmlFor="movie">Movies</label>
                     <input type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 

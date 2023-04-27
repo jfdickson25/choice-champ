@@ -4,6 +4,9 @@ import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import _ from 'lodash';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './Search.css';
 
 import back from '../../shared/assets/img/back.svg';
@@ -28,6 +31,20 @@ const Search = props => {
     const [collection, setCollection] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Create a ref of collection
+    const collectionRef = useRef(collection);
+
+    const notify = () => toast.success(`Items saved to ${collectionName} collection`, {
+        position: "bottom-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+    });
+
     useEffect(() => {
         auth.showFooterHandler(false);
         // Get all the items in the collection to check if any items in the search are already in the collection
@@ -42,11 +59,13 @@ const Search = props => {
             // Verify that data.items is not undefined
             if(data.items) {
                 setCollection(data.items);
+                collectionRef.current = data.items;
             }
         });
     }, []);
 
     const updateList = (search) => {
+        console.log("Here with search: ", search);
         if (search === '' || search === undefined || search === null) {
             setItems([]);
             setIsLoading(false);
@@ -62,10 +81,12 @@ const Search = props => {
 
             res.media.results.forEach(mediaItem => {
 
-                // Make sure the movie isn't already in the collection
+                // Make sure the item is not already in the collection
                 let inCollection = false;
-                collection.forEach(item => {
-                    if(item.itemId === mediaItem.id) {
+
+                // Check if item exists in collection ref
+                collectionRef.current.forEach(item => {
+                    if(item.itemId == mediaItem.id) {
                         inCollection = true;
                     }
                 });
@@ -151,6 +172,7 @@ const Search = props => {
             });
 
             setItems(updatedItems);
+            notify();
         }
     }
 
@@ -160,9 +182,22 @@ const Search = props => {
 
     return (
         <div className='content'>
+            <ToastContainer
+                position="bottom-center"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                style={{ textAlign: "center" }}
+            />
             <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
             <h2 className='title'>{collectionName}</h2>
-            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682394809855' className="edit" alt='Save icon' onClick={addItems} />
+            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' className="save-icon" alt='Save icon' onClick={addItems} />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
