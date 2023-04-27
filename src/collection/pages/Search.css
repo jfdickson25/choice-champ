@@ -21,9 +21,9 @@
 }
 
 .save-icon {
-    width: 50px;
+    width: 70px;
     position: fixed;
-    top: 30px;
+    top: 15px;
     right: 20px;
     z-index: 100;
 }

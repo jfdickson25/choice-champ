@@ -65,7 +65,6 @@ const Search = props => {
     }, []);
 
     const updateList = (search) => {
-        console.log("Here with search: ", search);
         if (search === '' || search === undefined || search === null) {
             setItems([]);
             setIsLoading(false);
@@ -197,7 +196,7 @@ const Search = props => {
             />
             <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
             <h2 className='title'>{collectionName}</h2>
-            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' className="save-icon" alt='Save icon' onClick={addItems} />
+            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' id='save-icon' className="save-icon" alt='Save icon' onClick={addItems} />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
