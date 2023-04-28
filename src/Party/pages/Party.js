@@ -324,7 +324,7 @@ const Party = ({ socket }) => {
                 ))
             }
         </div>
-        { userType === 'owner' && <Button className='filter-collection-btn' onClick={filterVoted}>Filter Selected</Button> }
+        { (userType === 'owner' && collectionItems.length > 1) && <Button className='filter-collection-btn' onClick={filterVoted}>Filter Selected</Button> }
     </div>
   )
 }

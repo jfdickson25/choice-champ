@@ -169,6 +169,15 @@ const Search = props => {
                 }
                 return item;
             });
+          
+            selectedItems.forEach(item => {
+                collectionRef.current.push({
+                    title: item.title,
+                    poster: item.poster,
+                    watched: false,
+                    itemId: item.id
+                })
+            });
 
             setItems(updatedItems);
             notify();
