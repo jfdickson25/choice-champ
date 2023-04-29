@@ -30,7 +30,43 @@ function App() {
   const [userId, setUserId] = useState(null);
   const [socket, setSocket] = useState(null);
 
+  const [loading, setLoading] = useState(true);
+
   const [showFooter, setShowFooter] = useState(false);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if(storedUserId) {
+      // Check if user exists in database
+      fetch('https://choice-champ-backend.glitch.me/user/checkUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userId: storedUserId
+        })
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(body => {
+        if(body.userExists) {
+          setUserId(storedUserId);
+          setIsLoggedIn(true);
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        localStorage.removeItem('userId');
+        setLoading(false);
+      });
+    } else {
+      setIsLoggedIn(false);
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const newSocket = io('https://choice-champ-backend.glitch.me');
@@ -45,6 +81,8 @@ function App() {
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
+    localStorage.removeItem('userId');
   }, []);
 
   const userIdSetter = useCallback((id) => {
@@ -131,8 +169,9 @@ function App() {
     <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userId: userId, userIdSetter: userIdSetter, login: login, logout: logout, showFooterHandler: showFooterHandler}}>
       <Router>
         <main>
-          {routes}
-          {footer}
+          {loading && <Loading className='page-loading' size={100} />}
+          {!loading && routes}
+          {!loading && footer}
         </main>
       </Router>
     </AuthContext.Provider>
