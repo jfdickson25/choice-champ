@@ -50,16 +50,18 @@
     margin-bottom: 20px;
 }
 
-.radio-btns label {
-    grid-column: 3/9;
-    text-align: right;
+.radio-btn-label {
+    grid-column: 4/12;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.radio-btns input {
-    grid-column: 9;
+.radio-btn {
+    grid-column: 12/14;
     margin: 0;
     accent-color: #FCB016;
     font-size: 18pt;
+    margin-bottom: 30px;
 }
 
 .no-collections-found {
@@ -79,46 +81,15 @@
     margin-top: 20px;
 }
 
-.secret-mode {
-    grid-column: 1/18;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    align-items: center;
-    justify-items: center;
-    margin-top: 20px;
-}
-
-.secret-mode p {
-    grid-column: 3/9;
+.option-text {
+    grid-column: 4/12;
     text-align: center;
     font-weight: bold;
 }
 
-.secret-mode img {
-    grid-column: 9;
-    width: 100%;
-    cursor: pointer;
-}
-
-.include-watched {
-    grid-column: 1/18;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    align-items: center;
-    justify-items: center;
-}
-
-.include-watched p {
-    grid-column: 3/9;
-    text-align: center;
-    font-weight: bold;
-}
-
-.include-watched img {
-    grid-column: 9;
-    width: 100%;
+.option-img {
+    grid-column: 12/14;
+    width: 70%;
     cursor: pointer;
 }
 
@@ -142,6 +113,24 @@
 
     .create-party-btn {
         grid-column: 6/13;
+    }
+
+    .option-text {
+        grid-column: 8/10;
+    }
+    
+    .option-img {
+        grid-column: 10;
+        margin-bottom: 10px;
+        width: 30%;
+    }
+
+    .radio-btn-label {
+        grid-column: 8/10;
+    }
+    
+    .radio-btn {
+        grid-column: 10;
     }
 }
 

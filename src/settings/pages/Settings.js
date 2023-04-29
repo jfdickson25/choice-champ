@@ -106,7 +106,7 @@ const Settings = props => {
                         />
                         <p className='settings-attribution-text'>This product uses RAWG API but is not endorsed or certified by RAWG. All game data is provided by RAWG</p>
                     </div>
-                    <Button onClick={auth.logout}>Logout</Button>
+                    <Button className='btn-logout' onClick={auth.logout}>Logout</Button>
                     <Button className='btn-delete' onClick={openDeleteModal}>Delete Account</Button>
                 </div>
             </div>
@@ -115,7 +115,7 @@ const Settings = props => {
                     <div className='dialog-sub-content'>
                         <h2 className='modal-header'>Are you sure you want to delete your account?</h2>
                         <div className='dialog-buttons'>
-                            <Button onClick={handleClose}>Cancel</Button>
+                            <Button className='btn-cancel' onClick={handleClose}>Cancel</Button>
                             <Button className='btn-delete' onClick={deleteAccount}>Delete</Button>
                         </div>
                     </div>

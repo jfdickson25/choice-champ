@@ -28,14 +28,12 @@ const PartyHome = props => {
         <React.Fragment>
             <div className='content' {...handlers}>
                 <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/choice-party.svg?v=1681657279405" className="party-img" alt='Movie night'/>
-                <div className='party-home'>
-                    <NavLink to="/party/createParty">
-                        <Button type="button">Create Party</Button>
-                    </NavLink>
-                    <NavLink to="/party/joinParty">
-                        <Button type="button">Join Party</Button>
-                    </NavLink>
-                </div>
+                <NavLink to="/party/createParty" className='party-home'>
+                    <Button className="party-btn" type="button">Create Party</Button>
+                </NavLink>
+                <NavLink to="/party/joinParty" className='party-home'>
+                    <Button className="party-btn" type="button">Join Party</Button>
+                </NavLink>
             </div>
         </React.Fragment>
     );

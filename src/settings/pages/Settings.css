@@ -1,7 +1,10 @@
 .settings-home {
     width: 100%;
     grid-column: 3/16;
+    display: grid;
+    justify-items: center;
 }
+
 .modal-header {
     color: white;
     text-align: center;
@@ -14,6 +17,11 @@
     padding: 0;
     margin: 0;
     padding-bottom: 20px;
+}
+
+.dialog-buttons {
+    display: grid;
+    justify-items: center;
 }
 
 .MuiPaper-root {
@@ -93,4 +101,38 @@
 .storyset-link a {
     color: white;
     grid-column: 10/18;
+}
+
+@media only screen and (min-width: 1000px) {
+    .settings-attribution-logo {
+        grid-column: 4/7;
+    }
+
+    .settings-attribution-text {
+        grid-column: 8/16;
+        font-size: 9pt;
+    }
+
+    .btn-delete {
+        width: 50%;
+    }
+
+    .btn-logout {
+        width: 50%;
+    }
+
+    .btn-cancel {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 1600px) {
+    .settings-attribution-logo {
+        grid-column: 6/8;
+    }
+
+    .settings-attribution-text {
+        grid-column: 9/13;
+        font-size: 9pt;
+    }
 }

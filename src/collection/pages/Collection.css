@@ -97,3 +97,33 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+@media only screen and (min-width: 500px) {
+    .collection-content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .collection-content {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .collection-content {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .search-bar {
+        grid-column: 5/14;
+    }
+}
+
+@media only screen and (min-width: 1600px) {
+    .collection-content {
+        padding-left: 300px;
+        padding-right: 300px;
+        grid-gap: 50px;
+    }
+}

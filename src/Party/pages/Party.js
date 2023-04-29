@@ -268,7 +268,7 @@ const Party = ({ socket }) => {
                     />
                 </div>
             )}
-        <div className='collection-content' style={mediaType === 'game' ? { gridTemplateColumns: 'repeat(1, 1fr)'} : { gridTemplateColumns: 'repeat(2, 1fr)'} }>
+        <div className={mediaType === 'game' ? 'collection-content-game' : 'collection-content-other' }>
             { 
                 collectionItems.length === 1 ? (
                     <div className='winner'>

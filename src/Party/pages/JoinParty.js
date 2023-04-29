@@ -89,7 +89,7 @@ const JoinParty = (props) => {
         <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032" className="join-img" alt='Join Code Image'/>
         <div id='join-party-page'>
             <input type="number" min="0" max="9999" placeholder="Join Code" ref={inputRef} onChange={changeHandler} />
-            <Button onClick={navToParty}>Join Party</Button>
+            <Button className="join-btn" onClick={navToParty}>Join Party</Button>
             <p className='join-party-error-msg'>{errorMessage}</p>
         </div>
     </div>

@@ -34,7 +34,7 @@
     width: 50%;
   }
 
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1000px) {
     .category {
         width: 100%;
         grid-column: auto;

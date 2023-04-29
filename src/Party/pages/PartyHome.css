@@ -1,10 +1,47 @@
 .party-home {
     width: 100%;
     grid-column: 3/16;
+    display: grid;
+    justify-items: center;
+    text-decoration: none;
 }
 
 .party-img {
     margin-top: 30px;
     grid-column: 2/17;
     width: 100%;
+}
+
+@media only screen and (min-width: 500px) {
+    .party-img {
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .party-img {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .party-img {
+        width: 40%;
+    }
+
+    .party-btn {
+        width: 70%;
+        grid-column: 1/18;
+    }
+}
+
+@media only screen and (min-width: 1600px) {
+    .party-img {
+        width: 30%;
+    }
+
+    .party-btn {
+        width: 60%;
+        grid-column: 1/18;
+    }
 }

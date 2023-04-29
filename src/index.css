@@ -139,3 +139,18 @@ input {
   margin-top: 15px;
   color: rgb(161, 161, 161);
 }
+
+@media only screen and (min-width: 800px) {
+
+  .top-left {
+    width: 40%;
+  }
+
+  .edit {
+    width: 40%;
+  }
+
+  .add {
+    width: 30%;
+  }
+}

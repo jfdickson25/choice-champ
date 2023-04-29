@@ -131,24 +131,20 @@ const CreateParty = props => {
             <div className='content' {...handlers}>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>Create Party</h2>
-                <div className='secret-mode'>
-                    <p>Secret Mode</p>
-                    <img src={ secretMode ? check : circle } onClick={() => { setSecretMode(!secretMode) }} />
-                </div>
-                <div className='include-watched'>
-                    <p>Include Watched</p>
-                    <img src={ includeWatched ? check : circle } onClick={() => { setIncludeWatched(!includeWatched) }} />
-                </div>
+                <p className='option-text'>Secret Mode</p>
+                <img className='option-img' src={ secretMode ? check : circle } onClick={() => { setSecretMode(!secretMode) }} />
+                <p className='option-text'>Include Watched</p>
+                <img className='option-img' src={ includeWatched ? check : circle } onClick={() => { setIncludeWatched(!includeWatched) }} />
                 <div className='create-divider'></div>
-                <div className='radio-btns'>
-                    <label htmlFor="movie">Movies</label>
-                    <input type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 
-                    <label htmlFor="tv">TV Shows</label>
-                    <input type='radio' name='mediaType' id='tv' value='tv' onChange={mediaTypeHandler} checked={mediaType === 'tv'} />
-                    <label htmlFor="games">Video Games</label>
-                    <input type='radio' name='mediaType' it='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
-                </div>
+
+                <label className='radio-btn-label' htmlFor="movie">Movies</label>
+                <input className='radio-btn' type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 
+                <label className='radio-btn-label' htmlFor="tv">TV Shows</label>
+                <input className='radio-btn' type='radio' name='mediaType' id='tv' value='tv' onChange={mediaTypeHandler} checked={mediaType === 'tv'} />
+                <label className='radio-btn-label' htmlFor="games">Video Games</label>
+                <input className='radio-btn' type='radio' name='mediaType' it='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
                 <div className='create-party-collections'>
+                    
                 { isLoading ? <Loading type='beat' className='list-loading-create' size={20} /> : 
                         collections.length > 0 ?
                             collections.map(collection => (
