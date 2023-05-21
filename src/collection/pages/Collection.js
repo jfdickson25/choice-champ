@@ -23,13 +23,14 @@ const Collection = props => {
      ***********************************************************/
     // Grab the collection type, name and id from the parameters
     let collectionType = useParams().type;
-    let collectionName = useParams().name;
     let collectionId = useParams().id;
+    let collectionNameParam = useParams().name;
 
     const [items, setItems] = useState([]);
     const [isEdit, setIsEdit] = useState(false);
     const [shareCode, setShareCode] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [collectionName, setCollectionName] = useState(useParams().name);
 
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -51,7 +52,34 @@ const Collection = props => {
     /************************************************************
      * Logic for setting edit state and removing items
      ***********************************************************/
-    const isEditHandler = () => isEdit ? setIsEdit(false) : setIsEdit(true);
+    const isEditHandler = () => {
+        if(isEdit) {
+            // Check to make sure the collection name is not empty
+            if(collectionName !== '') {
+                // If collection name has changed make a fetch post request to update the collection name
+                if(collectionName !== collectionNameParam) {
+                    fetch(`https://choice-champ-backend.glitch.me/collections/name/${collectionId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: collectionName
+                        })
+                    })
+                    .then(res => {
+                        setIsEdit(false);
+                    });
+                } else {
+                    setIsEdit(false);
+                }
+            } else {
+                alert('Collection name cannot be empty');
+            }
+        } else {
+            setIsEdit(true);
+        }
+    }
 
     const removeItem = (id) => {
         // Make a fetch delete request to remove an item from a collection
@@ -124,7 +152,11 @@ const Collection = props => {
             <div className='content' {...handlers}>
                 { /* TODO: Look up difference between Link and NavLink */ }
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
-                <h2 className='title'>{collectionName}</h2>
+                { isEdit 
+                    ? (<input className='title' style={{gridColumn:"5/14", marginBottom: "10px"}} value={collectionName} onChange={e => setCollectionName(e.target.value)} />)
+                    : (<h2 className='title'>{collectionName}</h2>)
+                }
+
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <div className='share-code'>share code: {shareCode}</div>
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>

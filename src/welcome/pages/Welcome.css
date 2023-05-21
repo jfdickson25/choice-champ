@@ -27,15 +27,6 @@
     transition: all .5s ease-in;
 }
 
-#divider {
-    width: 33vw;
-    border-bottom: solid 7px #FCB016;
-    border-radius: 10px;
-    position: absolute;
-    bottom: 40px;
-    left: 33vw;
-}
-
 .rect-translate {
     transform: translateX(-32px);
 }
@@ -59,7 +50,7 @@ p.welcome-text {
     margin-top: 0;
 }
 
-button {
+.welcome-btn {
     grid-column: 2/17;
 }
 
@@ -68,7 +59,7 @@ button {
         grid-column: 5/14;
     }
 
-    button {
+    .welcome-btn {
         grid-column: 5/14;
     }
 }
@@ -78,7 +69,7 @@ button {
         grid-column: 7/12;
     }
 
-    button {
+    .welcome-btn {
         grid-column: 7/12;
     }
 }
@@ -88,7 +79,7 @@ button {
         grid-column: 8/11;
     }
 
-    button {
+    .welcome-btn {
         grid-column: 8/11;
     }
 }
@@ -98,7 +89,7 @@ button {
         grid-column: 9/10;
     }
 
-    button {
+    .welcome-btn {
         grid-column: 9/10;
     }
 }

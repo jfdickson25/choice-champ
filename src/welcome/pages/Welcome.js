@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import Button from '../../shared/components/FormElements/Button';
+import { AuthContext } from '../../shared/context/auth-context';
 
 import { useSwipeable } from 'react-swipeable';
 
@@ -8,8 +9,13 @@ import movieNight from '../assets/img/movie-night.svg';
 import watch from '../assets/img/watch.svg';
 import './Welcome.css';
 const Welcome = props => {
+    const auth = useContext(AuthContext);
     const history = useHistory();
     const [isWelcome, setIsWelcome] = useState(true);
+
+    useEffect(() => {
+        auth.showFooterHandler(false);
+    }, []);
 
     const continueOn = () => {
         setIsWelcome(false);
@@ -50,9 +56,9 @@ const Welcome = props => {
                 Having a hard time choosing what to watch or play together?
                 <br />
                 <br />
-                We're here to make that choice a little easier.
+                Choice Champ is here to make that choice a little easier.
             </p>
-            <Button onClick={continueOn}>
+            <Button className="welcome-btn" onClick={continueOn}>
                 Continue 
             </Button>
         </React.Fragment>
@@ -67,7 +73,7 @@ const Welcome = props => {
                 <li>Share Party Code to group</li>
                 <li>Choose Together!</li>
             </ol>
-            <Button onClick={getStarted}>
+            <Button className="welcome-btn" onClick={getStarted}>
                 Get Started 
             </Button>
         </React.Fragment>
@@ -81,7 +87,6 @@ const Welcome = props => {
                     <rect id='slider-rect' opacity="0.52" x="32" width="8" height="8" rx="4" fill="white"/>
                 </svg>
             {isWelcome ? welcome : info}
-            <div id='divider' />
         </div>
     );
 }
