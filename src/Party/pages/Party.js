@@ -10,8 +10,6 @@ import { AuthContext } from '../../shared/context/auth-context';
 
 import './Party.css';  
 
-// TODO: Add functionality to randomly select one of the items in the collection and display it on the screen
-
 const Party = ({ socket }) => {
     const auth = useContext(AuthContext);
     let history = useHistory();
@@ -72,59 +70,84 @@ const Party = ({ socket }) => {
             setSecretMode(body.party.secretMode);
             setCollectionItems(items);
             collectionPointRef.current = items;
+
+            // Emit event to clear the votes for the party
+            socket.emit('clear-remote-votes', code);
         });
     }, []);
 
     useEffect(() => {
-        socket.on('vote-increment', (id) => {
-            // Find item with the id and increment the vote count
-            const item = collectionPointRef.current.find(item => item.id == id);
-            item.votes += 1;
-            setCollectionItems([...collectionPointRef.current]);
-        });
-
-        socket.on('vote-decrement', (id) => {
-            // Find item with the id and decrement the vote count
-            const item = collectionPointRef.current.find(item => item.id == id);
-            item.votes -= 1;
-            setCollectionItems([...collectionPointRef.current]);
-        });
-
-        socket.on('vote-selected', (votesNeeded) => {
-            // Filter out the items that have been voted for
-            const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeeded);
-
-            // Reset votes and voted for all filtered items
-            filteredItems.forEach(item => {
-                item.votes = 0;
-                item.voted = false;
-            });
-
-            if(filteredItems.length === 1) {
-                // Set runners up to the remaining items
-                const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeeded);
-                setRunnerUps(runnerUps);
+        socket.on('vote-increment', (id, room) => {
+            if(room === code) {
+                // Find item with the id and increment the vote count
+                const item = collectionPointRef.current.find(item => item.id == id);
+                item.votes += 1;
+                setCollectionItems([...collectionPointRef.current]);
             }
-
-            setCollectionItems(filteredItems);
-            collectionPointRef.current = filteredItems;
         });
 
-        socket.on('random-selected', (id) => {
-            // Find the item with the id and set it to the state
-            const item = collectionPointRef.current.find(item => item.id === id);
-
-            // Set the rest of the items that are not the random item to be the runner ups
-            const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
-            setRunnerUps(runnerUps);
-
-            setCollectionItems([item]);
-            collectionPointRef.current = [item];
+        socket.on('vote-decrement', (id, room) => {
+            if(room === code) {
+                // Find item with the id and decrement the vote count
+                const item = collectionPointRef.current.find(item => item.id == id);
+                item.votes -= 1;
+                setCollectionItems([...collectionPointRef.current]);
+            }
         });
 
-        socket.on('party-deleted', () => {
-            // Redirect to the party page
-            history.push('/party');
+        socket.on('vote-selected', (votesNeeded, room) => {
+            if(room === code) {
+                // Filter out the items that have been voted for
+                const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeeded);
+
+                // Reset votes and voted for all filtered items
+                filteredItems.forEach(item => {
+                    item.votes = 0;
+                    item.voted = false;
+                });
+
+                if(filteredItems.length === 1) {
+                    // Set runners up to the remaining items
+                    const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeeded);
+                    setRunnerUps(runnerUps);
+                }
+
+                setCollectionItems(filteredItems);
+                collectionPointRef.current = filteredItems;
+            }
+        });
+
+        socket.on('random-selected', (id, room) => {
+            if(room === code) {
+                // Find the item with the id and set it to the state
+                const item = collectionPointRef.current.find(item => item.id === id);
+
+                // Set the rest of the items that are not the random item to be the runner ups
+                const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
+                setRunnerUps(runnerUps);
+
+                setCollectionItems([item]);
+                collectionPointRef.current = [item];
+            }
+        });
+
+        socket.on('party-deleted', (room) => {
+            if(room === code) {
+                // Redirect to the party page
+                history.push('/party');
+            }
+        });
+
+        socket.on('clear-votes', (room) => {
+            if(room === code) {
+                // Reset votes and voted for all filtered items
+                collectionPointRef.current.forEach(item => {
+                    item.votes = 0;
+                    item.voted = false;
+                });
+
+                setCollectionItems([...collectionPointRef.current]);
+            }
         });
 
         return () => {
@@ -145,13 +168,13 @@ const Party = ({ socket }) => {
             item.votes -= 1;
             setCollectionItems([...collectionItems]);
             collectionPointRef.current = [...collectionItems];
-            socket.emit('vote-remote-decrement', id);
+            socket.emit('vote-remote-decrement', id, code);
         } else {
             item.voted = true;        
             item.votes += 1;
             setCollectionItems([...collectionItems]);
             collectionPointRef.current = [...collectionItems];
-            socket.emit('vote-remote-increment', id);
+            socket.emit('vote-remote-increment', id, code);
         }
     }
 
@@ -191,7 +214,7 @@ const Party = ({ socket }) => {
             });
         }
 
-        socket.emit('vote-remote-selected', votesNeededRef.current);
+        socket.emit('vote-remote-selected', votesNeededRef.current, code);
     }
 
     const navToParty = () => {
@@ -205,7 +228,7 @@ const Party = ({ socket }) => {
                 }
             })
             .then(response => {
-                socket.emit('party-remote-deleted');
+                socket.emit('party-remote-deleted', code);
                 // Redirect to the home page
                 history.push('/party');
             });
@@ -243,7 +266,7 @@ const Party = ({ socket }) => {
             }
         });
 
-        socket.emit('random-remote-selected', randomItem.id);
+        socket.emit('random-remote-selected', randomItem.id, code);
     }
 
   return (
