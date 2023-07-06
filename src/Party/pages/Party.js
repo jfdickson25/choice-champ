@@ -7,6 +7,8 @@ import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
 
 import { AuthContext } from '../../shared/context/auth-context';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './Party.css';  
 
@@ -25,6 +27,8 @@ const Party = ({ socket }) => {
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
+
+    const notify = () => toast.success(`New member joined: Votes reset`);
 
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
@@ -140,13 +144,18 @@ const Party = ({ socket }) => {
 
         socket.on('clear-votes', (room) => {
             if(room === code) {
+                let itemsReset = false;
                 // Reset votes and voted for all filtered items
                 collectionPointRef.current.forEach(item => {
                     item.votes = 0;
                     item.voted = false;
+                    itemsReset = true;
                 });
 
                 setCollectionItems([...collectionPointRef.current]);
+                if(itemsReset) {
+                    notify();
+                }
             }
         });
 
@@ -271,6 +280,17 @@ const Party = ({ socket }) => {
 
   return (
     <div className='content'>
+        <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            draggable
+            theme="dark"
+            style={{ textAlign: "center" }}
+        />
         { collectionItems.length === 1 && ( <Confetti /> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
         <h2 className='title'>Code: {code}</h2>
