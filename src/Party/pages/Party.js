@@ -139,13 +139,13 @@ const Party = ({ socket }) => {
             let itemsReset = false;
             // Reset votes and voted for all filtered items
             collectionPointRef.current.forEach(item => {
-                item.votes = 0;
-                item.voted = false;
-
                 // Only set to true if there is a vote or if the user has voted
                 if(item.votes > 0 || item.voted) {
                     itemsReset = true;
                 }
+                
+                item.votes = 0;
+                item.voted = false;
             });
 
             setCollectionItems([...collectionPointRef.current]);
