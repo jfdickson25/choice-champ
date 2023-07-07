@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useContext } from 'react';
+import React, { useEffect, useMemo, useState, useContext, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
@@ -14,7 +14,7 @@ import './Collection.css';
 // TODO (Nice to have): Could be nice to add extra filtering of movies in a collection
 // such as alphabetically and by date added
 
-const Collection = props => {
+const Collection = ({ socket }) => {
     const auth = useContext(AuthContext);
     let history = useHistory();
     /************************************************************
@@ -32,6 +32,8 @@ const Collection = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [collectionName, setCollectionName] = useState(useParams().name);
 
+    const itemsRef = useRef(items);
+
     useEffect(() => {
         auth.showFooterHandler(true);
         // Make a fetch get request to get all the items in a collection
@@ -44,10 +46,42 @@ const Collection = props => {
         .then(res => res.json())
         .then(data => {
             setItems(data.items);
+            itemsRef.current = data.items;
             setShareCode(data.shareCode);
             setIsLoading(false);
+
+            // Join room with the collection id
+            socket.emit('join-room', collectionId);
         });
     }, []);
+
+    useEffect(() => {
+        socket.on('remove-item', (id) => {
+            // Find item with the id and remove it from the list
+            itemsRef.current = itemsRef.current.filter(item => item._id !== id);
+            setItems(itemsRef.current);
+        });
+
+        socket.on('watched-item', (id) => {
+            // Update the item with the given id to be watched
+            itemsRef.current = itemsRef.current.map(item => {
+                if(item._id === id && item.watched === false) {
+                    item.watched = true;
+                } else if(item._id === id && item.watched === true) {
+                    item.watched = false;
+                }
+
+                return item;
+            });
+
+            setItems(itemsRef.current);
+        });
+
+        return () => {
+            socket.off('remove-item');
+            socket.off('watched-item');
+        }
+    }, [socket]);
 
     /************************************************************
      * Logic for setting edit state and removing items
@@ -91,6 +125,9 @@ const Collection = props => {
         })
         .then(res => {
             setItems(items.filter(item => item._id !== id));
+            itemsRef.current = items;
+            // Emit to the server that an item has been removed
+            socket.emit('remove-remote-item', id, collectionId);
         });
     }
 
@@ -124,6 +161,11 @@ const Collection = props => {
 
                 return item;
             }));
+
+            itemsRef.current = items;
+
+            // Emit to the server that an item has been watched
+            socket.emit('watched-remote-item', id, collectionId);
         });
     }
 

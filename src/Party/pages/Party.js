@@ -161,6 +161,7 @@ const Party = ({ socket }) => {
             socket.off('vote-selected');
             socket.off('random-selected');
             socket.off('party-deleted');
+            socket.off('clear-votes');
         }
     }, [socket]);
 

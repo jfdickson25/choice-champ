@@ -13,6 +13,9 @@ import Footer from './shared/components/Navigation/Footer';
 
 import { AuthContext } from './shared/context/auth-context';
 
+// Lazy loading is a way to load a component only when it is needed. 
+// This is useful for components that are not needed right away, but are needed later on. 
+// This can help with performance by only loading what is needed at the time.
 const Categories = lazy(() => import('./categories/pages/Categories'));
 const Collection = lazy(() => import('./collection/pages/Collection'));
 const Search = lazy(() => import('./collection/pages/Search'));
@@ -112,10 +115,10 @@ function App() {
             <Collections />
           </Route>
           <Route path="/collections/:type/:name/:id" exact>
-            <Collection />
+            <Collection socket={socket} />
           </Route>
           <Route path="/collections/:type/:name/:id/add" exact>
-            <Search />
+            <Search socket={socket} />
           </Route>
 
           <Route path="/party" exact>
