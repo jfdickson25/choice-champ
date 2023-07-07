@@ -28,7 +28,7 @@ const Party = ({ socket }) => {
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
 
-    const notify = () => toast.success(`New member joined: Votes reset`);
+    const notify = () => toast.success(`New member joined! Votes are reset`);
 
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
@@ -75,87 +75,83 @@ const Party = ({ socket }) => {
             setCollectionItems(items);
             collectionPointRef.current = items;
 
+            // Join the party room. This will restrict the same movie getting voted in different parties
+            socket.emit('join-room', code);
+
             // Emit event to clear the votes for the party
             socket.emit('clear-remote-votes', code);
         });
     }, []);
 
     useEffect(() => {
-        socket.on('vote-increment', (id, room) => {
-            if(room === code) {
-                // Find item with the id and increment the vote count
-                const item = collectionPointRef.current.find(item => item.id == id);
-                item.votes += 1;
-                setCollectionItems([...collectionPointRef.current]);
-            }
+        socket.on('vote-increment', (id) => {
+            // Find item with the id and increment the vote count
+            const item = collectionPointRef.current.find(item => item.id == id);
+            item.votes += 1;
+            setCollectionItems([...collectionPointRef.current]);
         });
 
-        socket.on('vote-decrement', (id, room) => {
-            if(room === code) {
-                // Find item with the id and decrement the vote count
-                const item = collectionPointRef.current.find(item => item.id == id);
-                item.votes -= 1;
-                setCollectionItems([...collectionPointRef.current]);
-            }
+        socket.on('vote-decrement', (id) => {
+            // Find item with the id and decrement the vote count
+            const item = collectionPointRef.current.find(item => item.id == id);
+            item.votes -= 1;
+            setCollectionItems([...collectionPointRef.current]);
         });
 
-        socket.on('vote-selected', (votesNeeded, room) => {
-            if(room === code) {
-                // Filter out the items that have been voted for
-                const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeeded);
+        socket.on('vote-selected', (votesNeeded) => {
+            // Filter out the items that have been voted for
+            const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeeded);
 
-                // Reset votes and voted for all filtered items
-                filteredItems.forEach(item => {
-                    item.votes = 0;
-                    item.voted = false;
-                });
+            // Reset votes and voted for all filtered items
+            filteredItems.forEach(item => {
+                item.votes = 0;
+                item.voted = false;
+            });
 
-                if(filteredItems.length === 1) {
-                    // Set runners up to the remaining items
-                    const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeeded);
-                    setRunnerUps(runnerUps);
-                }
-
-                setCollectionItems(filteredItems);
-                collectionPointRef.current = filteredItems;
-            }
-        });
-
-        socket.on('random-selected', (id, room) => {
-            if(room === code) {
-                // Find the item with the id and set it to the state
-                const item = collectionPointRef.current.find(item => item.id === id);
-
-                // Set the rest of the items that are not the random item to be the runner ups
-                const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
+            if(filteredItems.length === 1) {
+                // Set runners up to the remaining items
+                const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeeded);
                 setRunnerUps(runnerUps);
-
-                setCollectionItems([item]);
-                collectionPointRef.current = [item];
             }
+
+            setCollectionItems(filteredItems);
+            collectionPointRef.current = filteredItems;
         });
 
-        socket.on('party-deleted', (room) => {
-            if(room === code) {
-                // Redirect to the party page
-                history.push('/party');
-            }
+        socket.on('random-selected', (id) => {
+            // Find the item with the id and set it to the state
+            const item = collectionPointRef.current.find(item => item.id === id);
+
+            // Set the rest of the items that are not the random item to be the runner ups
+            const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
+            setRunnerUps(runnerUps);
+
+            setCollectionItems([item]);
+            collectionPointRef.current = [item];
         });
 
-        socket.on('clear-votes', (room) => {
-            if(room === code) {
-                let itemsReset = false;
-                // Reset votes and voted for all filtered items
-                collectionPointRef.current.forEach(item => {
-                    item.votes = 0;
-                    item.voted = false;
+        socket.on('party-deleted', () => {
+            // Redirect to the party page
+            history.push('/party');
+        });
+
+        socket.on('clear-votes', () => {
+            let itemsReset = false;
+            // Reset votes and voted for all filtered items
+            collectionPointRef.current.forEach(item => {
+                item.votes = 0;
+                item.voted = false;
+
+                // Only set to true if there is a vote or if the user has voted
+                if(item.votes > 0 || item.voted) {
                     itemsReset = true;
-                });
-
-                setCollectionItems([...collectionPointRef.current]);
-                if(itemsReset) {
-                    notify();
                 }
+            });
+
+            setCollectionItems([...collectionPointRef.current]);
+
+            if(itemsReset) {
+                notify();
             }
         });
 
