@@ -14,7 +14,7 @@ import circle from '../../shared/assets/img/circle.png';
 import filledCircle from '../../shared/assets/img/filled-circle.png';
 import check from '../../shared/assets/img/check.png';
 
-const Search = props => {
+const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
     let history = useHistory();
 
@@ -159,28 +159,32 @@ const Search = props => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(selectedItems)
-            });
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Update to set selected to false and set inCollection to true in selectedItems then setItems to selectedItems
+                const updatedItems = items.map(item => {
+                    if(item.selected === true) {
+                        item.selected = false;
+                        item.inCollection = true;
+                    }
+                    return item;
+                });
+            
+                selectedItems.forEach(item => {
+                    collectionRef.current.push({
+                        title: item.title,
+                        poster: item.poster,
+                        watched: false,
+                        itemId: item.id
+                    })
+                });
 
-            // Update to set selected to false and set inCollection to true in selectedItems then setItems to selectedItems
-            const updatedItems = items.map(item => {
-                if(item.selected === true) {
-                    item.selected = false;
-                    item.inCollection = true;
-                }
-                return item;
-            });
-          
-            selectedItems.forEach(item => {
-                collectionRef.current.push({
-                    title: item.title,
-                    poster: item.poster,
-                    watched: false,
-                    itemId: item.id
-                })
-            });
+                socket.emit('add-remote-items', data.newItems, collectionId);
 
-            setItems(updatedItems);
-            notify();
+                setItems(updatedItems);
+                notify();
+            });
         }
     }
 

@@ -77,9 +77,17 @@ const Collection = ({ socket }) => {
             setItems(itemsRef.current);
         });
 
+        socket.on('add-items', (newItems) => {
+            // Push all newItems onto itemsRef.current
+            let newArray = [...itemsRef.current, ...newItems];
+            itemsRef.current = newArray;
+            setItems(itemsRef.current);
+        });
+
         return () => {
             socket.off('remove-item');
             socket.off('watched-item');
+            socket.off('add-items');
         }
     }, [socket]);
 
