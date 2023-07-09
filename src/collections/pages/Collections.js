@@ -12,6 +12,7 @@ import editing from '../../shared/assets/img/editing.png';
 
 import './Collections.css';
 import { AuthContext } from '../../shared/context/auth-context';
+import Button from '../../shared/components/FormElements/Button';
 
 const Collections = props => {
     const auth = useContext(AuthContext);
@@ -228,12 +229,12 @@ const Collections = props => {
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth='lg'>
                 <div className='dialog-content'>
                     <div className='dialog-sub-content'>
-                        <input type="text" placeholder={"New Collection"} onChange={changeCollectionHandler} ref={inputCollectionRef}/>
-                        <button onClick={handleAddCollection}>Create Collection</button>
+                        <input type="text" placeholder={"collection name"} onChange={changeCollectionHandler} ref={inputCollectionRef}/>
+                        <Button onClick={handleAddCollection}>Create Collection</Button>
                         {nameError && <p className='error' style={{textAlign: 'center'}}>Collection must have a name</p>}
                         <p className='or'>OR</p>
-                        <input type="number" min={10000} max={99999} placeholder={12345} onChange={changeJoinCodeHandler} ref={inputJoinRef}/>
-                        <button onClick={handleJoinCollection}>Join Collection</button>
+                        <input type="number" min={10000} max={99999} placeholder={"share code"} onChange={changeJoinCodeHandler} ref={inputJoinRef}/>
+                        <Button onClick={handleJoinCollection}>Join Collection</Button>
                         <p className='error' style={{textAlign: 'center'}}>{joinError}</p>
                     </div>
                 </div>
