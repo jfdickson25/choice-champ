@@ -215,7 +215,6 @@ const Collection = ({ socket }) => {
                            A navlink is used to navigate to a different page
                            but it also allows you to style the link based on
                            if it is active or not.
-
                     */ 
                 }
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
