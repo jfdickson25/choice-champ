@@ -140,6 +140,7 @@ const Collection = ({ socket }) => {
     }
 
     const navBack = () => {
+        socket.emit('leave-room', collectionId);
         history.push(`/collections/${collectionType}`);
     }
 
@@ -184,6 +185,10 @@ const Collection = ({ socket }) => {
      ***********************************************************/
     const [query, setQuery] = useState('');
 
+    // Q: Why do we use useMemo here?
+    // A: useMemo is used to optimize the filtering of items. It will only filter the items
+    // when the query changes. This is important because if we didn't use useMemo the items
+    // would be filtered on every render. This would be a waste of resources.
     const filteredItems = useMemo(() => {
         return items.filter(item => {
             return item.title.toLowerCase().includes(query.toLowerCase());
@@ -191,7 +196,10 @@ const Collection = ({ socket }) => {
     }, [items, query]);
 
     const handlers = useSwipeable({
-        onSwipedLeft: () => history.push('/party'),
+        onSwipedLeft: () => {
+            socket.emit('leave-room', collectionId);
+            history.push('/party');
+        },
         preventDefaultTouchmoveEvent: true,
         trackMouse: true,
         delta: 100
@@ -200,7 +208,16 @@ const Collection = ({ socket }) => {
     return (
         <React.Fragment>
             <div className='content' {...handlers}>
-                { /* TODO: Look up difference between Link and NavLink */ }
+                { 
+                    /* 
+                        Q: What is the difference between a link and navlink?
+                        A: A link is used to navigate to a different page. 
+                           A navlink is used to navigate to a different page
+                           but it also allows you to style the link based on
+                           if it is active or not.
+
+                    */ 
+                }
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 { isEdit 
                     ? (<input className='title' style={{gridColumn:"5/14", marginBottom: "10px"}} value={collectionName} onChange={e => setCollectionName(e.target.value)} />)
@@ -222,6 +239,7 @@ const Collection = ({ socket }) => {
                                 */ 
                                 }
                                 {
+                                    // TODO: Modify this logic to show a message for filtering and for when there are no items in the collection
                                     // Add a message if there are no items in the collection
                                     filteredItems.length === 0 && <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p>
                                 }
