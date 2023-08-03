@@ -28,7 +28,7 @@ const Party = ({ socket }) => {
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
 
-    const notify = () => toast.success(`New member joined! Votes are reset`);
+    const notify = () => toast.success(`New member! Votes are reset`);
 
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
