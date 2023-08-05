@@ -1,5 +1,5 @@
 import React from 'react';
-import { BounceLoader, BeatLoader, SyncLoader } from 'react-spinners';
+import { BounceLoader, BeatLoader, SyncLoader, PropagateLoader } from 'react-spinners';
 
 import './Loading.css';
 
@@ -16,6 +16,8 @@ const Loading = props => {
         loading = <BeatLoader color={color} size={size} speedMultiplier={speed} />;
     } else if (type === 'sync') {
         loading = <SyncLoader color={color} size={size} speedMultiplier={speed} />;
+    } else if (type === 'propagate') {
+        loading = <PropagateLoader color={color} size={size} speedMultiplier={speed} />;
     }
 
 

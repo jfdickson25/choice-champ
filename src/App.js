@@ -24,6 +24,7 @@ const Auth = lazy(() => import('./user/pages/Auth'));
 const Welcome = lazy(() => import('./welcome/pages/Welcome'));
 const PartyHome = lazy(() => import('./Party/pages/PartyHome'));
 const CreateParty = lazy(() => import('./Party/pages/CreateParty'));
+const PartyWait = lazy(() => import('./Party/pages/PartyWait'));
 const Party = lazy(() => import('./Party/pages/Party'));
 const JoinParty = lazy(() => import('./Party/pages/JoinParty'));
 const Settings = lazy(() => import('./settings/pages/Settings'));
@@ -130,6 +131,9 @@ function App() {
           <Route path="/party/joinParty" exact>
             <JoinParty />
           </Route>
+          <Route path="/party/wait/:code/:userType" exact>
+            <PartyWait socket={socket} />
+          </Route>
           <Route path="/party/:code/:userType" exact>
             <Party socket={socket} />
           </Route>
@@ -151,6 +155,9 @@ function App() {
             </Route>
             <Route path="/party/joinParty" exact>
               <JoinParty />
+            </Route>
+            <Route path="/party/wait/:code/:userType" exact>
+              <PartyWait socket={socket} />
             </Route>
             <Route path="/party/:code/:userType" exact>
               <Party socket={socket} />

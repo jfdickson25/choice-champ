@@ -1,0 +1,28 @@
+.party-wait-code {
+    grid-column: 1/18;
+    font-size: 18pt;
+    margin-top: 5vh;
+}
+
+.party-wait-count {
+    grid-column: 1/18;
+    font-size: 14pt;
+    margin-top: 50px;
+}
+
+.party-wait-count-num {
+    font-weight: bold;
+    color: #FCB016;
+    margin-left: 10px;
+    font-size: 18pt;
+}
+
+#waiting-img {
+    grid-column: 1/18;
+}
+
+.party-wait-start-btn {
+    grid-column: 1/18;
+    margin-top: 50px;
+    width: 50%;
+}

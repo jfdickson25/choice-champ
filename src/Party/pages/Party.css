@@ -207,6 +207,15 @@
     font-size: 16pt;
 }
 
+.guest-banner {
+    grid-column: 4/19;
+    width: 90%;
+    height: 4px;
+    justify-self: right;
+    border-radius: 10px 0px 0px 10px;
+    background-color: #FCB016;
+}
+
 @media only screen and (min-width: 700px) {
     .collection-content-other {
         grid-template-columns: repeat(3, 1fr);

@@ -23,7 +23,7 @@ const JoinParty = (props) => {
         auth.showFooterHandler(true);
     }, []);
 
-    const navToParty = () => {
+    const navToPartyWait = () => {
         // Grab the join code from the input and validate it is 4 digits if it is 4 digits, navigate to the party page if it is not 4 digits, display an error message
         const joinCode = inputRef.current.value;
 
@@ -39,7 +39,7 @@ const JoinParty = (props) => {
             .then(data => {
                 if(data.code) {
                     // Navigate to the party page
-                    history.push(`/party/${data.code}/guest`);
+                    history.push(`/party/wait/${data.code}/guest`);
                 }
                 else {
                     // Display an error message
@@ -89,7 +89,7 @@ const JoinParty = (props) => {
         <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032" className="join-img" alt='Join Code Image'/>
         <div id='join-party-page'>
             <input type="number" min="0" max="9999" placeholder="Join Code" ref={inputRef} onChange={changeHandler} />
-            <Button className="join-btn" onClick={navToParty}>Join Party</Button>
+            <Button className="join-btn" onClick={navToPartyWait}>Join Party</Button>
             <p className='join-party-error-msg'>{errorMessage}</p>
         </div>
     </div>

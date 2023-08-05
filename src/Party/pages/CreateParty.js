@@ -58,7 +58,7 @@ const CreateParty = props => {
         setCollections(updatedCollections);
     }
 
-    const navToParty = () => {
+    const navToPartyWait = () => {
         const selectedCollections = collections.filter(collection => collection.selected);
 
         if (selectedCollections.length === 0) {
@@ -89,7 +89,7 @@ const CreateParty = props => {
         .then(res => {
             // Route to the party page
             history.push({
-                pathname: `/party/${partyCode}/owner`,
+                pathname: `/party/wait/${partyCode}/owner`,
             });
         });
     }
@@ -156,7 +156,7 @@ const CreateParty = props => {
                         : <div className='no-collections-found'>No collections found for this media type</div>
                 }
                 </div>
-                <Button type="button" className='create-party-btn' onClick={navToParty}>Create Party</Button>
+                <Button type="button" className='create-party-btn' onClick={navToPartyWait}>Create Party</Button>
                 { selectAlert && <div className='select-alert'>Please select at least one collection</div> }
             </div>
         </React.Fragment>

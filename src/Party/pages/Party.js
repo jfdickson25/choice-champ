@@ -7,8 +7,6 @@ import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
 
 import { AuthContext } from '../../shared/context/auth-context';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import './Party.css';  
 
@@ -27,9 +25,7 @@ const Party = ({ socket }) => {
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
-
-    const notify = () => toast.success(`New member! Votes are reset`);
-
+  
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
         auth.showFooterHandler(false);
@@ -74,12 +70,9 @@ const Party = ({ socket }) => {
             setSecretMode(body.party.secretMode);
             setCollectionItems(items);
             collectionPointRef.current = items;
-
+          
             // Join the party room. This will restrict the same movie getting voted in different parties
             socket.emit('join-room', code);
-
-            // Emit event to clear the votes for the party
-            socket.emit('clear-remote-votes', code);
         });
     }, []);
 
@@ -133,26 +126,6 @@ const Party = ({ socket }) => {
         socket.on('party-deleted', () => {
             // Redirect to the party page
             history.push('/party');
-        });
-
-        socket.on('clear-votes', () => {
-            let itemsReset = false;
-            // Reset votes and voted for all filtered items
-            collectionPointRef.current.forEach(item => {
-                // Only set to true if there is a vote or if the user has voted
-                if(item.votes > 0 || item.voted) {
-                    itemsReset = true;
-                }
-                
-                item.votes = 0;
-                item.voted = false;
-            });
-
-            setCollectionItems([...collectionPointRef.current]);
-
-            if(itemsReset) {
-                notify();
-            }
         });
 
         return () => {
@@ -277,37 +250,26 @@ const Party = ({ socket }) => {
 
   return (
     <div className='content'>
-        <ToastContainer
-            position="top-center"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            draggable
-            theme="dark"
-            style={{ textAlign: "center" }}
-        />
         { collectionItems.length === 1 && ( <Confetti /> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
-        <h2 className='title'>Code: {code}</h2>
+        { userType === 'owner' ? (
+            <div className='votes-needed-section'>
+                <p className='votes-needed-title'>Votes Needed</p>
+                <input 
+                    type='number'
+                    className='votes-needed-input'
+                    value={votesNeeded}
+                    min={1}
+                    max={10}
+                    onChange={e => {
+                        setVotesNeeded(e.target.value);
+                        votesNeededRef.current = e.target.value;
+                    }}
+                />
+            </div>)
+            : <div className='guest-banner'></div>
+        }
         { userType === 'owner' && (<img src={dice} className="edit" alt='Dice' onClick={selectRandom} />) }
-            { userType === 'owner' && (
-                <div className='votes-needed-section'>
-                    <p className='votes-needed-title'>Votes Needed</p>
-                    <input 
-                        type='number'
-                        className='votes-needed-input'
-                        value={votesNeeded}
-                        min={1}
-                        max={10}
-                        onChange={e => {
-                            setVotesNeeded(e.target.value);
-                            votesNeededRef.current = e.target.value;
-                        }}
-                    />
-                </div>
-            )}
         <div className={mediaType === 'game' ? 'collection-content-game' : 'collection-content-other' }>
             { 
                 collectionItems.length === 1 ? (
