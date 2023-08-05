@@ -10,14 +10,17 @@ import back from '../../shared/assets/img/back.svg';
 import './PartyWait.css';
 
 const PartyWait = ({ socket }) => {
+    // Bring in the authentication context to decide whether to show the footer or not
     const auth = useContext(AuthContext);
+    // History allows us to redirect the user to another page
     let history = useHistory();
   
     // Get the party code and user type from the url
     const { code, userType } = useParams();
 
+    // Variable to store the number of members in the party
     const [memberCount, setMemberCount] = useState(0);
-
+    // Using useRef to store the memberCount so that it doesn't get reset on re-render
     const memberCountRef = useRef(memberCount);
 
     // Log the collections passed from the previous page using useEffect
@@ -33,6 +36,8 @@ const PartyWait = ({ socket }) => {
         })
         .then(response => response.json())
         .then(body => {
+            // Increase the member count by 1 for this user the other users will
+            // be updated with the member-increment socket event
             let memberCount = body.party.memberCount + 1;
 
             memberCountRef.current = memberCount;
@@ -41,10 +46,11 @@ const PartyWait = ({ socket }) => {
             // Join the party room. This will restrict the same movie getting voted in different parties
             socket.emit('join-room', `waiting${code}`);
 
-            // Emit event to clear the votes for the party
+            // Emit event to increment the member count for the other users
             socket.emit('member-remote-increment', `waiting${code}`);
 
             // Make a post request to the backend to add the user to the party
+            // This is because users who join will get the member count from the backend fetch request
             fetch(`https://choice-champ-backend.glitch.me/party/add-member/${code}`,
             {
                 method: 'POST',
@@ -60,6 +66,9 @@ const PartyWait = ({ socket }) => {
 
     useEffect(() => {
         socket.on('member-increment', () => {
+            // Q: Why do we set both the memberCountRef and the memberCount?
+            // A: Because if we only set the memberCountRef, the memberCount will not be updated
+            // and the memberCount will be 0 on re-render
             memberCountRef.current += 1;
             setMemberCount(memberCountRef.current);
         });
@@ -78,17 +87,24 @@ const PartyWait = ({ socket }) => {
         });
 
         socket.on('party-deleted', () => {
+            socket.emit('leave-room', `waiting${code}`);
             // Redirect to the party page
             history.push('/party');
         });
 
         return () => {
+            // Q: Why do we remove the socket events?
+            // A: Because if we don't remove the socket events, they will be added again
+            // on re-render and we will have multiple socket events for the same event
             socket.off('member-increment');
             socket.off('member-decrement');
             socket.off('start-party');
             socket.off('party-deleted');
         }
 
+        // Q: Why do we add socket to the dependency array?
+        // A: Because if we don't add socket to the dependency array, the socket events
+        // will not be added again on re-render
     }, [socket]);
 
     const routeToParty = () => {
@@ -105,7 +121,7 @@ const PartyWait = ({ socket }) => {
 
     const navBack = async () => {
         if(userType === 'owner') {
-            // Make a fetch request to the backend to get all the collectionItems for the party
+            // Make a fetch request to the backend delete the party
             fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
             {
                 method: 'DELETE',
@@ -114,13 +130,16 @@ const PartyWait = ({ socket }) => {
                 }
             })
             .then(response => {
+                // Emit event to delete the party for the other users so they can be redirected to the
+                // party page
                 socket.emit('party-remote-deleted', `waiting${code}`);
-                // Redirect to the home page
+                socket.emit('leave-room', `waiting${code}`);
                 history.push('/party');
             });
         }
         else {
             socket.emit('leave-room', `waiting${code}`);
+            // For guests if they leave decrement the member count for the other users
             socket.emit('member-remote-decrement', `waiting${code}`);
 
             // Make a post request to the backend to remove the user from the party

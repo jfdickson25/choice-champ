@@ -26,3 +26,36 @@
     margin-top: 50px;
     width: 50%;
 }
+
+@media only screen and (min-width: 500px) {
+    #waiting-img {
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    #waiting-img {
+        width: 50%;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    #waiting-img {
+        width: 40%;
+    }
+
+    .party-btn {
+        width: 70%;
+        grid-column: 1/18;
+    }
+}
+
+@media only screen and (min-width: 1600px) {
+    #waiting-img {
+        width: 30%;
+    }
+
+    .party-wait-start-btn {
+        width: 20%;
+    }
+}

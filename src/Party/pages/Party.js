@@ -112,6 +112,8 @@ const Party = ({ socket }) => {
         });
 
         socket.on('random-selected', (id) => {
+            socket.emit('leave-room', code);
+
             // Find the item with the id and set it to the state
             const item = collectionPointRef.current.find(item => item.id === id);
 
@@ -124,6 +126,7 @@ const Party = ({ socket }) => {
         });
 
         socket.on('party-deleted', () => {
+            socket.emit('leave-room', code);
             // Redirect to the party page
             history.push('/party');
         });
@@ -207,12 +210,14 @@ const Party = ({ socket }) => {
                 }
             })
             .then(response => {
+                socket.emit('leave-room', code);
                 socket.emit('party-remote-deleted', code);
                 // Redirect to the home page
                 history.push('/party');
             });
         }
         else {
+            socket.emit('leave-room', code);
             history.push('/party');
         }
     }
