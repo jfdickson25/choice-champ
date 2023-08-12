@@ -7,14 +7,18 @@ import { useSwipeable } from 'react-swipeable';
 
 import './Categories.css';
 
+// DONE
 const CollectionsHome = props => {
     const auth = useContext(AuthContext);
     let history = useHistory();
 
     const handlers = useSwipeable({
         onSwipedLeft: () => history.push('/party'),
+        // preventDefaultTouchmoveEvent prevents the default touchmove event from firing. This is useful if you 
+        // want to prevent scrolling of the page while swiping.
         preventDefaultTouchmoveEvent: true,
         trackMouse: true,
+        // The delta property is the minimum distance in pixels before a swipe is detected.
         delta: 100
     });
 

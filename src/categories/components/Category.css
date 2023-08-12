@@ -1,12 +1,3 @@
-.category-overlay::after {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    font-size: 18pt;
-    font-weight: bold;
-    top: 40%;
-}
-
 .category {
     grid-column: 7/15;
     width: 100%;
@@ -32,6 +23,7 @@
 
   .category-img {
     width: 50%;
+    margin-bottom: 10px;
   }
 
 @media only screen and (min-width: 1000px) {
