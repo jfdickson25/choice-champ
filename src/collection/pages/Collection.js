@@ -3,6 +3,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import { useSwipeable } from 'react-swipeable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDownAZ, faClock } from '@fortawesome/free-solid-svg-icons';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -10,9 +12,6 @@ import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
 
 import './Collection.css';
-
-// TODO (Nice to have): Could be nice to add extra filtering of movies in a collection
-// such as alphabetically and by date added
 
 const Collection = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -31,6 +30,7 @@ const Collection = ({ socket }) => {
     const [shareCode, setShareCode] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [collectionName, setCollectionName] = useState(useParams().name);
+    const [showAlphabetical, setShowAlphabetical] = useState(false);
 
     const itemsRef = useRef(items);
 
@@ -225,8 +225,10 @@ const Collection = ({ socket }) => {
 
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <div className='share-code'>share code: {shareCode}</div>
-                <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
                 <img src={add} alt='Add icon' className='add' onClick={navAdd} />
+                <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
+                <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize' : ''} />
+                <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {setShowAlphabetical(false)}} className={!showAlphabetical ? 'active-categorize' : ''} />
                 {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
                         (
@@ -243,35 +245,67 @@ const Collection = ({ socket }) => {
                                     filteredItems.length === 0 && <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p>
                                 }
                                 {
-                                    [...filteredItems].reverse().map(item => (
-                                        // Only show if the item is not watched
-                                        !item.watched ?
-                                            (<div className='item-section' key={item.itemId} >
-                                                <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                                                { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
-                                            </div>
-                                            )
-                                        : null
-                                    ))
+                                    // Logic to check if we should show the items in alphabetical order or not
+                                    showAlphabetical ? (
+                                        [...filteredItems].sort((a, b) => a.title.localeCompare(b.title)).map(item => (
+                                           // Only show if the item is not watched
+                                           !item.watched ?
+                                                (<div className='item-section' key={item.itemId} >
+                                                    <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
+                                                </div>
+                                                )
+                                            :   null
+                                        )) 
+                                    ) : (
+                                        [...filteredItems].reverse().map(item => (
+                                            // Only show if the item is not watched
+                                            !item.watched ?
+                                                (<div className='item-section' key={item.itemId} >
+                                                    <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
+                                                </div>
+                                                )
+                                            :   null
+                                        ))
+                                    )
                                 }
                                 { 
                                     // Add a divider if there are watched items
                                     filteredItems.filter(item => item.watched).length > 0 ? <div className={ collectionType === 'game' ? 'divider-game' : 'divider-other'}></div> : null 
                                 }
                                 {
-                                    [...filteredItems].reverse().map(item => (
-                                        // Only show if the item is watched
-                                        item.watched ?
-                                            (
-                                                <div className='item-section' key={item.itemId} >
-                                                    <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
-                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
-                                                </div>
-                                            )
-                                        : null
-                                    ))
+                                    // Logic to check if we should show the items in alphabetical order or not
+                                    showAlphabetical ? (
+                                        [...filteredItems].sort((a, b) => a.title.localeCompare(b.title)).map(item => (
+                                                // Only show if the item is watched
+                                                item.watched ?
+                                                (
+                                                    <div className='item-section' key={item.itemId} >
+                                                        <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                        { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                    </div>
+                                                )
+                                            : null
+                                        ))
+                                    ) : (
+
+                                        [...filteredItems].reverse().map(item => (
+                                            // Only show if the item is watched
+                                            item.watched ?
+                                                (
+                                                    <div className='item-section' key={item.itemId} >
+                                                        <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                        { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
+                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                    </div>
+                                                )
+                                            : null
+                                        ))
+                                    )
                                 }
                             </div>
                         )

@@ -39,6 +39,23 @@
     padding-left: 40px;
     width: 80%;
     color: white;
+    margin-top: 30px;
+}
+
+svg.svg-inline--fa.fa-clock.fa-xl {
+    grid-column: 10/12;
+    margin-top: 20px;
+}
+
+svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
+    grid-column: 7/9;
+    margin-top: 20px;
+}
+
+.active-categorize {
+    color: #FCB016;
+    border-bottom: 2px solid;
+    padding-bottom: 2px;
 }
 
 .item-section {
