@@ -142,7 +142,9 @@ const CreateParty = props => {
                 <label className='radio-btn-label' htmlFor="tv">TV Shows</label>
                 <input className='radio-btn' type='radio' name='mediaType' id='tv' value='tv' onChange={mediaTypeHandler} checked={mediaType === 'tv'} />
                 <label className='radio-btn-label' htmlFor="games">Video Games</label>
-                <input className='radio-btn' type='radio' name='mediaType' it='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
+                <input className='radio-btn' type='radio' name='mediaType' id='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
+                <label className='radio-btn-label' htmlFor="games">Board Games</label>
+                <input className='radio-btn' type='radio' name='mediaType' id='board' value='board' onChange={mediaTypeHandler} checked={mediaType === 'board'} />
                 <div className='create-party-collections'>
                     
                 { isLoading ? <Loading type='beat' className='list-loading-create' size={20} /> : 

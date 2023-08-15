@@ -208,6 +208,10 @@ const Settings = props => {
                             <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' />
                             <a href="https://www.flaticon.com/free-icons/save" title="save icons">Save icons created by designhub - Flaticon</a>
                         </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/pawn.png?v=1691967359871' />
+                            <a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by dr.iconsart - Flaticon</a>
+                        </div>
                     </div>
                 </div>
             </Dialog>

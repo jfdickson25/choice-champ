@@ -47,6 +47,8 @@ const Collections = props => {
             setTitle('TV Collections')
         } else if(collectionsType === 'game') {
             setTitle('Game Collections')
+        } else if(collectionsType === 'board') {
+            setTitle('Board Game Collections')
         }
         
         // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response

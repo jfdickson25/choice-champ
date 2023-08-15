@@ -33,6 +33,7 @@ const CollectionsHome = props => {
                     <Category id="movie" title="MOVIES" />
                     <Category id="tv" title="TV" />
                     <Category id="game" title="GAMES" />
+                    <Category id="board" title="BOARD" />
                 </div>
             </div>
         </React.Fragment>
