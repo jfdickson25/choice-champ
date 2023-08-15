@@ -1,19 +1,37 @@
+#choice-champ-header {
+    grid-column: 3/16;
+    width: 100%;
+}
+
 #categories {
-    grid-column: 1/18;
+    grid-column: 1/19;
     width: 100%;
     display: grid;
-    align-items: center;
-    justify-content: center;
-    grid-template-columns: repeat(20, 1fr);
-    text-align: center;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 20px;
+    column-gap: 20px;
+    padding: 20px;
+    padding-top: 0px;
+    justify-items: center;
     margin-top: 0;
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 800px) {
     #categories {
         grid-column: 4/15;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         column-gap: 20px;
-        margin-top: 20vh;
+    }
+
+    #choice-champ-header {
+        grid-column: 6/13;
+        width: 100%;
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    #choice-champ-header {
+        grid-column: 7/12;
+        width: 100%;
     }
 }
