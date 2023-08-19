@@ -212,6 +212,8 @@ const Settings = props => {
                             <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/pawn.png?v=1691967359871' />
                             <a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by dr.iconsart - Flaticon</a>
                         </div>
+                        <a href="https://www.flaticon.com/free-icons/back" title="back icons">Back icons created by Arkinasi - Flaticon</a>
+                        <a href="https://www.flaticon.com/free-icons/back" title="back icons">Back icons created by Arkinasi - Flaticon</a>
                     </div>
                 </div>
             </Dialog>

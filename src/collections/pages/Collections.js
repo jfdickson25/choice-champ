@@ -51,7 +51,7 @@ const Collections = props => {
             setTitle('Board Game Collections')
         }
         
-        // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
+        // Make a fetch post request to collections with the userId and setCollections to the response
         fetch(`https://choice-champ-backend.glitch.me/collections/${collectionsType}/${auth.userId}`, {
             method: 'GET',
             headers: {
@@ -71,8 +71,8 @@ const Collections = props => {
      const isEditHandler = () => isEdit ? setIsEdit(false) : setIsEdit(true);
 
      const handleRemoveCollection = (id) => {
-         // Send a fetch delete request to localhost:5000/collections with the userId and the collection id
-            fetch(`https://choice-champ-backend.glitch.me/collections/${auth.userId}/${id}`, {
+            // Send a fetch delete request to collections with the userId and the collection id
+            fetch(`https://choice-champ-backend.glitch.me/collections/${collectionsType}/${auth.userId}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -107,6 +107,7 @@ const Collections = props => {
         setJoinError('');
         setOpen(false);
     }
+
     const changeCollectionHandler = (event) => {
         const value = event.target.value;
 
@@ -127,7 +128,7 @@ const Collections = props => {
             return;
         }
 
-        // Send a fetch post request to localhost:5000/collections with the userId and the new collection name
+        // Send a fetch post request to collections with the userId and the new collection name
         fetch(`https://choice-champ-backend.glitch.me/collections/${auth.userId}`, {
             method: 'POST',
             headers: {
@@ -160,7 +161,7 @@ const Collections = props => {
             return;
         }
 
-        // Send a fetch post request to localhost:5000/collections with the userId and the new collection name
+        // Send a fetch post request to collections with the userId and the new collection name
         fetch(`https://choice-champ-backend.glitch.me/collections/join/${inputJoinRef.current.value}/${collectionsType}/${auth.userId}`, {
             method: 'GET',
             headers: {
@@ -196,6 +197,62 @@ const Collections = props => {
         history.push('/collections');
     }
 
+    const moveLeft = (id) => {
+        // Find the collection with the id parameter
+        const collection = collections.find(collection => collection._id === id);
+        // Move the collection to the left in the collections array
+        const index = collections.indexOf(collection);
+        if(index === 0) {
+            return;
+        }
+        const newCollections = [...collections];
+        newCollections.splice(index, 1);
+        newCollections.splice(index - 1, 0, collection);
+        setCollections(newCollections);
+
+        // Send a fetch post request with the userId and the collection id to move the collection left
+        fetch(`https://choice-champ-backend.glitch.me/collections/moveLeft/${collectionsType}/${auth.userId}/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(data => {
+            setCollections(newCollections);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    const moveRight = (id) => {
+        // Find the collection with the id parameter
+        const collection = collections.find(collection => collection._id === id);
+        // Move the collection to the right in the collections array
+        const index = collections.indexOf(collection);
+        if(index === collections.length - 1) {
+            return;
+        }
+        const newCollections = [...collections];
+        newCollections.splice(index, 1);
+        newCollections.splice(index + 1, 0, collection);
+        setCollections(newCollections);
+
+        // Send a fetch post with the userId and collection id to move the collection to the right
+        fetch(`https://choice-champ-backend.glitch.me/collections/moveRight/${collectionsType}/${auth.userId}/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(data => {
+            setCollections(newCollections);
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
     return (
         <React.Fragment>
             <div className='content' {...handlers}>
@@ -208,13 +265,15 @@ const Collections = props => {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
                     (<div className='collections-content'>
                         {
-                            collections.length > 0 ? collections.map(collection => (
+                            collections.length > 0 ? collections.map((collection, index) => (
                                 isEdit ? (
                                     <div className='collections-item' key={collection._id}>
-                                        <img className='item-action' alt="Remove Icon" onClick={() => { handleRemoveCollection(collection._id) }} src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433' />
+                                        <img className='remove' alt="Remove Icon" onClick={() => { handleRemoveCollection(collection._id) }} src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433' />
+                                        { index !== 0 && <img className='left' onClick={() => { moveLeft(collection._id) }} src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/left.png?v=1692161740511' /> }
                                         <div className="collection-text">
                                             {collection.name}
                                         </div>
+                                        { index !== collections.length - 1 && <img className='right' onClick={ () => { moveRight(collection._id) } } src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/right.png?v=1692161745669' /> }
                                     </div>
                                 ) : (
                                     <Link to={`/collections/${collectionsType}/${collection.name}/${collection._id}`} className='collections-item' key={collection._id} >

@@ -89,7 +89,7 @@ const Collection = ({ socket }) => {
             socket.off('watched-item');
             socket.off('add-items');
         }
-    }, [socket]);
+    }, []);
 
     /************************************************************
      * Logic for setting edit state and removing items

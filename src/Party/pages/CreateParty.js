@@ -12,8 +12,6 @@ import Button from '../../shared/components/FormElements/Button';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 
-// TODO: Update to use radio button to select media type. Based on current media type fetch the collections
-
 const CreateParty = props => {
     const auth = useContext(AuthContext);
 
@@ -27,8 +25,7 @@ const CreateParty = props => {
 
     useEffect(() => {
         auth.showFooterHandler(true);
-        // TODO: Update to only search for collection after radio button is selected
-        // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
+        // Make a fetch post request to collections with the userId and setCollections to the response
         fetch(`https://choice-champ-backend.glitch.me/collections/movie/${auth.userId}`, {
             method: 'GET',
             headers: {
@@ -103,7 +100,7 @@ const CreateParty = props => {
         setIsLoading(true);
         setMediaType(event.target.value);
 
-        // Make a fetch post request to localhost:5000/collections with the userId and setCollections to the response
+        // Make a fetch post request to collections with the userId and setCollections to the response
         fetch(`https://choice-champ-backend.glitch.me/collections/${event.target.value}/${auth.userId}`, {
             method: 'GET',
             headers: {

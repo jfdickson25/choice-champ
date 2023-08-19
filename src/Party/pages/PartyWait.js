@@ -101,11 +101,7 @@ const PartyWait = ({ socket }) => {
             socket.off('start-party');
             socket.off('party-deleted');
         }
-
-        // Q: Why do we add socket to the dependency array?
-        // A: Because if we don't add socket to the dependency array, the socket events
-        // will not be added again on re-render
-    }, [socket]);
+    }, []);
 
     const routeToParty = () => {
         // Emit event to start the party and route others to the party page

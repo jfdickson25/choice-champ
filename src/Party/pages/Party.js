@@ -139,7 +139,7 @@ const Party = ({ socket }) => {
             socket.off('party-deleted');
             socket.off('clear-votes');
         }
-    }, [socket]);
+    }, []);
 
     const changeCount = (id) => {
         // Find the item with the id and increment vote by one and save it to the state
