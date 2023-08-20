@@ -279,15 +279,10 @@ const Party = ({ socket }) => {
             { 
                 collectionItems.length === 1 ? (
                     <div className='winner'>
-                        <div
+                        <img
                             className={ mediaType === 'game' ? 'winner-img-game' :'winner-img' }
-                            style={{
-                                backgroundImage: `url(${collectionItems[0].poster})`, 
-                                backgroundRepeat: 'no-repeat', 
-                                backgroundSize: 'cover'
-                            }}
-                        >
-                        </div>
+                            src={collectionItems[0].poster}
+                        />
                         <p className='winner-title'>{collectionItems[0].title}</p>
                         <p className='winner-banner'>
                             CHOICE CHAMPION!
@@ -305,28 +300,14 @@ const Party = ({ socket }) => {
                     </div>
                 ) : [...collectionItems].reverse().map(item => (
                     <div className='item-section' key={item.id} >
-                        <div 
-                        className='item-img' 
-                        style={
-                                item.voted ?
-                                {
-                                    backgroundImage: `url(${item.poster})`, 
-                                    backgroundRepeat: 'no-repeat', 
-                                    backgroundSize: 'cover',
-                                    border: '5px solid #FCB016'
-                                }
-                                :
-                                {
-                                    backgroundImage: `url(${item.poster})`, 
-                                    backgroundRepeat: 'no-repeat', 
-                                    backgroundSize: 'cover'
-                                }
-                            }
-                        onClick={changeCount.bind(this, item.id)}
-                        >
-                        <p>{item.title}</p>
+                        <img 
+                            className='item-img' 
+                            src={item.poster} 
+                            onClick={changeCount.bind(this, item.id)}
+                            style={item.voted ? { border: '5px solid #FCB016' } : null}
+                        />
+                        {(mediaType === 'game' || mediaType === 'board') && <p style={item.voted ? { borderLeft: '5px solid #FCB016', borderRight: '5px solid #FCB016', borderBottom: '5px solid #FCB016', borderRadius: '0px 0px 9px 9px' } : null}>{item.title}</p>}
                         { (item.votes > 0 && !secretMode) && <div className='item-votes'>{item.votes}</div> }
-                        </div>
                     </div>
                 ))
             }

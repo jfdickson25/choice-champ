@@ -251,7 +251,7 @@ const Collection = ({ socket }) => {
                                            // Only show if the item is not watched
                                            !item.watched ?
                                                 (<div className='item-section' key={item.itemId} >
-                                                    <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                    <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
@@ -263,7 +263,7 @@ const Collection = ({ socket }) => {
                                             // Only show if the item is not watched
                                             !item.watched ?
                                                 (<div className='item-section' key={item.itemId} >
-                                                    <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                    <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
@@ -284,7 +284,7 @@ const Collection = ({ socket }) => {
                                                 item.watched ?
                                                 (
                                                     <div className='item-section' key={item.itemId} >
-                                                        <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                        <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                         { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                     </div>
@@ -298,7 +298,7 @@ const Collection = ({ socket }) => {
                                             item.watched ?
                                                 (
                                                     <div className='item-section' key={item.itemId} >
-                                                        <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}><p>{item.title}</p></div>
+                                                        <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                         { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                     </div>

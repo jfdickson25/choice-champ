@@ -70,11 +70,12 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
 }
 
 .item-img {
-    height: 30vh;
+    height: 32vh;
     width: 100%;
     grid-column: 1/4;
     display: grid;
     align-items: end;
+    border-radius: 10px;
 }
 
 .item-section p {
@@ -89,6 +90,9 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     margin: 0;
     padding: 5px;
     background-color: rgba(17, 17, 17, 0.877);
+    border-radius: 0px 0px 9px 9px;
+    position: absolute;
+    bottom: 0;
 }
 
 .item-action-watched {
