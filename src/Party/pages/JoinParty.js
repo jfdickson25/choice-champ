@@ -8,8 +8,6 @@ import back from '../../shared/assets/img/back.svg';
 
 import './JoinParty.css';
 
-// TODO: Add validation that the party exists otherwise display an error message
-
 const JoinParty = (props) => {
     const auth = useContext(AuthContext);
 

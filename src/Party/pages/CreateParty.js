@@ -68,8 +68,6 @@ const CreateParty = props => {
 
         const collectionIds = selectedCollections.map(collection => collection._id);
 
-        // TODO: Update to send the selected collections to the backend to create party with join code and then route to the party page
-        // make a post request to the backend to create the party with the join code and then route to the party page
         fetch('https://choice-champ-backend.glitch.me/party', {
             method: 'POST',
             headers: {

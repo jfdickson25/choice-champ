@@ -98,7 +98,6 @@ function App() {
   }, []);
 
   let routes;
-  // TODO: Add logic back in once we implement authentication
   if(isLoggedIn) {
     routes = (
       // Using Suspense inside a switch caused issues with redirecting. Solution found in this stack overflow article:
