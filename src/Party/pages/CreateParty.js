@@ -126,10 +126,13 @@ const CreateParty = props => {
             <div className='content' {...handlers}>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>Create Party</h2>
+                <div className='create-divider'></div>
                 <p className='option-text'>Secret Mode</p>
                 <img className='option-img' src={ secretMode ? check : circle } onClick={() => { setSecretMode(!secretMode) }} />
+                <p className='option-subtext'>Party members will not see each other's votes</p>                
                 <p className='option-text'>Include Watched</p>
                 <img className='option-img' src={ includeWatched ? check : circle } onClick={() => { setIncludeWatched(!includeWatched) }} />
+                <p className='option-subtext'>Include items that have been marked as watched/played</p>  
                 <div className='create-divider'></div>
 
                 <label className='radio-btn-label' htmlFor="movie">Movies</label>
@@ -140,6 +143,8 @@ const CreateParty = props => {
                 <input className='radio-btn' type='radio' name='mediaType' id='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
                 <label className='radio-btn-label' htmlFor="games">Board Games</label>
                 <input className='radio-btn' type='radio' name='mediaType' id='board' value='board' onChange={mediaTypeHandler} checked={mediaType === 'board'} />
+                
+                <p className='option-subtext'>Choose collections to include in party</p>   
                 <div className='create-party-collections'>
                     
                 { isLoading ? <Loading type='beat' className='list-loading-create' size={20} /> : 

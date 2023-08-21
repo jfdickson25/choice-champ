@@ -87,6 +87,15 @@
     font-weight: bold;
 }
 
+.option-subtext {
+    grid-column: 4/14;
+    text-align: center;
+    margin: 0;
+    font-size: 9pt;
+    color: grey;
+    margin-bottom: 10px;
+}
+
 .option-img {
     grid-column: 12/14;
     width: 70%;
@@ -117,6 +126,11 @@
 
     .option-text {
         grid-column: 8/10;
+    }
+
+    .option-subtext {
+        grid-column: 8/10;
+        font-size: 9pt;
     }
     
     .option-img {

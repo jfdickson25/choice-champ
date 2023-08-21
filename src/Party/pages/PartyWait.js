@@ -6,6 +6,7 @@ import Loading from '../../shared/components/Loading';
 import Button from '../../shared/components/FormElements/Button';
 
 import back from '../../shared/assets/img/back.svg';
+import dice from '../../shared/assets/img/dices.png';
 
 import './PartyWait.css';
 
@@ -167,9 +168,17 @@ const PartyWait = ({ socket }) => {
             Party Count <span className='party-wait-count-num'>{memberCount}</span>
         </div> 
         { userType === 'owner' &&
-            <Button className='party-wait-start-btn' onClick={routeToParty}>
-                Start Party
-            </Button>
+            <React.Fragment>
+                <Button className='party-wait-start-btn' onClick={routeToParty}>
+                    Start Party
+                </Button>
+                <div id="tip-section">
+                    <img src={dice} alt="Dice symbol" className="party-wait-dice" />
+                    <p className='party-wait-start-text'>
+                        TIP: Select this icon for a random collection item to be proclaimed the winner
+                    </p>
+                </div>
+            </React.Fragment>
         }
     </div>
   )

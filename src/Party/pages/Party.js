@@ -20,11 +20,19 @@ const Party = ({ socket }) => {
     const [mediaType, setMediaType] = useState('movie');
     const [votesNeeded, setVotesNeeded] = useState(1);
     const [secretMode, setSecretMode] = useState(false);
-
+    const [ready, setReady] = useState(false);
+    // State to track the number of users that have clicked the voting finished button
+    const [usersReadyCount, setUsersReadyCount] = useState(0);
+    // State to track the total number of users in the party, this is grabbed from the backend
+    // party object. Users may leave, so if anyone reloads the page, the totalUsers will be reset to
+    // an incorrect value.
+    const [totalUsers, setTotalUsers] = useState(0);
     const [runnerUps, setRunnerUps] = useState([]);
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
+    const usersReadyCountRef = useRef(usersReadyCount);
+    const totalUsersRef = useRef(totalUsers);
   
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
@@ -68,6 +76,8 @@ const Party = ({ socket }) => {
 
             setMediaType(body.party.mediaType);
             setSecretMode(body.party.secretMode);
+            setTotalUsers(body.party.memberCount);
+            totalUsersRef.current = body.party.memberCount;
             setCollectionItems(items);
             collectionPointRef.current = items;
           
@@ -89,6 +99,11 @@ const Party = ({ socket }) => {
             const item = collectionPointRef.current.find(item => item.id == id);
             item.votes -= 1;
             setCollectionItems([...collectionPointRef.current]);
+        });
+
+        socket.on('votes-needed', (votesNeeded) => {
+            setVotesNeeded(votesNeeded);
+            votesNeededRef.current = votesNeeded;
         });
 
         socket.on('vote-selected', (votesNeeded) => {
@@ -125,6 +140,54 @@ const Party = ({ socket }) => {
             collectionPointRef.current = [item];
         });
 
+        socket.on('user-ready', () => {
+            usersReadyCountRef.current += 1;
+            setUsersReadyCount(usersReadyCountRef.current);
+
+            // If the usersReadyCount is equal to the totalUsers then filter all the items that have
+            // less votes than the votesNeeded. Reset the votes and voted for all filtered items
+            if(usersReadyCountRef.current == totalUsersRef.current) {
+                // Filter out the items that have been voted for
+                const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeededRef.current);
+
+                // Check to make sure there are items left in the collection
+                if (filteredItems.length === 0) {
+                    setReady(false);
+                    return;
+                } else if(filteredItems.length === 1) {
+                    // Set runners up to the remaining items
+                    const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
+                    setRunnerUps(runnerUps);
+                } else {
+                    // Reset votes and voted for all filtered items
+                    filteredItems.forEach(item => {
+                        item.votes = 0;
+                        item.voted = false;
+                    });
+
+                    setUsersReadyCount(0);
+                    usersReadyCountRef.current = 0;
+                }
+
+                // No matter what set the collection items to the filtered items
+                setCollectionItems(filteredItems);
+                collectionPointRef.current = filteredItems;
+
+                // Set ready to false whether there is one or more items left in the collection
+                setReady(false);
+            }
+        });
+
+        socket.on('user-not-ready', () => {
+            usersReadyCountRef.current -= 1;
+            setUsersReadyCount(usersReadyCountRef.current);
+        });
+
+        socket.on('party-member-left', () => {
+            setTotalUsers(totalUsersRef.current - 1);
+            totalUsersRef.current -= 1;
+        });
+
         socket.on('party-deleted', () => {
             socket.emit('leave-room', code);
             // Redirect to the party page
@@ -134,10 +197,14 @@ const Party = ({ socket }) => {
         return () => {
             socket.off('vote-increment');
             socket.off('vote-decrement');
+            socket.off('votes-needed');
             socket.off('vote-selected');
             socket.off('random-selected');
             socket.off('party-deleted');
             socket.off('clear-votes');
+            socket.off('user-ready');
+            socket.off('user-not-ready');
+            socket.off('party-member-left');
         }
     }, []);
 
@@ -160,43 +227,67 @@ const Party = ({ socket }) => {
         }
     }
 
-    const filterVoted = () => {
-        // Filter out the items that have been voted for
-        const filteredItems = collectionItems.filter(item => item.votes >= votesNeededRef.current);
+    const userReady = () => {
+        // Set the user to ready
+        setReady(true);
+        // Increase usersReadyCount by one
+        usersReadyCountRef.current += 1;
+        setUsersReadyCount(usersReadyCountRef.current)
 
-        if(filteredItems.length === 1) {
-            // Set runners up to the remaining items
-            const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
-            setRunnerUps(runnerUps);
+        // If the usersReadyCount is equal to the totalUsers then filter all the items that have
+        // less votes than the votesNeeded. Reset the votes and voted for all filtered items
+        if(usersReadyCountRef.current == totalUsersRef.current) {
+            // Filter out the items that have been voted for
+            const filteredItems = collectionItems.filter(item => item.votes >= votesNeededRef.current);
+
+            // Check to make sure there are items left in the collection
+            if (filteredItems.length === 0) {
+                setReady(false);
+                return;
+            } else if(filteredItems.length === 1) {
+                // Set runners up to the remaining items
+                const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
+                setRunnerUps(runnerUps);
+
+                // Make a fetch request to delete the party from the database
+                fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            } else {
+                // Reset votes and voted for all filtered items
+                filteredItems.forEach(item => {
+                    item.votes = 0;
+                    item.voted = false;
+                });
+
+                setUsersReadyCount(0);
+                usersReadyCountRef.current = 0;
+            }
+
+            setCollectionItems(filteredItems);
+            collectionPointRef.current = filteredItems;
+
+            setReady(false);
         }
 
-        // Check to make sure there are items left in the collection
-        if (filteredItems.length === 0) {
-            return;
-        }
+        // Emit event to the server that the user is ready
+        socket.emit('user-ready-remote', code);
+    }
 
-        // Reset votes and voted for all filtered items
-        filteredItems.forEach(item => {
-            item.votes = 0;
-            item.voted = false;
-        });
+    const userNotReady = () => {
+        // Set the user to not ready
+        setReady(false);
 
-        setCollectionItems(filteredItems);
-        collectionPointRef.current = filteredItems;
+        // Decrease usersReadyCount by one
+        usersReadyCountRef.current -= 1;
+        setUsersReadyCount(usersReadyCountRef.current);
 
-        // Check if there is only one item left in the collection and delete party from the database
-        if (filteredItems.length === 1) {
-            // Make a fetch request to the backend to get all the collectionItems for the party
-            fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
-            {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-        }
-
-        socket.emit('vote-remote-selected', votesNeededRef.current, code);
+        // Emit event to the server that the user is not ready
+        socket.emit('user-not-ready-remote', code);
     }
 
     const navToParty = () => {
@@ -217,6 +308,7 @@ const Party = ({ socket }) => {
             });
         }
         else {
+            socket.emit('user-leave-party', code);
             socket.emit('leave-room', code);
             history.push('/party');
         }
@@ -255,6 +347,7 @@ const Party = ({ socket }) => {
 
   return (
     <div className='content'>
+        { ready && <div className='ready-overlay' onClick={userNotReady}></div> }
         { collectionItems.length === 1 && ( <Confetti /> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
         { userType === 'owner' ? (
@@ -265,10 +358,15 @@ const Party = ({ socket }) => {
                     className='votes-needed-input'
                     value={votesNeeded}
                     min={1}
-                    max={10}
                     onChange={e => {
                         setVotesNeeded(e.target.value);
                         votesNeededRef.current = e.target.value;
+                        // Check if e.target.value is a number
+                        if (isNaN(e.target.value) || e.target.value === '') {
+                            return;
+                        } else {
+                            socket.emit('votes-needed-remote', e.target.value, code);
+                        }
                     }}
                 />
             </div>)
@@ -312,7 +410,7 @@ const Party = ({ socket }) => {
                 ))
             }
         </div>
-        { (userType === 'owner' && collectionItems.length > 1) && <Button className='filter-collection-btn' onClick={filterVoted}>Filter Selected</Button> }
+        { (collectionItems.length > 1) && ( !ready ? <Button className='finish-voting-btn' onClick={userReady}>Finish Voting</Button> : <Button className='ready-btn' onClick={userNotReady}>Ready!</Button> ) }
     </div>
   )
 }
