@@ -175,7 +175,7 @@ const PartyWait = ({ socket }) => {
                 <div id="tip-section">
                     <img src={dice} alt="Dice symbol" className="party-wait-dice" />
                     <p className='party-wait-start-text'>
-                        TIP: Select this icon for a random collection item to be proclaimed the winner
+                        TIP: Select this icon for a random item to be chosen as the winner
                     </p>
                 </div>
             </React.Fragment>
