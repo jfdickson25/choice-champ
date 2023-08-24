@@ -5,6 +5,8 @@ import Button from '../../shared/components/FormElements/Button';
 import Confetti from 'react-confetti';
 import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
+import Loading from '../../shared/components/Loading';
+import Shake from 'react-reveal/Shake';
 
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -28,6 +30,9 @@ const Party = ({ socket }) => {
     // an incorrect value.
     const [totalUsers, setTotalUsers] = useState(0);
     const [runnerUps, setRunnerUps] = useState([]);
+
+    const [slideDown, setSlideDown] = useState(false);
+    const [randomSelected, setRandomSelected] = useState(false);
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
@@ -147,34 +152,42 @@ const Party = ({ socket }) => {
             // If the usersReadyCount is equal to the totalUsers then filter all the items that have
             // less votes than the votesNeeded. Reset the votes and voted for all filtered items
             if(usersReadyCountRef.current == totalUsersRef.current) {
-                // Filter out the items that have been voted for
-                const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeededRef.current);
+                setTimeout(() => {
 
-                // Check to make sure there are items left in the collection
-                if (filteredItems.length === 0) {
-                    setReady(false);
-                    return;
-                } else if(filteredItems.length === 1) {
-                    // Set runners up to the remaining items
-                    const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
-                    setRunnerUps(runnerUps);
-                } else {
-                    // Reset votes and voted for all filtered items
-                    filteredItems.forEach(item => {
-                        item.votes = 0;
-                        item.voted = false;
-                    });
+                    // Set slideDown to true to slide down the ready overlay
+                    setSlideDown(true);
+                    setTimeout(() => {
+                        // Filter out the items that have been voted for
+                        const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeededRef.current);
 
-                    setUsersReadyCount(0);
-                    usersReadyCountRef.current = 0;
-                }
+                        // Check to make sure there are items left in the collection
+                        if (filteredItems.length === 0) {
+                            setReady(false);
+                            return;
+                        } else if(filteredItems.length === 1) {
+                            // Set runners up to the remaining items
+                            const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
+                            setRunnerUps(runnerUps);
+                        } else {
+                            // Reset votes and voted for all filtered items
+                            filteredItems.forEach(item => {
+                                item.votes = 0;
+                                item.voted = false;
+                            });
 
-                // No matter what set the collection items to the filtered items
-                setCollectionItems(filteredItems);
-                collectionPointRef.current = filteredItems;
+                            setUsersReadyCount(0);
+                            usersReadyCountRef.current = 0;
+                        }
 
-                // Set ready to false whether there is one or more items left in the collection
-                setReady(false);
+                        // No matter what set the collection items to the filtered items
+                        setCollectionItems(filteredItems);
+                        collectionPointRef.current = filteredItems;
+
+                        // Set ready to false whether there is one or more items left in the collection
+                        setReady(false);
+                        setSlideDown(false);
+                    }, 2000);
+                }, 1000);
             }
         });
 
@@ -237,41 +250,49 @@ const Party = ({ socket }) => {
         // If the usersReadyCount is equal to the totalUsers then filter all the items that have
         // less votes than the votesNeeded. Reset the votes and voted for all filtered items
         if(usersReadyCountRef.current == totalUsersRef.current) {
-            // Filter out the items that have been voted for
-            const filteredItems = collectionItems.filter(item => item.votes >= votesNeededRef.current);
+            setTimeout(() => {
 
-            // Check to make sure there are items left in the collection
-            if (filteredItems.length === 0) {
-                setReady(false);
-                return;
-            } else if(filteredItems.length === 1) {
-                // Set runners up to the remaining items
-                const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
-                setRunnerUps(runnerUps);
+                // Set slideDown to true to slide down the ready overlay
+                setSlideDown(true);
+                setTimeout(() => {
+                    // Filter out the items that have been voted for
+                    const filteredItems = collectionItems.filter(item => item.votes >= votesNeededRef.current);
 
-                // Make a fetch request to delete the party from the database
-                fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
-                {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json'
+                    // Check to make sure there are items left in the collection
+                    if (filteredItems.length === 0) {
+                        setReady(false);
+                        return;
+                    } else if(filteredItems.length === 1) {
+                        // Set runners up to the remaining items
+                        const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
+                        setRunnerUps(runnerUps);
+
+                        // Make a fetch request to delete the party from the database
+                        fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+                        {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                    } else {
+                        // Reset votes and voted for all filtered items
+                        filteredItems.forEach(item => {
+                            item.votes = 0;
+                            item.voted = false;
+                        });
+
+                        setUsersReadyCount(0);
+                        usersReadyCountRef.current = 0;
                     }
-                });
-            } else {
-                // Reset votes and voted for all filtered items
-                filteredItems.forEach(item => {
-                    item.votes = 0;
-                    item.voted = false;
-                });
 
-                setUsersReadyCount(0);
-                usersReadyCountRef.current = 0;
-            }
+                    setCollectionItems(filteredItems);
+                    collectionPointRef.current = filteredItems;
 
-            setCollectionItems(filteredItems);
-            collectionPointRef.current = filteredItems;
-
-            setReady(false);
+                    setReady(false);
+                    setSlideDown(false);
+                }, 2000);
+            }, 1000);
         }
 
         // Emit event to the server that the user is ready
@@ -320,6 +341,8 @@ const Party = ({ socket }) => {
             return;
         }
 
+        setRandomSelected(true);
+
         // Randomly select on of the items in the collection and remove the rest
         const randomIndex = Math.floor(Math.random() * collectionItems.length);
         const randomItem = collectionItems[randomIndex];
@@ -329,25 +352,29 @@ const Party = ({ socket }) => {
 
         // Set the rest of the items that are not the random item to be the runner ups
         const runnerUps = collectionItems.filter(item => item.id !== randomItem.id);
-        setRunnerUps(runnerUps);
 
-        setCollectionItems([randomItem]);
-        collectionPointRef.current = [randomItem];
+        setTimeout(() => {
+            setSlideDown(true);
+            setTimeout(() => {
+                setRunnerUps(runnerUps);
+                setCollectionItems([randomItem]);
+                collectionPointRef.current = [randomItem];
 
-        fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
-        {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+                fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }, 2000);
+        }, 1000);
 
         socket.emit('random-remote-selected', randomItem.id, code);
     }
 
   return (
     <div className='content'>
-        { ready && <div className='ready-overlay' onClick={userNotReady}></div> }
         { collectionItems.length === 1 && ( <Confetti /> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
         { userType === 'owner' ? (
@@ -410,7 +437,49 @@ const Party = ({ socket }) => {
                 ))
             }
         </div>
-        { (collectionItems.length > 1) && ( !ready ? <Button className='finish-voting-btn' onClick={userReady}>Finish Voting</Button> : <Button className='ready-btn' onClick={userNotReady}>Ready!</Button> ) }
+        { 
+            (collectionItems.length > 1) && ( 
+                !ready ? ( !randomSelected ? <Button className='finish-voting-btn' onClick={userReady}>Finish Voting</Button> : null )
+                : <div 
+                    className='ready-overlay' 
+                    onClick={ totalUsers > 1 ? userNotReady : null} 
+                    style={ 
+                        // If slide down is true translate the overlay down 100vh make the transition smooth over 2 seconds
+                        slideDown ? { transform: 'translateY(100vh)', transition: 'transform 2s ease-in-out' } : null
+                    }
+                >
+                    {totalUsers === 1 
+                        ? 
+                            <React.Fragment>
+                            <h1 className='ready-text' style={{marginBottom: '30px'}}>Filtering Items</h1>
+                            <Loading type='beat' className='ready-loading' size={20} speed={.5} />
+                            </React.Fragment>
+                        : 
+                            <React.Fragment>
+                            <h1 className='ready-text'>Ready!</h1>
+                            <p className='waiting-text'>Waiting on other party members...</p>
+                            <p className='waiting-text-cancel'>Click to return to voting</p>
+                            <Loading type='sync' className='ready-loading' size={20} speed={.5} />
+                            </React.Fragment>
+                    }
+                </div> 
+            ) 
+        }
+        {
+            randomSelected && (
+                <div 
+                    className='ready-overlay'
+                    style={ 
+                        // If slide down is true translate the overlay down 100vh make the transition smooth over 2 seconds
+                        slideDown ? { transform: 'translateY(100vh)', transition: 'transform 2s ease-in-out' } : null
+                    }
+                >
+                    <Shake>
+                        <img src={dice} className='random-selected-dice' alt='Dice' />
+                    </Shake>
+                </div>
+            )
+        }
     </div>
   )
 }

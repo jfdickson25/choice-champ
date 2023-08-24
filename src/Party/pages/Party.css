@@ -22,7 +22,7 @@
 
 .finish-voting-btn {
     position: fixed;
-    bottom: 10px;
+    bottom: 25px;
     width: 90%;
     left: 5%;
     z-index: 100;
@@ -243,6 +243,29 @@
     bottom: 0;
     background-color: rgba(0,0,0,0.7); /* Black background with opacity */
     z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.ready-text {
+    margin: 0;
+}
+
+.waiting-text {
+    margin-bottom: 0;
+}
+
+.waiting-text-cancel {
+    font-size: 10pt;
+    margin-bottom: 30px;
+    color: rgb(167, 167, 167);
+}
+
+.random-selected-dice {
+    grid-column: 1/18;
+    width: 30%;
 }
 
 @media only screen and (min-width: 700px) {
