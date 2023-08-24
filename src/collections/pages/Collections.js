@@ -3,8 +3,6 @@ import { useParams, useHistory, Link } from 'react-router-dom';
 import { Dialog } from '@mui/material';
 import Loading from '../../shared/components/Loading';
 
-import { useSwipeable } from 'react-swipeable';
-
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
 import edit from '../../shared/assets/img/edit.png';
@@ -185,14 +183,6 @@ const Collections = props => {
         });
     }
 
-    const handlers = useSwipeable({
-        onSwipedLeft: () => history.push('/party'),
-        preventDefaultTouchmoveEvent: true,
-        trackMouse: true,
-        delta: 100
-    });
-
-
     const navBack = () => {
         history.push('/collections');
     }
@@ -255,7 +245,7 @@ const Collections = props => {
 
     return (
         <React.Fragment>
-            <div className='content' {...handlers}>
+            <div className='content'>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
                 <h2 className='title'>{title}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />

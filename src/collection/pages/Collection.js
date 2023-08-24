@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState, useContext, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
-import { useSwipeable } from 'react-swipeable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownAZ, faClock } from '@fortawesome/free-solid-svg-icons';
 
@@ -195,19 +194,9 @@ const Collection = ({ socket }) => {
         })
     }, [items, query]);
 
-    const handlers = useSwipeable({
-        onSwipedLeft: () => {
-            socket.emit('leave-room', collectionId);
-            history.push('/party');
-        },
-        preventDefaultTouchmoveEvent: true,
-        trackMouse: true,
-        delta: 100
-    });
-
     return (
         <React.Fragment>
-            <div className='content' {...handlers}>
+            <div className='content'>
                 { 
                     /* 
                         Q: What is the difference between a link and navlink?
