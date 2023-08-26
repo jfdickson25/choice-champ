@@ -14,25 +14,25 @@
       "type": "image/x-icon"
     },
     {
-      "src": "img/manifest-icon-192.maskable.png",
+      "src": "https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/manifest-icon-192.maskable.png?v=1693065719831",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "img/manifest-icon-192.maskable.png",
+      "src": "https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/manifest-icon-192.maskable.png?v=1693065719831",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "img/manifest-icon-512.maskable.png",
+      "src": "https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/manifest-icon-512.maskable.png?v=1693065720263",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "img/manifest-icon-512.maskable.png",
+      "src": "https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/manifest-icon-512.maskable.png?v=1693065720263",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
