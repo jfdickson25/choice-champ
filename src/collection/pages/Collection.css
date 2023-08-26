@@ -151,6 +151,10 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     .divider-other {
         grid-column: 1/5;
     }
+
+    .collection-content-game {
+        grid-column: 4/15;
+    }
 }
 
 @media only screen and (min-width: 900px) {

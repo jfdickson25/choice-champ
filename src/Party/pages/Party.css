@@ -60,7 +60,6 @@
     grid-column: 1/18;
     width: 100%;
     display: grid;
-    grid-template-columns: 1;
     justify-items: center;
     align-items: center;
     column-gap: 15px;
@@ -285,6 +284,10 @@
     .winner-img-game {
         width: 60%;
     }
+
+    .collection-content-game {
+        grid-column: 4/15;
+    }
 }
 
 @media only screen and (min-width: 900px) {
@@ -328,5 +331,9 @@
 
     .winner-img-game {
         width: 30%;
+    }
+
+    .item-img {
+        height: 45vh;
     }
 }
