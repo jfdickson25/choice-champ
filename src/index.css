@@ -41,6 +41,41 @@ input {
   font-size: 14pt;
 }
 
+#download-banner {
+  position: fixed;
+  bottom: 10vh;
+  display: grid;
+  grid-template-columns: repeat(17, 1fr);
+  justify-items: right;
+  align-items: center;
+  padding: 5px;
+  width: 100%;
+  background-color: #FCB016;
+  z-index: 100;
+  left: -100vw;
+}
+
+#install-prompt {
+  grid-column: 1/8;
+  font-size: 9pt;
+  font-weight: bold;
+}
+
+#install-yes {
+  grid-column: 8/11;
+  font-size: 10pt;
+}
+
+#install-later {
+  grid-column: 11/14;
+  font-size: 10pt;
+}
+
+#install-never {
+  grid-column: 14/17;
+  font-size: 10pt;
+}
+
 .slide-in-left-enter {
   transform: translateX(-100%);
 }
@@ -153,5 +188,29 @@ input {
 
   .add {
     width: 30%;
+  }
+
+  #download-banner {
+    justify-items: center;
+  }
+
+  #install-prompt {
+    font-size: 12pt;
+    grid-column: 5/8;
+  }
+  
+  #install-yes {
+    font-size: 12pt;
+    grid-column: 11;
+  }
+  
+  #install-later {
+    font-size: 12pt;
+    grid-column: 12;
+  }
+  
+  #install-never {
+    font-size: 12pt;
+    grid-column: 13;
   }
 }

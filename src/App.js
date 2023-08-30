@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+import React, { lazy, Suspense, useCallback, useEffect, useState, useRef } from 'react';
 import {
   BrowserRouter as Router,
   Route, 
@@ -35,11 +35,16 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   const [loading, setLoading] = useState(true);
+  const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [animateInstallPrompt, setAnimateInstallPrompt] = useState(false); // Used to animate the install prompt when it is shown
+  let defeferredPrompt = useRef(null);
 
   const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
+    const neverShowAppInstallBanner = localStorage.getItem('neverShowAppInstallBanner');
+
     if(storedUserId) {
       // Check if user exists in database
       fetch('https://choice-champ-backend.glitch.me/user/checkUser', {
@@ -59,6 +64,21 @@ function App() {
           setUserId(storedUserId);
           setIsLoggedIn(true);
           setLoading(false);
+
+          if(!neverShowAppInstallBanner) {
+            window.addEventListener('beforeinstallprompt', (e) => {
+              // Prevent the mini-infobar from appearing on mobile
+              e.preventDefault();
+              // Stash the event so it can be triggered later.
+              defeferredPrompt.current = e;
+
+              setShowInstallPrompt(true);
+
+              setTimeout(() => {
+                setAnimateInstallPrompt(true);
+              }, 1000);
+            });
+          }
         }
       })
       .catch(err => {
@@ -69,6 +89,21 @@ function App() {
     } else {
       setIsLoggedIn(false);
       setLoading(false);
+
+      if(!neverShowAppInstallBanner) {
+        window.addEventListener('beforeinstallprompt', (e) => {
+          // Prevent the mini-infobar from appearing on mobile
+          e.preventDefault();
+          // Stash the event so it can be triggered later.
+          defeferredPrompt.current = e;
+
+          setShowInstallPrompt(true);
+
+          setTimeout(() => {
+            setAnimateInstallPrompt(true);
+          }, 1000);
+        });
+      }
     }
   }, []);
 
@@ -96,6 +131,24 @@ function App() {
   const showFooterHandler = useCallback((show) => {
     setShowFooter(show);
   }, []);
+
+  const installApp = () => {
+    setShowInstallPrompt(false);
+
+    defeferredPrompt.current.prompt();
+    defeferredPrompt.current.userChoice.then((choiceResult) => {
+      if(choiceResult.outcome === 'accepted') {
+        neverShowInstallPrompt();
+      } else {
+        console.log('User dismissed the install prompt');
+      }
+    });
+  }
+
+  const neverShowInstallPrompt = () => {
+    setShowInstallPrompt(false);
+    localStorage.setItem('neverShowAppInstallBanner', true);
+  }
 
   let routes;
   if(isLoggedIn) {
@@ -180,6 +233,20 @@ function App() {
         <main>
           {loading && <Loading className='page-loading' size={100} />}
           {!loading && routes}
+          {
+            (!loading && showInstallPrompt) && (
+              <div id='download-banner' 
+                // If the install prompt is being animated, use transform to translateX 100vw with a transition of 2s
+                // Otherwise, use display: none
+                style={animateInstallPrompt && !isLoggedIn ? { transform: 'translateX(100vw)', transition: 'transform .5s ease-in-out', top: '0', bottom: 'unset' } : (isLoggedIn ? { transform: 'translateX(100vw)', transition: 'transform .5s ease-in-out', top: 'unset' } : null )}
+              >
+                  <p id="install-prompt">Install Choice Champ?</p>
+                  <p id="install-yes" onClick={installApp}>YES</p>
+                  <p id="install-later" onClick={() => {setShowInstallPrompt(false)}}>LATER</p>
+                  <p id="install-never" onClick={neverShowInstallPrompt}>NEVER</p>
+              </div>
+            )
+          }
           {!loading && footer}
         </main>
       </Router>
