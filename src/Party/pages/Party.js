@@ -377,7 +377,7 @@ const Party = ({ socket }) => {
     <div className='content'>
         { collectionItems.length === 1 && ( <Confetti /> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
-        { userType === 'owner' ? (
+        { (userType === 'owner' && collectionItems.length > 1) ? (
             <div className='votes-needed-section'>
                 <p className='votes-needed-title'>Votes Needed</p>
                 <input 
@@ -399,7 +399,7 @@ const Party = ({ socket }) => {
             </div>)
             : <div className='guest-banner'></div>
         }
-        { userType === 'owner' && (<img src={dice} className="edit" alt='Dice' onClick={selectRandom} />) }
+        { (userType === 'owner' && collectionItems.length > 1) && (<img src={dice} className="edit" alt='Dice' onClick={selectRandom} />) }
         <div className={mediaType === 'game' ? 'collection-content-game' : 'collection-content-other' }>
             { 
                 collectionItems.length === 1 ? (

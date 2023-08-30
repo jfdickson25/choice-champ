@@ -66,14 +66,26 @@ input {
   font-size: 10pt;
 }
 
+#install-yes:hover {
+  cursor: pointer;
+}
+
 #install-later {
   grid-column: 11/14;
   font-size: 10pt;
 }
 
+#install-later:hover {
+  cursor: pointer;
+}
+
 #install-never {
   grid-column: 14/17;
   font-size: 10pt;
+}
+
+#install-never:hover {
+  cursor: pointer;
 }
 
 .slide-in-left-enter {
