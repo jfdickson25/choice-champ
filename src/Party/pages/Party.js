@@ -1,12 +1,12 @@
 
 import React, { useEffect, useState, useRef, useContext }  from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import Confetti from 'react-confetti';
 import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
 import Loading from '../../shared/components/Loading';
-import Shake from 'react-reveal/Shake';
+// import Shake from 'react-reveal/Shake';
 
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -14,7 +14,7 @@ import './Party.css';
 
 const Party = ({ socket }) => {
     const auth = useContext(AuthContext);
-    let history = useHistory();
+    let navigate = useNavigate();
     // Get the party code and user type from the url
     const { code, userType } = useParams();
 
@@ -204,7 +204,7 @@ const Party = ({ socket }) => {
         socket.on('party-deleted', () => {
             socket.emit('leave-room', code);
             // Redirect to the party page
-            history.push('/party');
+            navigate('/party');
         });
 
         return () => {
@@ -325,13 +325,13 @@ const Party = ({ socket }) => {
                 socket.emit('leave-room', code);
                 socket.emit('party-remote-deleted', code);
                 // Redirect to the home page
-                history.push('/party');
+                navigate('/party');
             });
         }
         else {
             socket.emit('user-leave-party', code);
             socket.emit('leave-room', code);
-            history.push('/party');
+            navigate('/party');
         }
     }
 
@@ -474,9 +474,9 @@ const Party = ({ socket }) => {
                         slideDown ? { transform: 'translateY(100vh)', transition: 'transform 2s ease-in-out' } : null
                     }
                 >
-                    <Shake>
-                        <img src={dice} className='random-selected-dice' alt='Dice' />
-                    </Shake>
+                    
+                    <img src={dice} className='random-selected-dice' alt='Dice' />
+                    
                 </div>
             )
         }

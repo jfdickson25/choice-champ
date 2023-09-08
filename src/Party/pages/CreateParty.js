@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
@@ -20,7 +20,7 @@ const CreateParty = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [secretMode, setSecretMode] = useState(false);
     const [includeWatched, setIncludeWatched] = useState(false);
-    let history = useHistory();
+    let navigate = useNavigate();
 
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -82,14 +82,12 @@ const CreateParty = props => {
         })
         .then(res => {
             // Route to the party page
-            history.push({
-                pathname: `/party/wait/${partyCode}/owner`,
-            });
+            navigate(`/party/wait/${partyCode}/owner`);
         });
     }
 
     const navBack = () => {
-        history.push('/party');
+        navigate('/party');
     }
 
     const mediaTypeHandler = (event) => {

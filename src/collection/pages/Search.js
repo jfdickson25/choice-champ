@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import _ from 'lodash';
@@ -16,7 +16,7 @@ import check from '../../shared/assets/img/check.png';
 
 const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
-    let history = useHistory();
+    let navigate = useNavigate();
 
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
@@ -211,7 +211,7 @@ const Search = ({ socket }) => {
     }
 
     const navBack = () => {
-        history.push(`/collections/${collectionType}/${collectionName}/${collectionId}`);
+        navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
     }
 
     return (

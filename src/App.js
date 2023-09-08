@@ -2,8 +2,8 @@ import React, { lazy, Suspense, useCallback, useEffect, useState, useRef } from 
 import {
   BrowserRouter as Router,
   Route, 
-  Redirect,
-  Switch
+  Navigate,
+  Routes
 } from 'react-router-dom';
 
 import io from 'socket.io-client';
@@ -156,66 +156,32 @@ function App() {
       // Using Suspense inside a switch caused issues with redirecting. Solution found in this stack overflow article:
       // https://stackoverflow.com/questions/62193855/react-lazy-loaded-route-makes-redirecting-non-matching-routes-to-404-not-work
       <Suspense fallback={<Loading className='page-loading' size={100} />}>
-        <Switch>
-          <Route path="/welcome/info" exact>
-            <Welcome />
-          </Route>
-
-          <Route path="/collections" exact>
-            <Categories />
-          </Route>
-          <Route path="/collections/:type" exact>
-            <Collections />
-          </Route>
-          <Route path="/collections/:type/:name/:id" exact>
-            <Collection socket={socket} />
-          </Route>
-          <Route path="/collections/:type/:name/:id/add" exact>
-            <Search socket={socket} />
-          </Route>
-
-          <Route path="/party" exact>
-            <PartyHome />
-          </Route>
-          <Route path="/party/createParty" exact>
-            <CreateParty />
-          </Route>
-          <Route path="/party/joinParty" exact>
-            <JoinParty />
-          </Route>
-          <Route path="/party/wait/:code/:userType" exact>
-            <PartyWait socket={socket} />
-          </Route>
-          <Route path="/party/:code/:userType" exact>
-            <Party socket={socket} />
-          </Route>
-          <Route path="/settings" exact>
-            <Settings />
-          </Route>
-
-
-          <Redirect to="/collections" />
-        </Switch>
+        <Routes>
+          <Route path="/welcome/info" element={<Welcome />} exact />
+          <Route path="/collections" element={<Categories />} exact />
+          <Route path="/collections/:type" element={<Collections />} exact />
+          <Route path="/collections/:type/:name/:id" element={<Collection socket={socket} />} exact />
+          <Route path="/collections/:type/:name/:id/add" element={<Search socket={socket} />} exact />
+          <Route path="/party" element={<PartyHome />} exact />
+          <Route path="/party/createParty" element={<CreateParty />} exact />
+          <Route path="/party/joinParty" element={<JoinParty />} exact />
+          <Route path="/party/wait/:code/:userType" element={<PartyWait socket={socket} />} exact />
+          <Route path="/party/:code/:userType" element={<Party socket={socket} />} exact />
+          <Route path="/settings" element={<Settings />} exact />
+          <Route path="*" element={<Navigate to="/collections" />} />
+        </Routes>
       </Suspense>
     )
   } else {
     routes = (
       <Suspense fallback={<Loading />}>
-        <Switch>
-            <Route path="/" exact>
-              <Auth />
-            </Route>
-            <Route path="/party/joinParty" exact>
-              <JoinParty />
-            </Route>
-            <Route path="/party/wait/:code/:userType" exact>
-              <PartyWait socket={socket} />
-            </Route>
-            <Route path="/party/:code/:userType" exact>
-              <Party socket={socket} />
-            </Route>
-            <Redirect to="/" />
-        </Switch>
+        <Routes>
+            <Route path="/" element={<Auth />} exact />
+            <Route path="/party/joinParty" element={<JoinParty />} exact />
+            <Route path="/party/wait/:code/:userType" element={<PartyWait socket={socket} />} exact />
+            <Route path="/party/:code/:userType" element={<Party socket={socket} />} exact />
+            <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </Suspense>
     )
   }

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useContext, useRef } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +14,7 @@ import './Collection.css';
 
 const Collection = ({ socket }) => {
     const auth = useContext(AuthContext);
-    let history = useHistory();
+    let navigate = useNavigate();
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
      * from the params and set edit and our items list
@@ -140,11 +140,11 @@ const Collection = ({ socket }) => {
 
     const navBack = () => {
         socket.emit('leave-room', collectionId);
-        history.push(`/collections/${collectionType}`);
+        navigate(`/collections/${collectionType}`);
     }
 
     const navAdd = () => {
-        history.push(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
+        navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
     }
 
     const updateWatched = (id, watched) => {

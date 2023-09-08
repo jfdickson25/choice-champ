@@ -1,5 +1,5 @@
 import React, { useRef, useState, useContext, useEffect } from 'react'
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -13,7 +13,7 @@ const JoinParty = (props) => {
     // Enum for the error state 0 = no error, 1 = join code must be 4 digits, 2 = party does not exist
     const [errorMessage, setErrorMessage] = useState('');
 
-    let history = useHistory();
+    let navigate = useNavigate();
     const inputRef = useRef();
 
     useEffect(() => {
@@ -36,7 +36,7 @@ const JoinParty = (props) => {
             .then(data => {
                 if(data.code) {
                     // Navigate to the party page
-                    history.push(`/party/wait/${data.code}/guest`);
+                    navigate(`/party/wait/${data.code}/guest`);
                 }
                 else {
                     // Display an error message
@@ -60,7 +60,7 @@ const JoinParty = (props) => {
     }
 
     const navBack = () => {
-        history.push('/party');
+        navigate('/party');
     }
 
   return (

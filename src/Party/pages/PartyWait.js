@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef }  from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 
 import Loading from '../../shared/components/Loading';
@@ -14,7 +14,7 @@ const PartyWait = ({ socket }) => {
     // Bring in the authentication context to decide whether to show the footer or not
     const auth = useContext(AuthContext);
     // History allows us to redirect the user to another page
-    let history = useHistory();
+    let navigate = useNavigate();
   
     // Get the party code and user type from the url
     const { code, userType } = useParams();
@@ -82,15 +82,13 @@ const PartyWait = ({ socket }) => {
         socket.on('start-party', () => {
             // Emit event to leave the party room
             socket.emit('leave-room', `waiting${code}`);
-            history.push({
-                pathname: `/party/${code}/guest`,
-            });
+            navigate(`/party/${code}/guest`);
         });
 
         socket.on('party-deleted', () => {
             socket.emit('leave-room', `waiting${code}`);
             // Redirect to the party page
-            history.push('/party');
+            navigate('/party');
         });
 
         return () => {
@@ -111,9 +109,7 @@ const PartyWait = ({ socket }) => {
         socket.emit('leave-room', `waiting${code}`);
 
         // Route to the party page
-        history.push({
-            pathname: `/party/${code}/owner`,
-        });
+        navigate(`/party/${code}/owner`);
     }
 
     const navBack = async () => {
@@ -131,7 +127,7 @@ const PartyWait = ({ socket }) => {
                 // party page
                 socket.emit('party-remote-deleted', `waiting${code}`);
                 socket.emit('leave-room', `waiting${code}`);
-                history.push('/party');
+                navigate('/party');
             });
         }
         else {
@@ -151,7 +147,7 @@ const PartyWait = ({ socket }) => {
                 })
             });
             
-            history.push('/party');
+            navigate('/party');
         }
     }
 

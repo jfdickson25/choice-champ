@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import logo from '../../shared/assets/img/logo.png'
 import Button from '../../shared/components/FormElements/Button';
@@ -13,7 +13,7 @@ const Auth = props => {
     // useContext is used to access the context object created in auth-context.js
     // with this we can access the isLoggedIn state and the login and logout functions
     const auth = useContext(AuthContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     // State to change between login and create
     const [isLoginMode, setIsLoginMode] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
@@ -47,7 +47,7 @@ const Auth = props => {
                     auth.userIdSetter(body.userId);
                     // Set the userId to local storage so it can be used in other backend calls
                     localStorage.setItem('userId', body.userId);
-                    history.push('/collections');
+                    navigate('/collections');
                 } else {
                     setErrorMessage(body.errMsg);
                 }
@@ -78,7 +78,7 @@ const Auth = props => {
                 // Set the userId to local storage so it can be used in other backend calls
                 localStorage.setItem('userId', body.userId);
 
-                history.push('/welcome/info');
+                navigate('/welcome/info');
                 } else {
                     setErrorMessage(body.errMsg);
                 }
@@ -101,14 +101,14 @@ const Auth = props => {
     }
 
     const navJoin = () => {
-        history.push('/party/joinParty');
+        navigate('/party/joinParty');
     }
 
     return (
         <div className='center'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 
-                <img src={logo} alt="Movie Match Logo" id="logo" />
+                <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/choice-champ-logo.PNG?v=1694138179997' alt="Movie Match Logo" id="logo" />
                 
                 <div className='seperator' />
                 

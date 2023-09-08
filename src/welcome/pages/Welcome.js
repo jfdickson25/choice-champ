@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -10,7 +10,7 @@ import watch from '../assets/img/watch.svg';
 import './Welcome.css';
 const Welcome = props => {
     const auth = useContext(AuthContext);
-    const history = useHistory();
+    const navigate = useNavigate();
     const [isWelcome, setIsWelcome] = useState(true);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const Welcome = props => {
     }
 
     const getStarted = () => {
-        history.push('/collections');
+        navigate('/collections');
     }
 
     const handlers = useSwipeable({

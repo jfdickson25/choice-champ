@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Dialog } from '@mui/material';
 import Loading from '../../shared/components/Loading';
 
@@ -14,7 +14,7 @@ import Button from '../../shared/components/FormElements/Button';
 
 const Collections = props => {
     const auth = useContext(AuthContext);
-    let history = useHistory();
+    let navigate = useNavigate();
 
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
@@ -184,7 +184,7 @@ const Collections = props => {
     }
 
     const navBack = () => {
-        history.push('/collections');
+        navigate('/collections');
     }
 
     const moveLeft = (id) => {
