@@ -6,7 +6,7 @@ import Confetti from 'react-confetti';
 import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
 import Loading from '../../shared/components/Loading';
-// import Shake from 'react-reveal/Shake';
+import $ from 'jquery';
 
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -133,6 +133,10 @@ const Party = ({ socket }) => {
 
         socket.on('random-selected', (id) => {
             socket.emit('leave-room', code);
+
+            if(ready) {
+                setReady(false);
+            }
 
             setRandomSelected(true);
 
@@ -382,7 +386,7 @@ const Party = ({ socket }) => {
 
   return (
     <div className='content'>
-        { collectionItems.length === 1 && ( <Confetti /> )}
+        { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
         { (userType === 'owner' && collectionItems.length > 1) ? (
             <div className='votes-needed-section'>
