@@ -6,8 +6,6 @@ import Confetti from 'react-confetti';
 import back from '../../shared/assets/img/back.svg';
 import dice from '../../shared/assets/img/dices.png';
 import Loading from '../../shared/components/Loading';
-import $ from 'jquery';
-
 import { AuthContext } from '../../shared/context/auth-context';
 
 import './Party.css';  
