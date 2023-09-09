@@ -188,6 +188,19 @@ input {
   color: rgb(161, 161, 161);
 }
 
+.offline-msg {
+  grid-column: 5/14;
+  text-align: center;
+  justify-self: center;
+  height: 80vh;
+  display: grid;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  font-size: 16pt;
+}
+
 @media only screen and (min-width: 800px) {
 
   .top-left {

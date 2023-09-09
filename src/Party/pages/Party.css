@@ -114,6 +114,7 @@
     text-align: center;
     font-size: 14pt;
     color: white;
+    font-weight: bold;
 }
 
 .winner-banner {
@@ -123,7 +124,8 @@
     font-size: 21pt;
     color: #FCB016;
     margin: 0;
-    margin-bottom: 150px;
+    margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .runner-up-title {
@@ -135,6 +137,7 @@
     font-weight: 300;
     margin: 0;
     margin-bottom: 10px;
+    text-decoration: underline;
 }
 
 .runner-up {
@@ -265,7 +268,44 @@
 .random-selected-dice {
     grid-column: 1/18;
     width: 30%;
+    animation: shake-base 1s ease-in-out;
 }
+
+@keyframes shake-base {
+    0% {
+      transform: translateX(0px);
+    }
+    10% {
+      transform: translateX(-5px);
+    }
+    20% {
+      transform: translateX(5px);
+    }
+    30% {
+      transform: translateX(-5px);
+    }
+    40% {
+      transform: translateX(5px);
+    }
+    50% {
+      transform: translateX(-5px);
+    }
+    60% {
+      transform: translateX(5px);
+    }
+    70% {
+      transform: translateX(-5px);
+    }
+    80% {
+      transform: translateX(5px);
+    }
+    90% {
+      transform: translateX(-5px);
+    }
+    100% {
+      transform: translateX(0px);
+    }
+  }
 
 @media only screen and (min-width: 700px) {
     .collection-content-other {

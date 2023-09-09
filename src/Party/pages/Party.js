@@ -134,15 +134,22 @@ const Party = ({ socket }) => {
         socket.on('random-selected', (id) => {
             socket.emit('leave-room', code);
 
-            // Find the item with the id and set it to the state
-            const item = collectionPointRef.current.find(item => item.id === id);
+            setRandomSelected(true);
 
-            // Set the rest of the items that are not the random item to be the runner ups
-            const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
-            setRunnerUps(runnerUps);
+            setTimeout(() => {
+                setSlideDown(true);
+                setTimeout(() => {
+                    // Find the item with the id and set it to the state
+                    const item = collectionPointRef.current.find(item => item.id === id);
 
-            setCollectionItems([item]);
-            collectionPointRef.current = [item];
+                    // Set the rest of the items that are not the random item to be the runner ups
+                    const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
+                    setRunnerUps(runnerUps);
+
+                    setCollectionItems([item]);
+                    collectionPointRef.current = [item];
+                }, 2000);
+            }, 1000);
         });
 
         socket.on('user-ready', () => {
@@ -404,14 +411,14 @@ const Party = ({ socket }) => {
             { 
                 collectionItems.length === 1 ? (
                     <div className='winner'>
+                        <p className='winner-banner'>
+                            CHOICE CHAMPION!
+                        </p>
                         <img
                             className={ mediaType === 'game' ? 'winner-img-game' :'winner-img' }
                             src={collectionItems[0].poster}
                         />
                         <p className='winner-title'>{collectionItems[0].title}</p>
-                        <p className='winner-banner'>
-                            CHOICE CHAMPION!
-                        </p>
                         <p className='runner-up-title'>
                             Runner Ups
                         </p>
@@ -474,9 +481,7 @@ const Party = ({ socket }) => {
                         slideDown ? { transform: 'translateY(100vh)', transition: 'transform 2s ease-in-out' } : null
                     }
                 >
-                    
                     <img src={dice} className='random-selected-dice' alt='Dice' />
-                    
                 </div>
             )
         }
