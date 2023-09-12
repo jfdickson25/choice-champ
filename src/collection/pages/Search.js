@@ -78,66 +78,51 @@ const Search = ({ socket }) => {
             // Reset the items to populate with updated value
             setItems([]);
 
-            if(collectionType === 'board') {
-                res.media.games.forEach(game => {
-                    // Make sure the item is not already in the collection
-                    let inCollection = false;
-    
-                    // Check if item exists in collection ref
-                    collectionRef.current.forEach(item => {
-                        if(item.itemId == game.id) {
-                            inCollection = true;
-                        }
-                    });
-                    
+                res.media.results.forEach(mediaItem => {
+
+                // Make sure the item is not already in the collection
+                let inCollection = false;
+
+                // Check if item exists in collection ref
+                collectionRef.current.forEach(item => {
+                    if(item.itemId == mediaItem.id) {
+                        inCollection = true;
+                    }
+                });
+
+                if (collectionType === 'movie') {
                     setItems(prevState => [...prevState, {
-                        id: game.id,
-                        title: game.name,
-                        poster: game.image_url,
+                        id: mediaItem.id,
+                        title: mediaItem.title,
+                        poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
                         selected: false,
                         inCollection: inCollection
                     }]);
-                });
-            } else {
-                res.media.results.forEach(mediaItem => {
-
-                    // Make sure the item is not already in the collection
-                    let inCollection = false;
-    
-                    // Check if item exists in collection ref
-                    collectionRef.current.forEach(item => {
-                        if(item.itemId == mediaItem.id) {
-                            inCollection = true;
-                        }
-                    });
-    
-                    if (collectionType === 'movie') {
-                        setItems(prevState => [...prevState, {
-                            id: mediaItem.id,
-                            title: mediaItem.title,
-                            poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
-                            selected: false,
-                            inCollection: inCollection
-                        }]);
-                    } else if (collectionType === 'tv') {
-                        setItems(prevState => [...prevState, {
-                            id: mediaItem.id,
-                            title: mediaItem.name,
-                            poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
-                            selected: false,
-                            inCollection: inCollection
-                        }]);
-                    } else if (collectionType === 'game') {
-                        setItems(prevState => [...prevState, {
-                            id: mediaItem.id,
-                            title: mediaItem.name,
-                            poster: mediaItem.background_image,
-                            selected: false,
-                            inCollection: inCollection
-                        }]);
-                    }
-                });
-            }
+                } else if (collectionType === 'tv') {
+                    setItems(prevState => [...prevState, {
+                        id: mediaItem.id,
+                        title: mediaItem.name,
+                        poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
+                        selected: false,
+                        inCollection: inCollection
+                    }]);
+                } else if (collectionType === 'game') {
+                    setItems(prevState => [...prevState, {
+                        id: mediaItem.id,
+                        title: mediaItem.name,
+                        poster: mediaItem.background_image,
+                        selected: false,
+                        inCollection: inCollection
+                    }]);
+                } else if (collectionType === 'board') {
+                    setItems(prevState => [...prevState, {
+                        id: mediaItem.id,
+                        title: mediaItem.name,
+                        selected: false,
+                        inCollection: inCollection
+                    }]);
+                }
+            });
 
             setIsLoading(false);
         });
@@ -238,7 +223,10 @@ const Search = ({ socket }) => {
                 (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
                     {items.map(item => (
                         <div className='item-section' key={item.id}>
-                                <div className='item-img' style={{backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'contain'}}><p>{item.title}</p></div>                       {
+
+                                <div className='item-img' style={ collectionType !== 'board' ? {backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'contain'} : null }>
+                                    { (collectionType !== 'movie' || collectionType !== 'tv') && <p className={ collectionType === 'board' && 'item-title'}>{item.title}</p> }
+                                </div>                       {
                                 item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
                                 (
                                     item.selected 

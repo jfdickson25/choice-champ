@@ -28,6 +28,11 @@
     z-index: 100;
 }
 
+.item-title {
+    height: 100% !important;
+    border-radius: 9px !important;
+}
+
 @media only screen and (min-width: 900px) {
     .save-icon {
         width: 10%;
