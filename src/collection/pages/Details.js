@@ -69,6 +69,7 @@ const Details = () => {
     return (
         <div className='content'>
             <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
+            <div id="content-details">
             <img
                 className={ collectionType === 'game' ? 'details-img-game' :'details-img' }
                 src={details.poster}
@@ -112,6 +113,25 @@ const Details = () => {
                 (collectionType === 'movie' || collectionType === 'tv') && 
                 (
                     <React.Fragment>
+                        <div className='details-provider-title'>Stream</div>
+                        { 
+                            // Q: How can I check to see if the providers.stream array is empty?
+                            // A: Use providers.stream.length
+                            providers.stream ?
+                            (
+                                <div className='details-provider-list'>
+                                    {
+                                        providers.stream.map(provider => (
+                                            (<div className='details-provider-item' key={provider.provider_name}>
+                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                            </div>)
+                                        ))
+                                    }
+                                </div>
+                            ) : (
+                                <div className='providers-not-available'>Not available to stream</div>
+                            )
+                        }
                         <div className='details-provider-title'>Buy</div>
                         { 
                             providers.buy ?
@@ -151,25 +171,6 @@ const Details = () => {
                                 </React.Fragment>
                              )
                         }
-                        <div className='details-provider-title'>Stream</div>
-                        { 
-                            // Q: How can I check to see if the providers.stream array is empty?
-                            // A: Use providers.stream.length
-                            providers.stream ?
-                            (
-                                <div className='details-provider-list'>
-                                    {
-                                        providers.stream.map(provider => (
-                                            (<div className='details-provider-item' key={provider.provider_name}>
-                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                            </div>)
-                                        ))
-                                    }
-                                </div>
-                            ) : (
-                                <div className='providers-not-available'>Not available to stream</div>
-                            )
-                        }
                     </React.Fragment>
                 )
             }
@@ -199,7 +200,7 @@ const Details = () => {
                     </React.Fragment>
                 )
             }
-
+            </div>
         </div>
     );
 }
