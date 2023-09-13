@@ -1,7 +1,7 @@
 .details-img {
     grid-column: 1/18;
     height: 55vh;
-    width: 85%;
+    width: 100%;
     border-radius: 22px;
     margin-top: 20px;
 }
