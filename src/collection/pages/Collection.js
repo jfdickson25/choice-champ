@@ -147,6 +147,10 @@ const Collection = ({ socket }) => {
         navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
     }
 
+    const navDetails = (id) => {
+        navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/details/${id}`);
+    }
+
     const updateWatched = (id, watched) => {
         // Make a fetch post request to update the watched status of an item
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}/${id}`, {
@@ -239,7 +243,7 @@ const Collection = ({ socket }) => {
                                         [...filteredItems].sort((a, b) => a.title.localeCompare(b.title)).map(item => (
                                            // Only show if the item is not watched
                                            !item.watched ?
-                                                (<div className='item-section' key={item.itemId} >
+                                                (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
@@ -251,7 +255,7 @@ const Collection = ({ socket }) => {
                                         [...filteredItems].reverse().map(item => (
                                             // Only show if the item is not watched
                                             !item.watched ?
-                                                (<div className='item-section' key={item.itemId} >
+                                                (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }

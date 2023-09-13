@@ -19,6 +19,7 @@ import { AuthContext } from './shared/context/auth-context';
 const Categories = lazy(() => import('./categories/pages/Categories'));
 const Collection = lazy(() => import('./collection/pages/Collection'));
 const Search = lazy(() => import('./collection/pages/Search'));
+const Details = lazy(() => import('./collection/pages/Details'));
 const Collections = lazy(() => import('./collections/pages/Collections'));
 const Auth = lazy(() => import('./user/pages/Auth'));
 const Welcome = lazy(() => import('./welcome/pages/Welcome'));
@@ -162,6 +163,7 @@ function App() {
           <Route path="/collections/:type" element={<Collections />} exact />
           <Route path="/collections/:type/:name/:id" element={<Collection socket={socket} />} exact />
           <Route path="/collections/:type/:name/:id/add" element={<Search socket={socket} />} exact />
+          <Route path="/collections/:type/:name/:collectionId/details/:itemId" element={ <Details /> } exact />
           <Route path="/party" element={<PartyHome />} exact />
           <Route path="/party/createParty" element={<CreateParty />} exact />
           <Route path="/party/joinParty" element={<JoinParty />} exact />
