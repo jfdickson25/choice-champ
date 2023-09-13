@@ -25,7 +25,7 @@ const Details = () => {
     useEffect(() => {
         auth.showFooterHandler(false);
         // Get all the items in the collection to check if any items in the search are already in the collection
-        fetch(`http://localhost:5000/media/getInfo/${collectionType}/${itemId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${collectionType}/${itemId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,8 +48,6 @@ const Details = () => {
             }
 
             setDetails(data.media.details);
-            console.log(data.media.details);
-
 
             if(collectionType !== 'board' || collectionType !== 'game') {
                 // Set the providers to the providers object
