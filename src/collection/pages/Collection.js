@@ -226,16 +226,11 @@ const Collection = ({ socket }) => {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
                         (
                             <div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
-                                { /* 
-                                    Received help from this article: https://bobbyhadz.com/blog/react-map-array-reverse 
-                                    We use the spread operator here because we want to make a copy of filteredItems. We don't want
-                                    to modify it
-                                */ 
+                                {
+                                    (filteredItems.length === 0 && query === '') && <p className='no-items'>No items in this collection</p>
                                 }
                                 {
-                                    // TODO: Modify this logic to show a message for filtering and for when there are no items in the collection
-                                    // Add a message if there are no items in the collection
-                                    filteredItems.length === 0 && <p style={{textAlign: 'center', gridColumn: '1/3', fontWeight: 'bold'}}>No items in this collection</p>
+                                    (filteredItems.length === 0 && query !== '') && <p className='no-items'>No items match search</p>
                                 }
                                 {
                                     // Logic to check if we should show the items in alphabetical order or not
@@ -244,7 +239,7 @@ const Collection = ({ socket }) => {
                                            // Only show if the item is not watched
                                            !item.watched ?
                                                 (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                    <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
+                                                    <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
@@ -252,11 +247,16 @@ const Collection = ({ socket }) => {
                                             :   null
                                         )) 
                                     ) : (
+                                        /* 
+                                            Received help from this article: https://bobbyhadz.com/blog/react-map-array-reverse 
+                                            We use the spread operator here because we want to make a copy of filteredItems. We don't want
+                                            to modify it
+                                        */ 
                                         [...filteredItems].reverse().map(item => (
                                             // Only show if the item is not watched
                                             !item.watched ?
                                                 (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                    <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
+                                                    <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
@@ -277,7 +277,7 @@ const Collection = ({ socket }) => {
                                                 item.watched ?
                                                 (
                                                     <div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                        <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
+                                                        <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                         { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                     </div>
@@ -291,7 +291,7 @@ const Collection = ({ socket }) => {
                                             item.watched ?
                                                 (
                                                     <div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                        <img className='item-img' src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
+                                                        <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                         { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                     </div>

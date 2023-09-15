@@ -70,6 +70,24 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
 }
 
 .item-img {
+    height: auto;
+    width: 100%;
+    grid-column: 1/4;
+    display: grid;
+    align-items: end;
+    border-radius: 10px;
+}
+
+.game-img {
+    height: auto;
+    width: 100%;
+    grid-column: 1/4;
+    display: grid;
+    align-items: end;
+    border-radius: 10px;
+}
+
+.board-img {
     height: 32vh;
     width: 100%;
     grid-column: 1/4;
@@ -129,6 +147,12 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     grid-column: 1/3;
 }
 
+.no-items {
+    text-align: center;
+    grid-column: 1/3;
+    font-weight: bold;
+}
+
 @media only screen and (min-width: 500px) {
     .collection-content {
         grid-template-columns: repeat(3, 1fr);
@@ -170,8 +194,12 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
         grid-column: 1/6;
     }
 
-    .item-img {
-        height: 35vh;
+    .game-img {
+        width: 90%;
+    }
+
+    .game-img + p {
+        width: 90%;
     }
 }
 
@@ -180,5 +208,13 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
         padding-left: 300px;
         padding-right: 300px;
         grid-gap: 50px;
+    }
+
+    .game-img {
+        width: 70%;
+    }
+
+    .game-img + p {
+        width: 70%;
     }
 }

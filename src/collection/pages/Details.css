@@ -1,7 +1,7 @@
 .details-img {
     grid-column: 1/18;
-    height: 55vh;
-    width: 100%;
+    height: auto;
+    width: 90%;
     border-radius: 22px;
     margin-top: 20px;
 }
@@ -94,5 +94,9 @@
 @media only screen and (min-width: 1600px) {
     #content-details {
         width: 40%;
+    }
+
+    .details-img {
+        width: 60%;
     }
 }
