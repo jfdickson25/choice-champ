@@ -227,10 +227,10 @@ const Search = ({ socket }) => {
                                 <img src={item.poster} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img' } />
                                 { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
                             {
-                                item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
+                                item.inCollection ? (<img src={check} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
                                 (
                                     item.selected 
-                                    ? (<img id={item.id} src={check} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                    ? (<img id={item.id} src={filledCircle} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
                                     : (<img id={item.id} src={circle} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
                                 )
                             }
