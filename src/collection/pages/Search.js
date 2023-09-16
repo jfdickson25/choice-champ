@@ -224,9 +224,9 @@ const Search = ({ socket }) => {
                     {items.map(item => (
                         <div className='item-section' key={item.id}>
 
-                                <div className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} style={ collectionType !== 'board' ? {backgroundImage: `url(${item.poster})`, backgroundRepeat: 'no-repeat', backgroundSize: 'contain'} : null }>
-                                    { (collectionType !== 'movie' && collectionType !== 'tv') && <p className={ collectionType === 'board' && 'item-title'}>{item.title}</p> }
-                                </div>                       {
+                                <img src={item.poster} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img' } />
+                                { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
+                            {
                                 item.inCollection ? (<img src={filledCircle} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
                                 (
                                     item.selected 
