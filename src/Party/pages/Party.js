@@ -448,11 +448,10 @@ const Party = ({ socket }) => {
                         )}
                     </div>
                 ) : [...collectionItems].reverse().map(item => (
-                    <div className='item-section' key={item.id} >
+                    <div className='item-section' key={item.id} onClick={changeCount.bind(this, item.id)}>
                         <img 
                             className={mediaType === 'movie' || mediaType === 'tv' ? 'item-img' : mediaType === 'game' ? 'game-img' : 'board-img'}  
                             src={item.poster} 
-                            onClick={changeCount.bind(this, item.id)}
                             style={item.voted ? { border: '5px solid #FCB016' } : null}
                         />
                         {(mediaType === 'game' || mediaType === 'board') && <p style={item.voted ? { borderLeft: '5px solid #FCB016', borderRight: '5px solid #FCB016', borderBottom: '5px solid #FCB016', borderRadius: '0px 0px 9px 9px' } : null}>{item.title}</p>}
