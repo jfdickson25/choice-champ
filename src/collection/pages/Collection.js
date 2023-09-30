@@ -150,7 +150,7 @@ const Collection = ({ socket }) => {
         setTimeout(() => {
             setNavingBack(false);
             navigate(`/collections/${collectionType}`);
-        }, 500);
+        }, 1000);
     }
 
     const navAdd = () => {
@@ -158,7 +158,7 @@ const Collection = ({ socket }) => {
         setTimeout(() => {
             setNavingAdd(false);
             navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
-        }, 500);
+        }, 1000);
     }
 
     const navDetails = (id) => {
@@ -225,7 +225,7 @@ const Collection = ({ socket }) => {
                     */ 
                 }
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-                    style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                    style={navingBack ? {animation: 'resize .75s'} : null}
                 />
                 { isEdit 
                     ? (<input className='title' style={{gridColumn:"5/14", marginBottom: "10px"}} value={collectionName} onChange={e => setCollectionName(e.target.value)} />)
@@ -235,7 +235,7 @@ const Collection = ({ socket }) => {
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <div className='share-code'>share code: {shareCode}</div>
                 <img src={add} alt='Add icon' className='add' onClick={navAdd} 
-                    style={navingAdd ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                    style={navingAdd ? {animation: 'resize .75s'} : null}
                 />
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
                 <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize' : ''} />

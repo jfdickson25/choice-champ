@@ -189,7 +189,7 @@ const Collections = props => {
         setTimeout(() => {
             setNavingBack(false);
             navigate('/collections');
-        }, 500);
+        }, 1000);
     }
 
     const moveLeft = (id) => {
@@ -252,7 +252,7 @@ const Collections = props => {
         <React.Fragment>
             <div className='content'>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-                    style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                    style={navingBack ? {animation: 'resize .75s'} : null}
                 />
                 <h2 className='title'>{title}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />

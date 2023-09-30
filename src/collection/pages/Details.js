@@ -73,14 +73,15 @@ const Details = () => {
         setTimeout(() => {
             setNavingBack(false);
             navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
-        }, 500);
+        }, 1000);
     }
 
     return (
         <div className='content'>
             <img 
                 src={back} alt="Back symbol" className="top-left" onClick={navBack}
-                style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                // Add a resize animation when navigating back
+                style={navingBack ? {animation: 'resize .75s'} : null}
             />
             { loading ? <Loading type='beat' className='list-loading' size={20} /> : 
             <React.Fragment>

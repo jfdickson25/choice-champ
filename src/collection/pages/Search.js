@@ -172,7 +172,7 @@ const Search = ({ socket }) => {
 
             setTimeout(() => {
                 setSendingData(false);
-            }, 500);
+            }, 1000);
 
             // Send the selected items to the backend to be added to the collection
             fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
@@ -215,7 +215,7 @@ const Search = ({ socket }) => {
         setTimeout(() => {
             setNavingBack(false);
             navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
-        }, 500);
+        }, 1000);
     }
 
     return (
@@ -234,11 +234,11 @@ const Search = ({ socket }) => {
                 style={{ textAlign: "center" }}
             />
             <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-                style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                style={navingBack ? {animation: 'resize .75s'} : null}
             />
             <h2 className='title'>{collectionName}</h2>
             <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' id='save-icon' className="save-icon" alt='Save icon' onClick={addItems} 
-                style={sendingData ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                style={sendingData ? {animation: 'resize .75s'} : null}
             />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             {

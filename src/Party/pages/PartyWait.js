@@ -132,7 +132,7 @@ const PartyWait = ({ socket }) => {
                     socket.emit('party-remote-deleted', `waiting${code}`);
                     socket.emit('leave-room', `waiting${code}`);
                     navigate('/party');
-                }, 500);
+                }, 1000);
             });
         }
         else {
@@ -157,7 +157,7 @@ const PartyWait = ({ socket }) => {
             setTimeout(() => {
                 setNavingBack(false);
                 navigate('/party');
-            }, 500);
+            }, 1000);
         }
     }
 
@@ -165,7 +165,7 @@ const PartyWait = ({ socket }) => {
   return (
     <div className='content'>
         <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-            style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+            style={navingBack ? {animation: 'resize .75s'} : null}
         />
         <div className='party-wait-code'>
             Party Code: {code}

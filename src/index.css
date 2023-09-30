@@ -127,6 +127,7 @@ input {
 .top-left {
   grid-column: 2/4;
   width: 90%;
+  transition: ease-in-out;
 }
 
 .title {
@@ -199,6 +200,18 @@ input {
   padding: 0;
   font-weight: bold;
   font-size: 16pt;
+}
+
+@keyframes resize {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.75);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @media only screen and (min-width: 800px) {

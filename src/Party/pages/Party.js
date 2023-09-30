@@ -341,7 +341,7 @@ const Party = ({ socket }) => {
                     socket.emit('party-remote-deleted', code);
                     // Redirect to the home page
                     navigate('/party');
-                }, 500);
+                }, 1000);
             });
         }
         else {
@@ -352,7 +352,7 @@ const Party = ({ socket }) => {
                 socket.emit('user-leave-party', code);
                 socket.emit('leave-room', code);
                 navigate('/party');
-            }, 500);
+            }, 1000);
 
         }
     }
@@ -399,7 +399,7 @@ const Party = ({ socket }) => {
     <div className='content'>
         { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'
-            style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+            style={navingBack ? {animation: 'resize .75s'} : null}
         />
         { (userType === 'owner' && collectionItems.length > 1) ? (
             <div className='votes-needed-section'>

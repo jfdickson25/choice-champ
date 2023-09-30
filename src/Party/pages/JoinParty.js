@@ -66,13 +66,13 @@ const JoinParty = (props) => {
         setTimeout(() => {
             setNavingBack(false);
             navigate('/party');
-        }, 500);
+        }, 1000);
     }
 
   return (
     <div className='content'>
         <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-            style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+            style={navingBack ? {animation: 'resize .75s'} : null}
         />
         <h2 className='title'>Join Party</h2>
         <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032" className="join-img" alt='Join Code Image'/>
