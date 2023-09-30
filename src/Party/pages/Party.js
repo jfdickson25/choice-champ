@@ -398,7 +398,7 @@ const Party = ({ socket }) => {
   return (
     <div className='content'>
         { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
-        <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'
+        <img src={back} alt="Back symbol" onClick={navToParty} className='top-left clickable'
             style={navingBack ? {animation: 'button-press .75s'} : null}
         />
         { (userType === 'owner' && collectionItems.length > 1) ? (
@@ -423,7 +423,7 @@ const Party = ({ socket }) => {
             </div>)
             : <div className='guest-banner'></div>
         }
-        { (userType === 'owner' && collectionItems.length > 1) && (<img src={dice} className="edit" alt='Dice' onClick={selectRandom} />) }
+        { (userType === 'owner' && collectionItems.length > 1) && (<img src={dice} className="edit clickable" alt='Dice' onClick={selectRandom} />) }
         <div className={mediaType === 'game' ? 'collection-content-game' : 'collection-content-other' }>
             { 
                 collectionItems.length === 1 ? (

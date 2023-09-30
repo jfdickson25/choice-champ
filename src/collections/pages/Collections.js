@@ -251,12 +251,12 @@ const Collections = props => {
     return (
         <React.Fragment>
             <div className='content'>
-                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+                <img src={back} alt="Back symbol" className="top-left clickable" onClick={navBack} 
                     style={navingBack ? {animation: 'button-press .75s'} : null}
                 />
                 <h2 className='title'>{title}</h2>
-                <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
-                <img src={add} className='add' alt='Add icon' onClick={handleOpen} />
+                <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} />
+                <img src={add} className='add clickable' alt='Add icon' onClick={handleOpen} />
 
                 {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 

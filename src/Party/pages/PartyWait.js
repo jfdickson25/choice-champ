@@ -164,7 +164,7 @@ const PartyWait = ({ socket }) => {
 
   return (
     <div className='content'>
-        <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+        <img src={back} alt="Back symbol" className="top-left clickable" onClick={navBack} 
             style={navingBack ? {animation: 'button-press .75s'} : null}
         />
         <div className='party-wait-code'>

@@ -224,7 +224,7 @@ const Collection = ({ socket }) => {
                            if it is active or not.
                     */ 
                 }
-                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+                <img src={back} alt="Back symbol" className="top-left clickable" onClick={navBack} 
                     style={navingBack ? {animation: 'button-press .75s'} : null}
                 />
                 { isEdit 
@@ -232,14 +232,14 @@ const Collection = ({ socket }) => {
                     : (<h2 className='title'>{collectionName}</h2>)
                 }
 
-                <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
+                <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} />
                 <div className='share-code'>share code: {shareCode}</div>
-                <img src={add} alt='Add icon' className='add' onClick={navAdd} 
+                <img src={add} alt='Add icon' className='add clickable' onClick={navAdd} 
                     style={navingAdd ? {animation: 'button-press .75s'} : null}
                 />
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
-                <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize' : 'inactive-categorize'} />
-                <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {setShowAlphabetical(false)}} className={!showAlphabetical ? 'active-categorize' : 'inactive-categorize'} />
+                <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize clickable' : 'clickable'} />
+                <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {setShowAlphabetical(false)}} className={!showAlphabetical ? 'active-categorize clickable' : 'clickable'} />
                 {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
                         (
@@ -264,8 +264,8 @@ const Collection = ({ socket }) => {
                                                             <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
                                                     } 
                                                     { collectionType === 'game' || collectionType === 'board' && <p>{item.title}</p>}
-                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
+                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
+                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-watched-game clickable' : 'item-action-watched clickable'} onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
                                                 )
                                             :   null
@@ -287,8 +287,8 @@ const Collection = ({ socket }) => {
                                                             <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
                                                     }
                                                     { collectionType === 'game' || collectionType === 'board' && <p>{item.title}</p>}
-                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
+                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
+                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-watched-game clickable' : 'item-action-watched clickable'} onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
                                                 )
                                             :   null
@@ -308,8 +308,8 @@ const Collection = ({ socket }) => {
                                                 (
                                                     <div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                         <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
-                                                        { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                        { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
+                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-watched-game clickable' : 'item-action-watched clickable'} onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                     </div>
                                                 )
                                             : null
@@ -322,8 +322,8 @@ const Collection = ({ socket }) => {
                                                 (
                                                     <div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                         <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
-                                                        { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
-                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                        { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
+                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-watched-game clickable' : 'item-action-watched clickable'} onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                     </div>
                                                 )
                                             : null

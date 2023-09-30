@@ -79,7 +79,7 @@ const Details = () => {
     return (
         <div className='content'>
             <img 
-                src={back} alt="Back symbol" className="top-left" onClick={navBack}
+                src={back} alt="Back symbol" className="top-left clickable" onClick={navBack}
                 // Add a button-press animation when navigating back
                 style={navingBack ? {animation: 'button-press .75s'} : null}
             />

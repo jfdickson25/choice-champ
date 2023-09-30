@@ -233,11 +233,11 @@ const Search = ({ socket }) => {
                 theme="dark"
                 style={{ textAlign: "center" }}
             />
-            <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+            <img src={back} alt="Back symbol" className="top-left clickable" onClick={navBack} 
                 style={navingBack ? {animation: 'button-press .75s'} : null}
             />
             <h2 className='title'>{collectionName}</h2>
-            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' id='save-icon' className="save-icon" alt='Save icon' onClick={addItems} 
+            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' id='save-icon' className="save-icon clickable" alt='Save icon' onClick={addItems} 
                 style={sendingData ? {animation: 'button-press .75s'} : null}
             />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
@@ -250,11 +250,11 @@ const Search = ({ socket }) => {
                                 <img src={item.poster} alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img' } />
                                 { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
                             {
-                                item.inCollection ? (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
+                                item.inCollection ? (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'}  />) :
                                 (
                                     item.selected 
-                                    ? (<img id={item.id} src={filledCircle} alt={`${item.title} selected`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
-                                    : (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                    ? (<img id={item.id} src={filledCircle} alt={`${item.title} selected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                    : (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { checkUncheckItem(item.id) }} />)
                                 )
                             }
                             </div>

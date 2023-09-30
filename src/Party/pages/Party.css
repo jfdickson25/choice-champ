@@ -397,4 +397,8 @@
     .game-img + p {
         width: 70%;
     }
+
+    .collection-content-game {
+        grid-column: 6/13;
+    }
 }

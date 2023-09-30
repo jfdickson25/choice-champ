@@ -99,8 +99,8 @@ const Settings = props => {
                         />
                         <p className='settings-attribution-text'>All illustrated imagery was used from Storyset. For an extensive list of all the illustrations used please press the image to the left.</p>
                     </div>
-                    <Button className='btn-logout' onClick={auth.logout}>Logout</Button>
-                    <Button className='btn-delete' onClick={openDeleteModal}>Delete Account</Button>
+                    <Button className='btn-logout clickable' onClick={auth.logout}>Logout</Button>
+                    <Button className='btn-delete clickable' onClick={openDeleteModal}>Delete Account</Button>
                 </div>
             </div>
             <Dialog open={showDeleteModal} onClose={handleClose} fullWidth maxWidth='lg'>
