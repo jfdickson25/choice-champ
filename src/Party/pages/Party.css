@@ -165,7 +165,7 @@
 }
 
 .board-img {
-    height: 32vh;
+    height: auto;
     width: 100%;
     grid-column: 1/4;
     display: grid;
