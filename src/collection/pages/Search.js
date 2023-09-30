@@ -247,7 +247,12 @@ const Search = ({ socket }) => {
                     {items.map(item => (
                         <div className='item-section' key={item.id}>
 
-                                <img src={item.poster} alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img' } />
+                                { 
+                                    collectionType !== 'board' ?
+                                    <img src={item.poster} alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : 'game-img'} /> 
+                                    :
+                                    <div className='board-img-search' /> 
+                                }
                                 { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
                             {
                                 item.inCollection ? (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'}  />) :
