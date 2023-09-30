@@ -30,6 +30,8 @@ const Search = ({ socket }) => {
     const [items, setItems] = useState([]);
     const [collection, setCollection] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [navingBack, setNavingBack] = useState(false);
+    const [sendingData, setSendingData] = useState(false);
 
     // Create a ref of collection
     const collectionRef = useRef(collection);
@@ -62,7 +64,7 @@ const Search = ({ socket }) => {
                 collectionRef.current = data.items;
             }
         });
-    }, []);
+    }, [auth, collectionType, collectionId]);
 
     const updateList = (search) => {
         if (search === '' || search === undefined || search === null) {
@@ -85,7 +87,7 @@ const Search = ({ socket }) => {
 
                 // Check if item exists in collection ref
                 collectionRef.current.forEach(item => {
-                    if(item.itemId == mediaItem.id) {
+                    if(item.itemId === mediaItem.id) {
                         inCollection = true;
                     }
                 });
@@ -98,6 +100,8 @@ const Search = ({ socket }) => {
                         selected: false,
                         inCollection: inCollection
                     }]);
+
+                    setIsLoading(false);
                 } else if (collectionType === 'tv') {
                     setItems(prevState => [...prevState, {
                         id: mediaItem.id,
@@ -106,6 +110,8 @@ const Search = ({ socket }) => {
                         selected: false,
                         inCollection: inCollection
                     }]);
+
+                    setIsLoading(false);
                 } else if (collectionType === 'game') {
                     setItems(prevState => [...prevState, {
                         id: mediaItem.id,
@@ -114,6 +120,8 @@ const Search = ({ socket }) => {
                         selected: false,
                         inCollection: inCollection
                     }]);
+
+                    setIsLoading(false);
                 } else if (collectionType === 'board') {
                     setItems(prevState => [...prevState, {
                         id: mediaItem.id,
@@ -121,10 +129,10 @@ const Search = ({ socket }) => {
                         selected: false,
                         inCollection: inCollection
                     }]);
+
+                    setIsLoading(false);
                 }
             });
-
-            setIsLoading(false);
         });
     };
 
@@ -159,6 +167,13 @@ const Search = ({ socket }) => {
 
         // Check to make sure selectedItems is not empty
         if(selectedItems.length !== 0) {
+
+            setSendingData(true);
+
+            setTimeout(() => {
+                setSendingData(false);
+            }, 500);
+
             // Send the selected items to the backend to be added to the collection
             fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
                 method: 'POST',
@@ -196,7 +211,11 @@ const Search = ({ socket }) => {
     }
 
     const navBack = () => {
-        navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
+        setNavingBack(true);
+        setTimeout(() => {
+            setNavingBack(false);
+            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
+        }, 500);
     }
 
     return (
@@ -214,9 +233,13 @@ const Search = ({ socket }) => {
                 theme="dark"
                 style={{ textAlign: "center" }}
             />
-            <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
+            <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+                style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+            />
             <h2 className='title'>{collectionName}</h2>
-            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' id='save-icon' className="save-icon" alt='Save icon' onClick={addItems} />
+            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' id='save-icon' className="save-icon" alt='Save icon' onClick={addItems} 
+                style={sendingData ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+            />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
@@ -224,14 +247,14 @@ const Search = ({ socket }) => {
                     {items.map(item => (
                         <div className='item-section' key={item.id}>
 
-                                <img src={item.poster} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img' } />
+                                <img src={item.poster} alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img' } />
                                 { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
                             {
-                                item.inCollection ? (<img src={check} alt={`${item.title} poster`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
+                                item.inCollection ? (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game' : 'item-action'}  />) :
                                 (
                                     item.selected 
-                                    ? (<img id={item.id} src={filledCircle} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
-                                    : (<img id={item.id} src={circle} alt={`${item.title} poster`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                    ? (<img id={item.id} src={filledCircle} alt={`${item.title} selected`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
+                                    : (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game' : 'item-action'} onClick={() => { checkUncheckItem(item.id) }} />)
                                 )
                             }
                             </div>

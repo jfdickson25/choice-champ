@@ -21,6 +21,7 @@ const PartyWait = ({ socket }) => {
 
     // Variable to store the number of members in the party
     const [memberCount, setMemberCount] = useState(0);
+    const [navingBack, setNavingBack] = useState(false);
     // Using useRef to store the memberCount so that it doesn't get reset on re-render
     const memberCountRef = useRef(memberCount);
 
@@ -123,11 +124,15 @@ const PartyWait = ({ socket }) => {
                 }
             })
             .then(response => {
-                // Emit event to delete the party for the other users so they can be redirected to the
-                // party page
-                socket.emit('party-remote-deleted', `waiting${code}`);
-                socket.emit('leave-room', `waiting${code}`);
-                navigate('/party');
+                setNavingBack(true);
+                setTimeout(() => {
+                    setNavingBack(false);
+                    // Emit event to delete the party for the other users so they can be redirected to the
+                    // party page
+                    socket.emit('party-remote-deleted', `waiting${code}`);
+                    socket.emit('leave-room', `waiting${code}`);
+                    navigate('/party');
+                }, 500);
             });
         }
         else {
@@ -146,15 +151,22 @@ const PartyWait = ({ socket }) => {
                     partyCode: code,
                 })
             });
+
+            setNavingBack(true);
             
-            navigate('/party');
+            setTimeout(() => {
+                setNavingBack(false);
+                navigate('/party');
+            }, 500);
         }
     }
 
 
   return (
     <div className='content'>
-        <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
+        <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+            style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+        />
         <div className='party-wait-code'>
             Party Code: {code}
         </div>

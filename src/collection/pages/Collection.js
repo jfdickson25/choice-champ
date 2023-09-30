@@ -30,6 +30,8 @@ const Collection = ({ socket }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [collectionName, setCollectionName] = useState(useParams().name);
     const [showAlphabetical, setShowAlphabetical] = useState(false);
+    const [navingBack, setNavingBack] = useState(false);
+    const [navingAdd, setNavingAdd] = useState(false);
 
     const itemsRef = useRef(items);
 
@@ -47,7 +49,11 @@ const Collection = ({ socket }) => {
             setItems(data.items);
             itemsRef.current = data.items;
             setShareCode(data.shareCode);
-            setIsLoading(false);
+
+            // Give a little time for the items to load
+            setTimeout(() => {
+                setIsLoading(false);
+            }, 500);
 
             // Join room with the collection id
             socket.emit('join-room', collectionId);
@@ -140,11 +146,19 @@ const Collection = ({ socket }) => {
 
     const navBack = () => {
         socket.emit('leave-room', collectionId);
-        navigate(`/collections/${collectionType}`);
+        setNavingBack(true);
+        setTimeout(() => {
+            setNavingBack(false);
+            navigate(`/collections/${collectionType}`);
+        }, 500);
     }
 
     const navAdd = () => {
-        navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
+        setNavingAdd(true);
+        setTimeout(() => {
+            setNavingAdd(false);
+            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
+        }, 500);
     }
 
     const navDetails = (id) => {
@@ -210,7 +224,9 @@ const Collection = ({ socket }) => {
                            if it is active or not.
                     */ 
                 }
-                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
+                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+                    style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                />
                 { isEdit 
                     ? (<input className='title' style={{gridColumn:"5/14", marginBottom: "10px"}} value={collectionName} onChange={e => setCollectionName(e.target.value)} />)
                     : (<h2 className='title'>{collectionName}</h2>)
@@ -218,7 +234,9 @@ const Collection = ({ socket }) => {
 
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <div className='share-code'>share code: {shareCode}</div>
-                <img src={add} alt='Add icon' className='add' onClick={navAdd} />
+                <img src={add} alt='Add icon' className='add' onClick={navAdd} 
+                    style={navingAdd ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                />
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
                 <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize' : ''} />
                 <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {setShowAlphabetical(false)}} className={!showAlphabetical ? 'active-categorize' : ''} />

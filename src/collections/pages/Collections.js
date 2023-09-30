@@ -33,6 +33,7 @@ const Collections = props => {
     // State for error messages
     const [nameError, setNameError] = useState(null);
     const [joinError, setJoinError] = useState('');
+    const [navingBack, setNavingBack] = useState(false);
 
     // Empty array will only run on the initial render
     useEffect(() => {
@@ -61,7 +62,7 @@ const Collections = props => {
             setCollections(data.collections);
             setIsLoading(false);
         });
-    }, [collectionsType]);
+    }, [auth, collectionsType]);
 
     /************************************************************
      * Logic for setting edit state and removing movies
@@ -184,7 +185,11 @@ const Collections = props => {
     }
 
     const navBack = () => {
-        navigate('/collections');
+        setNavingBack(true);
+        setTimeout(() => {
+            setNavingBack(false);
+            navigate('/collections');
+        }, 500);
     }
 
     const moveLeft = (id) => {
@@ -246,7 +251,9 @@ const Collections = props => {
     return (
         <React.Fragment>
             <div className='content'>
-                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
+                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+                    style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                />
                 <h2 className='title'>{title}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <img src={add} className='add' alt='Add icon' onClick={handleOpen} />
@@ -259,11 +266,11 @@ const Collections = props => {
                                 isEdit ? (
                                     <div className='collections-item' key={collection._id}>
                                         <img className='remove' alt="Remove Icon" onClick={() => { handleRemoveCollection(collection._id) }} src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433' />
-                                        { index !== 0 && <img className='left' onClick={() => { moveLeft(collection._id) }} src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/left.png?v=1692161740511' /> }
+                                        { index !== 0 && <img className='left' alt="left arrow" onClick={() => { moveLeft(collection._id) }} src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/left.png?v=1692161740511' /> }
                                         <div className="collection-text">
                                             {collection.name}
                                         </div>
-                                        { index !== collections.length - 1 && <img className='right' onClick={ () => { moveRight(collection._id) } } src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/right.png?v=1692161745669' /> }
+                                        { index !== collections.length - 1 && <img className='right' alt="right arrow" onClick={ () => { moveRight(collection._id) } } src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/right.png?v=1692161745669' /> }
                                     </div>
                                 ) : (
                                     <Link to={`/collections/${collectionsType}/${collection.name}/${collection._id}`} className='collections-item' key={collection._id} >

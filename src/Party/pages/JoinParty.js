@@ -12,6 +12,7 @@ const JoinParty = (props) => {
 
     // Enum for the error state 0 = no error, 1 = join code must be 4 digits, 2 = party does not exist
     const [errorMessage, setErrorMessage] = useState('');
+    const [navingBack, setNavingBack] = useState(false);
 
     let navigate = useNavigate();
     const inputRef = useRef();
@@ -60,12 +61,19 @@ const JoinParty = (props) => {
     }
 
     const navBack = () => {
-        navigate('/party');
+        setNavingBack(true);
+
+        setTimeout(() => {
+            setNavingBack(false);
+            navigate('/party');
+        }, 500);
     }
 
   return (
     <div className='content'>
-        <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
+        <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+            style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+        />
         <h2 className='title'>Join Party</h2>
         <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032" className="join-img" alt='Join Code Image'/>
         <div id='join-party-page'>

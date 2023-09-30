@@ -20,6 +20,7 @@ const CreateParty = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [secretMode, setSecretMode] = useState(false);
     const [includeWatched, setIncludeWatched] = useState(false);
+    const [navingBack, setNavingBack] = useState(false);
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -87,7 +88,11 @@ const CreateParty = props => {
     }
 
     const navBack = () => {
-        navigate('/party');
+        setNavingBack(true);
+        setTimeout(() => {
+            setNavingBack(false);
+            navigate('/party');
+        }, 500);
     }
 
     const mediaTypeHandler = (event) => {
@@ -113,7 +118,9 @@ const CreateParty = props => {
     return (
         <React.Fragment>
             <div className='content'>
-                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} />
+                <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
+                    style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+                />
                 <h2 className='title'>Create Party</h2>
                 <div className='create-divider'></div>
                 <p className='option-text'>Secret Mode</p>

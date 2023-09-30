@@ -9,6 +9,7 @@ import Loading from '../../shared/components/Loading';
 import { AuthContext } from '../../shared/context/auth-context';
 
 import './Party.css';  
+import { set } from 'react-hook-form';
 
 const Party = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -31,6 +32,7 @@ const Party = ({ socket }) => {
 
     const [slideDown, setSlideDown] = useState(false);
     const [randomSelected, setRandomSelected] = useState(false);
+    const [navingBack, setNavingBack] = useState(false);
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
@@ -331,16 +333,27 @@ const Party = ({ socket }) => {
                 }
             })
             .then(response => {
-                socket.emit('leave-room', code);
-                socket.emit('party-remote-deleted', code);
-                // Redirect to the home page
-                navigate('/party');
+                setNavingBack(true);
+
+                setTimeout(() => {
+                    setNavingBack(false);
+                    socket.emit('leave-room', code);
+                    socket.emit('party-remote-deleted', code);
+                    // Redirect to the home page
+                    navigate('/party');
+                }, 500);
             });
         }
         else {
-            socket.emit('user-leave-party', code);
-            socket.emit('leave-room', code);
-            navigate('/party');
+            setNavingBack(true);
+
+            setTimeout(() => {
+                setNavingBack(false);
+                socket.emit('user-leave-party', code);
+                socket.emit('leave-room', code);
+                navigate('/party');
+            }, 500);
+
         }
     }
 
@@ -385,7 +398,9 @@ const Party = ({ socket }) => {
   return (
     <div className='content'>
         { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
-        <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'/>
+        <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'
+            style={navingBack ? {transform: 'scale(0.9)', transition: 'transform 0.5s'} : null}
+        />
         { (userType === 'owner' && collectionItems.length > 1) ? (
             <div className='votes-needed-section'>
                 <p className='votes-needed-title'>Votes Needed</p>
