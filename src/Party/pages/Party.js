@@ -399,7 +399,7 @@ const Party = ({ socket }) => {
     <div className='content'>
         { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left'
-            style={navingBack ? {animation: 'resize .75s'} : null}
+            style={navingBack ? {animation: 'button-press .75s'} : null}
         />
         { (userType === 'owner' && collectionItems.length > 1) ? (
             <div className='votes-needed-section'>

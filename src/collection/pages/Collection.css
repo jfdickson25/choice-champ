@@ -58,6 +58,14 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     padding-bottom: 2px;
 }
 
+.active-categorize:hover {
+    cursor: pointer;
+}
+
+.inactive-categorize:hover {
+    cursor: pointer;
+}
+
 .item-section {
     width: 100%;
     column-count: 1;
@@ -119,7 +127,11 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     height: auto;
     top: 5px;
     left: 5px;
-  }
+}
+
+.item-action-watched:hover {
+    cursor: pointer;
+}
 
 .share-code {
     width: 100%;

@@ -103,6 +103,14 @@
     grid-column: 10/18;
 }
 
+.btn-logout:hover {
+    cursor: pointer;
+}
+
+.btn-delete:hover {
+    cursor: pointer;
+}
+
 @media only screen and (min-width: 1000px) {
     .settings-attribution-logo {
         grid-column: 4/7;

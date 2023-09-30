@@ -80,8 +80,8 @@ const Details = () => {
         <div className='content'>
             <img 
                 src={back} alt="Back symbol" className="top-left" onClick={navBack}
-                // Add a resize animation when navigating back
-                style={navingBack ? {animation: 'resize .75s'} : null}
+                // Add a button-press animation when navigating back
+                style={navingBack ? {animation: 'button-press .75s'} : null}
             />
             { loading ? <Loading type='beat' className='list-loading' size={20} /> : 
             <React.Fragment>

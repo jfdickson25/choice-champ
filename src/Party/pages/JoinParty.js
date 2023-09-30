@@ -72,7 +72,7 @@ const JoinParty = (props) => {
   return (
     <div className='content'>
         <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-            style={navingBack ? {animation: 'resize .75s'} : null}
+            style={navingBack ? {animation: 'button-press .75s'} : null}
         />
         <h2 className='title'>Join Party</h2>
         <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032" className="join-img" alt='Join Code Image'/>

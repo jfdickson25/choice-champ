@@ -130,6 +130,10 @@ input {
   transition: ease-in-out;
 }
 
+.top-left:hover {
+  cursor: pointer;
+}
+
 .title {
   grid-column: 4/15;
   font-weight: 300;
@@ -141,12 +145,20 @@ input {
   width: 90%;
 }
 
+.edit:hover {
+  cursor: pointer;
+}
+
 .item-action {
   position: absolute;
   width: 25%;
   height: auto;
   top: 5px;
   right: 5px;
+}
+
+.item-action:hover {
+  cursor: pointer;
 }
 
 .item-action-game {
@@ -157,6 +169,10 @@ input {
   right: 5px;
 }
 
+.item-action-game:hover {
+  cursor: pointer;
+}
+
 .add {
     grid-column: 8/11;
     width: 70%;
@@ -165,6 +181,10 @@ input {
 
 .add img {
   width: 100%;
+}
+
+.add:hover {
+  cursor: pointer;
 }
 
 .page-loading {
@@ -202,15 +222,19 @@ input {
   font-size: 16pt;
 }
 
-@keyframes resize {
+.clickable:hover {
+  cursor: pointer;
+}
+
+@keyframes button-press {
   0% {
-    transform: scale(1);
+    transform: translateY(0);
   }
   50% {
-    transform: scale(0.75);
+    transform: translateY(3px) scale(0.95);
   }
   100% {
-    transform: scale(1);
+    transform: translateY(0) scale(1);
   }
 }
 

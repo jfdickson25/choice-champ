@@ -11,3 +11,7 @@ button {
     font-size: 12pt;
     font-weight: bold;
 }
+
+button:hover {
+    cursor: pointer;
+}

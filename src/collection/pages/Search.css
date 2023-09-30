@@ -28,6 +28,10 @@
     z-index: 100;
 }
 
+.save-icon:hover {
+    cursor: pointer;
+}
+
 .item-title {
     height: 100% !important;
     border-radius: 9px !important;

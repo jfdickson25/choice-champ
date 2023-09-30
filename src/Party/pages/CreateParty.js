@@ -119,7 +119,7 @@ const CreateParty = props => {
         <React.Fragment>
             <div className='content'>
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-                    style={navingBack ? {animation: 'resize .75s'} : null}
+                    style={navingBack ? {animation: 'button-press .75s'} : null}
                 />
                 <h2 className='title'>Create Party</h2>
                 <div className='create-divider'></div>

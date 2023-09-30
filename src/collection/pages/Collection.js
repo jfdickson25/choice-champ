@@ -225,7 +225,7 @@ const Collection = ({ socket }) => {
                     */ 
                 }
                 <img src={back} alt="Back symbol" className="top-left" onClick={navBack} 
-                    style={navingBack ? {animation: 'resize .75s'} : null}
+                    style={navingBack ? {animation: 'button-press .75s'} : null}
                 />
                 { isEdit 
                     ? (<input className='title' style={{gridColumn:"5/14", marginBottom: "10px"}} value={collectionName} onChange={e => setCollectionName(e.target.value)} />)
@@ -235,11 +235,11 @@ const Collection = ({ socket }) => {
                 <img src={ isEdit ? editing :  edit } className="edit" alt='Edit icon' onClick={isEditHandler} />
                 <div className='share-code'>share code: {shareCode}</div>
                 <img src={add} alt='Add icon' className='add' onClick={navAdd} 
-                    style={navingAdd ? {animation: 'resize .75s'} : null}
+                    style={navingAdd ? {animation: 'button-press .75s'} : null}
                 />
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
-                <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize' : ''} />
-                <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {setShowAlphabetical(false)}} className={!showAlphabetical ? 'active-categorize' : ''} />
+                <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize' : 'inactive-categorize'} />
+                <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {setShowAlphabetical(false)}} className={!showAlphabetical ? 'active-categorize' : 'inactive-categorize'} />
                 {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
                         (
@@ -257,7 +257,13 @@ const Collection = ({ socket }) => {
                                            // Only show if the item is not watched
                                            !item.watched ?
                                                 (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                    <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
+                                                    { 
+                                                        !isEdit ? 
+                                                            <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img clickable' : collectionType === 'game' ? 'game-img clickable' : 'board-img clickable'} src={item.poster} />
+                                                            :
+                                                            <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
+                                                    } 
+                                                    { collectionType === 'game' || collectionType === 'board' && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
@@ -274,7 +280,13 @@ const Collection = ({ socket }) => {
                                             // Only show if the item is not watched
                                             !item.watched ?
                                                 (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                    <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />{(collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
+                                                    { 
+                                                        !isEdit ? 
+                                                            <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img clickable' : collectionType === 'game' ? 'game-img clickable' : 'board-img clickable'} src={item.poster} />
+                                                            :
+                                                            <img className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
+                                                    }
+                                                    { collectionType === 'game' || collectionType === 'board' && <p>{item.title}</p>}
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
