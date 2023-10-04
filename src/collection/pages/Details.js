@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 
@@ -72,7 +72,7 @@ const Details = () => {
         setNavingBack(true);
         setTimeout(() => {
             setNavingBack(false);
-            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
+            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}#${itemId}`);
         }, 1000);
     }
 

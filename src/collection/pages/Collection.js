@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useContext, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -34,6 +34,7 @@ const Collection = ({ socket }) => {
     const [navingAdd, setNavingAdd] = useState(false);
 
     const itemsRef = useRef(items);
+    const { hash } = useLocation();
 
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -53,6 +54,16 @@ const Collection = ({ socket }) => {
             // Give a little time for the items to load
             setTimeout(() => {
                 setIsLoading(false);
+
+                // If there is a hash in the url, scroll to that element
+                if(hash) {
+                    // Add a little more time for the items to load
+                    setTimeout(() => {
+                        // If there is a hash in the url, scroll to that element
+                            const element = document.getElementById(hash.substring(1));
+                            element.scrollIntoView({ behavior: "smooth" });
+                    }, 500);
+                }
             }, 500);
 
             // Join room with the collection id
@@ -256,7 +267,7 @@ const Collection = ({ socket }) => {
                                         [...filteredItems].sort((a, b) => a.title.localeCompare(b.title)).map(item => (
                                            // Only show if the item is not watched
                                            !item.watched ?
-                                                (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
+                                                (<div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     { 
                                                         !isEdit ? 
                                                             <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img clickable' : collectionType === 'game' ? 'game-img clickable' : 'board-img clickable'} src={item.poster} />
@@ -279,7 +290,7 @@ const Collection = ({ socket }) => {
                                         [...filteredItems].reverse().map(item => (
                                             // Only show if the item is not watched
                                             !item.watched ?
-                                                (<div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
+                                                (<div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     { 
                                                         !isEdit ? 
                                                             <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img clickable' : collectionType === 'game' ? 'game-img clickable' : 'board-img clickable'} src={item.poster} />
@@ -306,7 +317,7 @@ const Collection = ({ socket }) => {
                                                 // Only show if the item is watched
                                                 item.watched ?
                                                 (
-                                                    <div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
+                                                    <div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                         <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
                                                         { (collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
@@ -321,7 +332,7 @@ const Collection = ({ socket }) => {
                                             // Only show if the item is watched
                                             item.watched ?
                                                 (
-                                                    <div className='item-section' key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
+                                                    <div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                         <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
                                                         { (collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
