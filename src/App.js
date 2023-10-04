@@ -167,8 +167,8 @@ function App() {
           <Route path="/party" element={<PartyHome />} exact />
           <Route path="/party/createParty" element={<CreateParty />} exact />
           <Route path="/party/joinParty" element={<JoinParty />} exact />
-          <Route path="/party/wait/:code/:userType" element={<PartyWait socket={socket} />} exact />
-          <Route path="/party/:code/:userType" element={<Party socket={socket} />} exact />
+          <Route path="/party/wait/:code" element={<PartyWait socket={socket} />} exact />
+          <Route path="/party/:code" element={<Party socket={socket} />} exact />
           <Route path="/settings" element={<Settings />} exact />
           <Route path="*" element={<Navigate to="/collections" />} />
         </Routes>
@@ -180,8 +180,8 @@ function App() {
         <Routes>
             <Route path="/" element={<Auth />} exact />
             <Route path="/party/joinParty" element={<JoinParty />} exact />
-            <Route path="/party/wait/:code/:userType" element={<PartyWait socket={socket} />} exact />
-            <Route path="/party/:code/:userType" element={<Party socket={socket} />} exact />
+            <Route path="/party/wait/:code" element={<PartyWait socket={socket} />} exact />
+            <Route path="/party/:code" element={<Party socket={socket} />} exact />
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>

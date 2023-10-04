@@ -79,11 +79,12 @@ const CreateParty = props => {
                     mediaType: mediaType,
                     secretMode: secretMode,
                     includeWatched: includeWatched,
+                    owner: auth.userId
             })
         })
         .then(res => {
             // Route to the party page
-            navigate(`/party/wait/${partyCode}/owner`);
+            navigate(`/party/wait/${partyCode}`);
         });
     }
 

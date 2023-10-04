@@ -37,7 +37,7 @@ const JoinParty = (props) => {
             .then(data => {
                 if(data.code) {
                     // Navigate to the party page
-                    navigate(`/party/wait/${data.code}/guest`);
+                    navigate(`/party/wait/${data.code}`);
                 }
                 else {
                     // Display an error message

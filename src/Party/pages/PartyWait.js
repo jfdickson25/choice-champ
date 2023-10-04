@@ -17,11 +17,12 @@ const PartyWait = ({ socket }) => {
     let navigate = useNavigate();
   
     // Get the party code and user type from the url
-    const { code, userType } = useParams();
+    const { code } = useParams();
 
     // Variable to store the number of members in the party
     const [memberCount, setMemberCount] = useState(0);
     const [navingBack, setNavingBack] = useState(false);
+    const [userType, setUserType] = useState('guest');
     // Using useRef to store the memberCount so that it doesn't get reset on re-render
     const memberCountRef = useRef(memberCount);
 
@@ -41,6 +42,10 @@ const PartyWait = ({ socket }) => {
             // Increase the member count by 1 for this user the other users will
             // be updated with the member-increment socket event
             let memberCount = body.party.memberCount + 1;
+
+            if(body.party.owner === auth.userId) {
+                setUserType('owner');
+            }
 
             memberCountRef.current = memberCount;
             setMemberCount(memberCountRef.current);
@@ -83,7 +88,7 @@ const PartyWait = ({ socket }) => {
         socket.on('start-party', () => {
             // Emit event to leave the party room
             socket.emit('leave-room', `waiting${code}`);
-            navigate(`/party/${code}/guest`);
+            navigate(`/party/${code}`);
         });
 
         socket.on('party-deleted', () => {
@@ -110,7 +115,7 @@ const PartyWait = ({ socket }) => {
         socket.emit('leave-room', `waiting${code}`);
 
         // Route to the party page
-        navigate(`/party/${code}/owner`);
+        navigate(`/party/${code}`);
     }
 
     const navBack = async () => {

@@ -8,14 +8,13 @@ import dice from '../../shared/assets/img/dices.png';
 import Loading from '../../shared/components/Loading';
 import { AuthContext } from '../../shared/context/auth-context';
 
-import './Party.css';  
-import { set } from 'react-hook-form';
+import './Party.css'; 
 
 const Party = ({ socket }) => {
     const auth = useContext(AuthContext);
     let navigate = useNavigate();
     // Get the party code and user type from the url
-    const { code, userType } = useParams();
+    const { code } = useParams();
 
     const [collectionItems, setCollectionItems] = useState([]);
     const [mediaType, setMediaType] = useState('movie');
@@ -29,6 +28,7 @@ const Party = ({ socket }) => {
     // an incorrect value.
     const [totalUsers, setTotalUsers] = useState(0);
     const [runnerUps, setRunnerUps] = useState([]);
+    const [userType, setUserType] = useState('guest');
 
     const [slideDown, setSlideDown] = useState(false);
     const [randomSelected, setRandomSelected] = useState(false);
@@ -52,6 +52,10 @@ const Party = ({ socket }) => {
         })
         .then(response => response.json())
         .then(body => {
+            if(body.party.owner === auth.userId) {
+                setUserType('owner');
+            }
+
             let items = body.party.items.map(item => {
                 return {
                     id: item._id,
@@ -146,6 +150,9 @@ const Party = ({ socket }) => {
                     // Find the item with the id and set it to the state
                     const item = collectionPointRef.current.find(item => item.id === id);
 
+                    // Scroll user back to the top of the page
+                    window.scrollTo(0, 0);
+
                     // Set the rest of the items that are not the random item to be the runner ups
                     const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
                     setRunnerUps(runnerUps);
@@ -176,6 +183,9 @@ const Party = ({ socket }) => {
                             setReady(false);
                             return;
                         } else if(filteredItems.length === 1) {
+                            // Scroll user back to the top of the page
+                            window.scrollTo(0, 0);
+
                             // Set runners up to the remaining items
                             const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
                             setRunnerUps(runnerUps);
@@ -185,6 +195,9 @@ const Party = ({ socket }) => {
                                 item.votes = 0;
                                 item.voted = false;
                             });
+
+                            // Scroll user back to the top of the page
+                            window.scrollTo(0, 0);
 
                             setUsersReadyCount(0);
                             usersReadyCountRef.current = 0;
@@ -278,6 +291,9 @@ const Party = ({ socket }) => {
                         const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
                         setRunnerUps(runnerUps);
 
+                        // Scroll user back to the top of the page
+                        window.scrollTo(0, 0);
+
                         // Make a fetch request to delete the party from the database
                         fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
                         {
@@ -292,6 +308,9 @@ const Party = ({ socket }) => {
                             item.votes = 0;
                             item.voted = false;
                         });
+
+                        // Scroll user back to the top of the page
+                        window.scrollTo(0, 0);
 
                         setUsersReadyCount(0);
                         usersReadyCountRef.current = 0;
@@ -381,6 +400,9 @@ const Party = ({ socket }) => {
                 setRunnerUps(runnerUps);
                 setCollectionItems([randomItem]);
                 collectionPointRef.current = [randomItem];
+
+                // Scroll user back to the top of the page
+                window.scrollTo(0, 0);
 
                 fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
                 {
