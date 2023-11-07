@@ -113,7 +113,7 @@ function App() {
     setSocket(newSocket);
 
     return () => newSocket.close();
-  }, [setSocket]);
+  }, []);
 
   const login = useCallback(() => {
     setIsLoggedIn(true);

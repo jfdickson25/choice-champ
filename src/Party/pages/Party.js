@@ -20,6 +20,7 @@ const Party = ({ socket }) => {
     const [mediaType, setMediaType] = useState('movie');
     const [votesNeeded, setVotesNeeded] = useState(1);
     const [secretMode, setSecretMode] = useState(false);
+    const [superChoiceMode, setSuperChoiceMode] = useState(false);
     const [ready, setReady] = useState(false);
     // State to track the number of users that have clicked the voting finished button
     const [usersReadyCount, setUsersReadyCount] = useState(0);
@@ -43,7 +44,7 @@ const Party = ({ socket }) => {
     useEffect(() => {
         auth.showFooterHandler(false);
         // Make a fetch request to the backend to get all the collectionItems for the party
-        fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+        fetch(`https://choice-champ-backend.glitch.me/party/${code}?userId=${auth.userId}`,
         {
             method: 'GET',
             headers: {
@@ -52,7 +53,7 @@ const Party = ({ socket }) => {
         })
         .then(response => response.json())
         .then(body => {
-            if(body.party.owner === auth.userId) {
+            if(body.owner) {
                 setUserType('owner');
             }
 
@@ -64,6 +65,9 @@ const Party = ({ socket }) => {
                     poster: item.poster,
                     watched: item.watched,
                     votes: 0,
+                    superChoice: false,
+                    tempSuperChoice: false,
+                    holdSuperChoice: false,
                     voted: false
                 }
             });
@@ -85,6 +89,7 @@ const Party = ({ socket }) => {
 
             setMediaType(body.party.mediaType);
             setSecretMode(body.party.secretMode);
+            setSuperChoiceMode(body.party.superChoice);
             setTotalUsers(body.party.memberCount);
             totalUsersRef.current = body.party.memberCount;
             setCollectionItems(items);
@@ -115,24 +120,20 @@ const Party = ({ socket }) => {
             votesNeededRef.current = votesNeeded;
         });
 
-        socket.on('vote-selected', (votesNeeded) => {
-            // Filter out the items that have been voted for
-            const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeeded);
+        socket.on('super-choice', (id) => {
+            // Find item with the id and set holdSuperChoice to true
+            const item = collectionPointRef.current.find(item => item.id == id);
 
-            // Reset votes and voted for all filtered items
-            filteredItems.forEach(item => {
-                item.votes = 0;
-                item.voted = false;
-            });
+            item.holdSuperChoice = true;
+            setCollectionItems([...collectionPointRef.current]);
+        });
 
-            if(filteredItems.length === 1) {
-                // Set runners up to the remaining items
-                const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeeded);
-                setRunnerUps(runnerUps);
-            }
-
-            setCollectionItems(filteredItems);
-            collectionPointRef.current = filteredItems;
+        socket.on('remove-super-choice', (id) => {
+            // Find item with the id and set holdSuperChoice to false
+            const item = collectionPointRef.current.find(item => item.id == id);
+            
+            item.holdSuperChoice = false;
+            setCollectionItems([...collectionPointRef.current]);
         });
 
         socket.on('random-selected', (id) => {
@@ -170,48 +171,61 @@ const Party = ({ socket }) => {
             // If the usersReadyCount is equal to the totalUsers then filter all the items that have
             // less votes than the votesNeeded. Reset the votes and voted for all filtered items
             if(usersReadyCountRef.current == totalUsersRef.current) {
-                setTimeout(() => {
+                // Filter out the items that have been voted for
+                const filteredItems = collectionPointRef.current.filter(item => (item.votes >= votesNeededRef.current || item.holdSuperChoice || item.tempSuperChoice));
 
-                    // Set slideDown to true to slide down the ready overlay
-                    setSlideDown(true);
+                if (filteredItems.length === 0) {
+                    alert('No item reached the votes needed. Continue voting.');
+                    setReady(false);
+                    usersReadyCountRef.current = 0;
+                    setUsersReadyCount(usersReadyCountRef.current);
+                    return;
+                } else {
                     setTimeout(() => {
-                        // Filter out the items that have been voted for
-                        const filteredItems = collectionPointRef.current.filter(item => item.votes >= votesNeededRef.current);
+                        // Set slideDown to true to slide down the ready overlay
+                        setSlideDown(true);
+                        setTimeout(() => {
+                            // Check to make sure there are items left in the collection
+                            if (filteredItems.length === 0) {
+                                setReady(false);
+                                return;
+                            } else if(filteredItems.length === 1) {
+                                // Scroll user back to the top of the page
+                                window.scrollTo(0, 0);
 
-                        // Check to make sure there are items left in the collection
-                        if (filteredItems.length === 0) {
+                                // Set runners up to the remaining items
+                                const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
+                                setRunnerUps(runnerUps);
+                            } else {
+                                // Reset votes and voted for all filtered items
+                                filteredItems.forEach(item => {
+                                    if(item.tempSuperChoice || item.holdSuperChoice) {
+                                        item.superChoice = true;
+                                        item.holdSuperChoice = false;
+                                        item.tempSuperChoice = false;
+                                    }
+
+                                    item.votes = 0;
+                                    item.voted = false;
+                                });
+
+                                // Scroll user back to the top of the page
+                                window.scrollTo(0, 0);
+
+                                setUsersReadyCount(0);
+                                usersReadyCountRef.current = 0;
+                            }
+
+                            // No matter what set the collection items to the filtered items
+                            setCollectionItems(filteredItems);
+                            collectionPointRef.current = filteredItems;
+
+                            // Set ready to false whether there is one or more items left in the collection
                             setReady(false);
-                            return;
-                        } else if(filteredItems.length === 1) {
-                            // Scroll user back to the top of the page
-                            window.scrollTo(0, 0);
-
-                            // Set runners up to the remaining items
-                            const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
-                            setRunnerUps(runnerUps);
-                        } else {
-                            // Reset votes and voted for all filtered items
-                            filteredItems.forEach(item => {
-                                item.votes = 0;
-                                item.voted = false;
-                            });
-
-                            // Scroll user back to the top of the page
-                            window.scrollTo(0, 0);
-
-                            setUsersReadyCount(0);
-                            usersReadyCountRef.current = 0;
-                        }
-
-                        // No matter what set the collection items to the filtered items
-                        setCollectionItems(filteredItems);
-                        collectionPointRef.current = filteredItems;
-
-                        // Set ready to false whether there is one or more items left in the collection
-                        setReady(false);
-                        setSlideDown(false);
-                    }, 2000);
-                }, 1000);
+                            setSlideDown(false);
+                        }, 2000);
+                    }, 1000);
+                }
             }
         });
 
@@ -242,6 +256,8 @@ const Party = ({ socket }) => {
             socket.off('user-ready');
             socket.off('user-not-ready');
             socket.off('party-member-left');
+            socket.off('super-choice');
+            socket.off('remove-super-choice');
         }
     }, []);
 
@@ -249,12 +265,36 @@ const Party = ({ socket }) => {
         // Find the item with the id and increment vote by one and save it to the state
         const item = collectionItems.find(item => item.id === id);
         // Only increment if the user has not voted
-        if (item.voted) {
-            item.voted = false;
+        if (item.voted && !item.tempSuperChoice && !item.superChoice) {
+            // If superChoice mode is not enabled then decrement the vote count
+            // the other else if statements won't hit if superChoice mode is disabled
+            // since tempSuperChoice and superChoice will always be false
+            if(!superChoiceMode) {
+                item.voted = false;
+                item.votes -= 1;
+                setCollectionItems([...collectionItems]);
+                collectionPointRef.current = [...collectionItems];
+                socket.emit('vote-remote-decrement', id, code);
+            } else {
+                item.tempSuperChoice = true;
+                setCollectionItems([...collectionItems]);
+                collectionPointRef.current = [...collectionItems];
+                socket.emit('super-choice-remote', id, code);
+            }
+        } else if (item.voted && item.superChoice) {
             item.votes -= 1;
+            item.voted = false;
             setCollectionItems([...collectionItems]);
             collectionPointRef.current = [...collectionItems];
             socket.emit('vote-remote-decrement', id, code);
+        } else if (item.tempSuperChoice && !item.superChoice) {
+            item.votes -= 1;
+            item.voted = false;
+            item.tempSuperChoice = false;
+            setCollectionItems([...collectionItems]);
+            collectionPointRef.current = [...collectionItems];
+            socket.emit('vote-remote-decrement', id, code);
+            socket.emit('remove-super-choice-remote', id, code);
         } else {
             item.voted = true;        
             item.votes += 1;
@@ -274,55 +314,66 @@ const Party = ({ socket }) => {
         // If the usersReadyCount is equal to the totalUsers then filter all the items that have
         // less votes than the votesNeeded. Reset the votes and voted for all filtered items
         if(usersReadyCountRef.current == totalUsersRef.current) {
-            setTimeout(() => {
+            // Filter out the items that have been voted for
+            const filteredItems = collectionItems.filter(item => (item.votes >= votesNeededRef.current) || item.holdSuperChoice || item.tempSuperChoice);
 
-                // Set slideDown to true to slide down the ready overlay
-                setSlideDown(true);
+            if (filteredItems.length === 0) {
+                alert('No item reached the votes needed. Continue voting.');
+                setReady(false);
+                usersReadyCountRef.current = 0;
+                setUsersReadyCount(usersReadyCountRef.current);
+                // Still emit so other users will be reset
+                socket.emit('user-ready-remote', code);
+                return;
+            } else {
                 setTimeout(() => {
-                    // Filter out the items that have been voted for
-                    const filteredItems = collectionItems.filter(item => item.votes >= votesNeededRef.current);
+                    // Set slideDown to true to slide down the ready overlay
+                    setSlideDown(true);
+                    setTimeout(() => {
+                        if(filteredItems.length === 1) {
+                            // Set runners up to the remaining items
+                            const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
+                            setRunnerUps(runnerUps);
 
-                    // Check to make sure there are items left in the collection
-                    if (filteredItems.length === 0) {
+                            // Scroll user back to the top of the page
+                            window.scrollTo(0, 0);
+
+                            // Make a fetch request to delete the party from the database
+                            fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+                            {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                        } else {
+                            // Reset votes and voted for all filtered items
+                            filteredItems.forEach(item => {
+                                if(item.tempSuperChoice || item.holdSuperChoice) {
+                                    item.superChoice = true;
+                                    item.tempSuperChoice = false;
+                                    item.holdSuperChoice = false;
+                                }
+
+                                item.votes = 0;
+                                item.voted = false;
+                            });
+
+                            // Scroll user back to the top of the page
+                            window.scrollTo(0, 0);
+
+                            setUsersReadyCount(0);
+                            usersReadyCountRef.current = 0;
+                        }
+
+                        setCollectionItems(filteredItems);
+                        collectionPointRef.current = filteredItems;
+
                         setReady(false);
-                        return;
-                    } else if(filteredItems.length === 1) {
-                        // Set runners up to the remaining items
-                        const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
-                        setRunnerUps(runnerUps);
-
-                        // Scroll user back to the top of the page
-                        window.scrollTo(0, 0);
-
-                        // Make a fetch request to delete the party from the database
-                        fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
-                        {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                    } else {
-                        // Reset votes and voted for all filtered items
-                        filteredItems.forEach(item => {
-                            item.votes = 0;
-                            item.voted = false;
-                        });
-
-                        // Scroll user back to the top of the page
-                        window.scrollTo(0, 0);
-
-                        setUsersReadyCount(0);
-                        usersReadyCountRef.current = 0;
-                    }
-
-                    setCollectionItems(filteredItems);
-                    collectionPointRef.current = filteredItems;
-
-                    setReady(false);
-                    setSlideDown(false);
-                }, 2000);
-            }, 1000);
+                        setSlideDown(false);
+                    }, 2000);
+                }, 1000);
+            }
         }
 
         // Emit event to the server that the user is ready
@@ -464,7 +515,9 @@ const Party = ({ socket }) => {
                         { runnerUps.length > 0 && (
                             runnerUps.map(item => (
                                 <p className='runner-up' key={item.id}>
-                                    { item.title }
+                                    { 
+                                        item.superChoice ? `${item.title} ⭐` : item.title
+                                    }
                                 </p>
                             ))
                         )}
@@ -474,10 +527,31 @@ const Party = ({ socket }) => {
                         <img 
                             className={mediaType === 'movie' || mediaType === 'tv' ? 'item-img' : mediaType === 'game' ? 'game-img' : 'board-img'}  
                             src={item.poster} 
-                            style={item.voted ? { border: '5px solid #FCB016' } : null}
+                            style={
+                                (item.voted) ? { border: '5px solid #FCB016' } : null
+                            }
                         />
-                        {(mediaType === 'game' || mediaType === 'board') && <p style={item.voted ? { borderLeft: '5px solid #FCB016', borderRight: '5px solid #FCB016', borderBottom: '5px solid #FCB016', borderRadius: '0px 0px 9px 9px' } : null}>{item.title}</p>}
+                        {
+                            (mediaType === 'game' || mediaType === 'board') && 
+                            <p 
+                                style={
+                                    (item.voted) ? { borderLeft: '5px solid #FCB016', borderRight: '5px solid #FCB016', borderBottom: '5px solid #FCB016', borderRadius: '0px 0px 9px 9px' } : null
+                                }
+                            >
+                                {item.title}
+                            </p>
+                        }
                         { (item.votes > 0 && !secretMode) && <div className='item-votes'>{item.votes}</div> }
+                        { 
+                            ((item.tempSuperChoice || item.superChoice) && superChoiceMode) && 
+                                <img 
+                                    className={
+                                        item.superChoice ? 'item-super-choice' :
+                                        item.tempSuperChoice ? 'item-temp-super-choice' : null
+                                    } 
+                                    src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692" 
+                                /> 
+                        }
                     </div>
                 ))
             }

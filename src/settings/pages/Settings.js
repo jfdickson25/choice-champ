@@ -213,6 +213,10 @@ const Settings = props => {
                             <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/right.png?v=1692161745669' />
                             <a href="https://www.flaticon.com/free-icons/back" title="back icons">Back icons created by Arkinasi - Flaticon</a>
                         </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692' />
+                            <a href="https://www.flaticon.com/free-icons/rating" title="rating icons">Rating icons created by Corner Pixel - Flaticon</a>
+                        </div>
                     </div>
                 </div>
             </Dialog>

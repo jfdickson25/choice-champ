@@ -20,6 +20,7 @@ const CreateParty = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [secretMode, setSecretMode] = useState(false);
     const [includeWatched, setIncludeWatched] = useState(false);
+    const [superChoice, setSuperChoice] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
     let navigate = useNavigate();
 
@@ -79,6 +80,7 @@ const CreateParty = props => {
                     mediaType: mediaType,
                     secretMode: secretMode,
                     includeWatched: includeWatched,
+                    superChoice: superChoice,
                     owner: auth.userId
             })
         })
@@ -130,6 +132,12 @@ const CreateParty = props => {
                 <p className='option-text'>Include Watched</p>
                 <img className='option-img' src={ includeWatched ? check : circle } onClick={() => { setIncludeWatched(!includeWatched) }} />
                 <p className='option-subtext'>Include items that have been marked as watched/played</p>  
+                <p className='option-text'>Super Choice Mode</p>
+                <img className='option-img' src={ superChoice ? check : circle } onClick={() => { setSuperChoice(!superChoice) }} />
+                <p className='option-subtext'>
+                    Super choice mode allows for more passionate voting. Double tap to star a choice to ensure it moves on to the next round.
+                    All party members will see the star in subsequent rounds and it cannot be starred again.
+                </p>  
                 <div className='create-divider'></div>
 
                 <label className='radio-btn-label' htmlFor="movie">Movies</label>

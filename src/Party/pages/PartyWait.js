@@ -23,6 +23,7 @@ const PartyWait = ({ socket }) => {
     const [memberCount, setMemberCount] = useState(0);
     const [navingBack, setNavingBack] = useState(false);
     const [userType, setUserType] = useState('guest');
+    const [superChoiceEnabled, setSuperChoiceEnabled] = useState(false);
     // Using useRef to store the memberCount so that it doesn't get reset on re-render
     const memberCountRef = useRef(memberCount);
 
@@ -30,7 +31,7 @@ const PartyWait = ({ socket }) => {
     useEffect(() => {
         auth.showFooterHandler(false);
         // Make a fetch request to the backend to get all the collectionItems for the party
-        fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+        fetch(`https://choice-champ-backend.glitch.me/party/${code}?userId=${auth.userId}`,
         {
             method: 'GET',
             headers: {
@@ -43,7 +44,11 @@ const PartyWait = ({ socket }) => {
             // be updated with the member-increment socket event
             let memberCount = body.party.memberCount + 1;
 
-            if(body.party.owner === auth.userId) {
+            if(body.party.superChoice) {
+                setSuperChoiceEnabled(true);
+            }
+
+            if(body.owner) {
                 setUserType('owner');
             }
 
@@ -168,7 +173,7 @@ const PartyWait = ({ socket }) => {
 
 
   return (
-    <div className='content'>
+    <div className='content' style={{paddingBottom: '0px'}}>
         <img src={back} alt="Back symbol" className="top-left clickable" onClick={navBack} 
             style={navingBack ? {animation: 'button-press .75s'} : null}
         />
@@ -180,18 +185,29 @@ const PartyWait = ({ socket }) => {
         <div className='party-wait-count'>
             Party Count <span className='party-wait-count-num'>{memberCount}</span>
         </div> 
-        { userType === 'owner' &&
-            <React.Fragment>
-                <Button className='party-wait-start-btn' onClick={routeToParty}>
-                    Start Party
-                </Button>
+        { 
+            userType === 'owner' &&
+                <React.Fragment>
+                    <Button className='party-wait-start-btn' onClick={routeToParty}>
+                        Start Party
+                    </Button>
+                    <div id="tip-section">
+                        <img src={dice} alt="Dice symbol" className="party-wait-icon" />
+                        <p className='party-wait-start-text'>
+                            TIP: Select this icon for a random item to be chosen as the winner
+                        </p>
+                    </div>
+                </React.Fragment>
+        }
+        {
+            superChoiceEnabled &&
                 <div id="tip-section">
-                    <img src={dice} alt="Dice symbol" className="party-wait-dice" />
+                    <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692' alt="Dice symbol" className="party-wait-icon" />
                     <p className='party-wait-start-text'>
-                        TIP: Select this icon for a random item to be chosen as the winner
+                        TIP: Super choices have been enabled. Double tap an item to star it and ensure
+                        it moves on to the next round. Party items can only be starred once per choice party.
                     </p>
                 </div>
-            </React.Fragment>
         }
     </div>
   )
