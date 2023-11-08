@@ -305,79 +305,84 @@ const Party = ({ socket }) => {
     }
 
     const userReady = () => {
-        // Set the user to ready
-        setReady(true);
-        // Increase usersReadyCount by one
-        usersReadyCountRef.current += 1;
-        setUsersReadyCount(usersReadyCountRef.current)
+        if(userType === 'owner' && votesNeededRef.current === '') {
+            alert('Please enter a number for the votes needed.');
+            return;
+        } else {
+            // Set the user to ready
+            setReady(true);
+            // Increase usersReadyCount by one
+            usersReadyCountRef.current += 1;
+            setUsersReadyCount(usersReadyCountRef.current)
 
-        // If the usersReadyCount is equal to the totalUsers then filter all the items that have
-        // less votes than the votesNeeded. Reset the votes and voted for all filtered items
-        if(usersReadyCountRef.current == totalUsersRef.current) {
-            // Filter out the items that have been voted for
-            const filteredItems = collectionItems.filter(item => (item.votes >= votesNeededRef.current) || item.holdSuperChoice || item.tempSuperChoice);
+            // If the usersReadyCount is equal to the totalUsers then filter all the items that have
+            // less votes than the votesNeeded. Reset the votes and voted for all filtered items
+            if(usersReadyCountRef.current == totalUsersRef.current) {
+                // Filter out the items that have been voted for
+                const filteredItems = collectionItems.filter(item => (item.votes >= votesNeededRef.current) || item.holdSuperChoice || item.tempSuperChoice);
 
-            if (filteredItems.length === 0) {
-                alert('No item reached the votes needed. Continue voting.');
-                setReady(false);
-                usersReadyCountRef.current = 0;
-                setUsersReadyCount(usersReadyCountRef.current);
-                // Still emit so other users will be reset
-                socket.emit('user-ready-remote', code);
-                return;
-            } else {
-                setTimeout(() => {
-                    // Set slideDown to true to slide down the ready overlay
-                    setSlideDown(true);
+                if (filteredItems.length === 0) {
+                    alert('No item reached the votes needed. Continue voting.');
+                    setReady(false);
+                    usersReadyCountRef.current = 0;
+                    setUsersReadyCount(usersReadyCountRef.current);
+                    // Still emit so other users will be reset
+                    socket.emit('user-ready-remote', code);
+                    return;
+                } else {
                     setTimeout(() => {
-                        if(filteredItems.length === 1) {
-                            // Set runners up to the remaining items
-                            const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
-                            setRunnerUps(runnerUps);
+                        // Set slideDown to true to slide down the ready overlay
+                        setSlideDown(true);
+                        setTimeout(() => {
+                            if(filteredItems.length === 1) {
+                                // Set runners up to the remaining items
+                                const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
+                                setRunnerUps(runnerUps);
 
-                            // Scroll user back to the top of the page
-                            window.scrollTo(0, 0);
+                                // Scroll user back to the top of the page
+                                window.scrollTo(0, 0);
 
-                            // Make a fetch request to delete the party from the database
-                            fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
-                            {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            });
-                        } else {
-                            // Reset votes and voted for all filtered items
-                            filteredItems.forEach(item => {
-                                if(item.tempSuperChoice || item.holdSuperChoice) {
-                                    item.superChoice = true;
-                                    item.tempSuperChoice = false;
-                                    item.holdSuperChoice = false;
-                                }
+                                // Make a fetch request to delete the party from the database
+                                fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+                                {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                });
+                            } else {
+                                // Reset votes and voted for all filtered items
+                                filteredItems.forEach(item => {
+                                    if(item.tempSuperChoice || item.holdSuperChoice) {
+                                        item.superChoice = true;
+                                        item.tempSuperChoice = false;
+                                        item.holdSuperChoice = false;
+                                    }
 
-                                item.votes = 0;
-                                item.voted = false;
-                            });
+                                    item.votes = 0;
+                                    item.voted = false;
+                                });
 
-                            // Scroll user back to the top of the page
-                            window.scrollTo(0, 0);
+                                // Scroll user back to the top of the page
+                                window.scrollTo(0, 0);
 
-                            setUsersReadyCount(0);
-                            usersReadyCountRef.current = 0;
-                        }
+                                setUsersReadyCount(0);
+                                usersReadyCountRef.current = 0;
+                            }
 
-                        setCollectionItems(filteredItems);
-                        collectionPointRef.current = filteredItems;
+                            setCollectionItems(filteredItems);
+                            collectionPointRef.current = filteredItems;
 
-                        setReady(false);
-                        setSlideDown(false);
-                    }, 2000);
-                }, 1000);
+                            setReady(false);
+                            setSlideDown(false);
+                        }, 2000);
+                    }, 1000);
+                }
             }
-        }
 
-        // Emit event to the server that the user is ready
-        socket.emit('user-ready-remote', code);
+            // Emit event to the server that the user is ready
+            socket.emit('user-ready-remote', code);
+        }
     }
 
     const userNotReady = () => {
@@ -483,12 +488,25 @@ const Party = ({ socket }) => {
                     value={votesNeeded}
                     min={1}
                     onChange={e => {
-                        setVotesNeeded(e.target.value);
-                        votesNeededRef.current = e.target.value;
                         // Check if e.target.value is a number
-                        if (isNaN(e.target.value) || e.target.value === '') {
-                            return;
+                        if (e.target.value === '' ) {
+                            setVotesNeeded(e.target.value);
+                            votesNeededRef.current = e.target.value;
+                        } else if(isNaN(e.target.value)) {
+                            setVotesNeeded(1);
+                            votesNeededRef.current = 1;
+                            socket.emit('votes-needed-remote', 1, code);
+                        } else if(e.target.value > totalUsersRef.current) {
+                            setVotesNeeded(totalUsersRef.current);
+                            votesNeededRef.current = totalUsersRef.current;
+                            socket.emit('votes-needed-remote', totalUsersRef.current, code);
+                        } else if(e.target.value < 1) {
+                            setVotesNeeded(1);
+                            votesNeededRef.current = 1;
+                            socket.emit('votes-needed-remote', 1, code);
                         } else {
+                            setVotesNeeded(e.target.value);
+                            votesNeededRef.current = e.target.value;
                             socket.emit('votes-needed-remote', e.target.value, code);
                         }
                     }}
@@ -514,11 +532,9 @@ const Party = ({ socket }) => {
                         </p>
                         { runnerUps.length > 0 && (
                             runnerUps.map(item => (
-                                <p className='runner-up' key={item.id}>
-                                    { 
-                                        item.superChoice ? `${item.title} ⭐` : item.title
-                                    }
-                                </p>
+                                item.superChoice ? 
+                                <p className='runner-up' key={item.id}>{item.title}<span className='super-choice-star'> ★</span></p>
+                                : <p className='runner-up' key={item.id}>{item.title}</p>
                             ))
                         )}
                     </div>
