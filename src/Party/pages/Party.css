@@ -148,6 +148,10 @@
     margin: 0;
 }
 
+.super-choice-star {
+    color: #FCB016;
+}
+
 .item-img {
     height: auto;
     width: 100%;
