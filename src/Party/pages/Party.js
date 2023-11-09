@@ -29,6 +29,7 @@ const Party = ({ socket }) => {
     // an incorrect value.
     const [totalUsers, setTotalUsers] = useState(0);
     const [runnerUps, setRunnerUps] = useState([]);
+    const [providers, setProviders] = useState([]);
     const [userType, setUserType] = useState('guest');
 
     const [slideDown, setSlideDown] = useState(false);
@@ -193,6 +194,21 @@ const Party = ({ socket }) => {
                                 // Scroll user back to the top of the page
                                 window.scrollTo(0, 0);
 
+                                // Grab the watch options for the winner but only if the media type is movie or tv
+                                if(mediaType === 'movie' || mediaType === 'tv') {
+                                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${filteredItems[0].itemId}`,
+                                    {
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(body => {
+                                        setProviders(body.media.providers);
+                                    });
+                                }
+
                                 // Set runners up to the remaining items
                                 const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
                                 setRunnerUps(runnerUps);
@@ -350,6 +366,21 @@ const Party = ({ socket }) => {
                                         'Content-Type': 'application/json'
                                     }
                                 });
+
+                                // Grab the watch options for the winner but only if the media type is movie or tv
+                                if(mediaType === 'movie' || mediaType === 'tv') {
+                                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${filteredItems[0].itemId}`,
+                                    {
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(body => {
+                                        setProviders(body.media.providers);
+                                    });
+                                }
                             } else {
                                 // Reset votes and voted for all filtered items
                                 filteredItems.forEach(item => {
@@ -527,6 +558,73 @@ const Party = ({ socket }) => {
                             src={collectionItems[0].poster}
                         />
                         <p className='winner-title'>{collectionItems[0].title}</p>
+                        {
+                            (mediaType === 'movie' || mediaType === 'tv') && (
+                                <React.Fragment>
+                                    <p className='runner-up-title'>
+                                        Where to Watch
+                                    </p>
+                                    <div className='providers-list'>
+                                        <div className='details-provider-title'>Stream</div>
+                                        { 
+                                            providers.stream ?
+                                            (
+                                                <div className='details-provider-list'>
+                                                    {
+                                                        providers.stream.map(provider => (
+                                                            (<div className='details-provider-item' key={provider.provider_name}>
+                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                            </div>)
+                                                        ))
+                                                    }
+                                                </div>
+                                            ) : (
+                                                <div className='providers-not-available'>Not available to stream</div>
+                                            )
+                                        }
+                                        <div className='details-provider-title'>Buy</div>
+                                        { 
+                                            providers.buy ?
+                                            (
+                                                <div className='details-provider-list'>
+                                                    {
+                                                        providers.buy.map(provider => (
+                                                            (<div className='details-provider-item' key={provider.provider_name}>
+                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                            </div>)
+                                                        ))
+                                                    }
+                                                </div>
+                                            ) : (
+                                                <div className='providers-not-available'>Not available to buy</div>
+                                            )
+                                        }
+                                        {   mediaType === 'movie' && (
+                                                <React.Fragment>
+                                                    <div className='details-provider-title'>Rent</div>
+                                                    { 
+                                                        providers.rent ? 
+                                                        (
+                                                            <div className='details-provider-list'>
+                                                                {
+                                                                    providers.rent.map(provider => (
+                                                                        (<div className='details-provider-item' key={provider.provider_name}>
+                                                                            <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                        </div>)
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                        ) : (
+                                                            <div className='providers-not-available'>Not available to rent</div>
+                                                        )
+                                                    }
+                                                </React.Fragment>
+                                            )
+                                        }
+                                    </div>
+                                </React.Fragment>
+                            )
+                        }
                         <p className='runner-up-title'>
                             Runner Ups
                         </p>

@@ -148,6 +148,40 @@
     margin: 0;
 }
 
+.providers-list {
+    grid-column: 1/4;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(17, 1fr);
+}
+
+.details-provider-list {
+    display: grid;
+    grid-column: 3/16;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 10px;
+    margin-top: 10px;
+}
+
+.provider-img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.details-provider-title {
+    grid-column: 3/16;
+    width: 100%;
+    margin-top: 20px;
+    color: #FCB016;
+    font-weight: bold;
+}
+
+.providers-not-available {
+    grid-column: 3/16;
+    width: 100%;
+    margin-top: 10px;
+}
+
 .super-choice-star {
     color: #FCB016;
 }
