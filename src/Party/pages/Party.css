@@ -129,7 +129,7 @@
     margin-bottom: 20px;
 }
 
-.runner-up-title {
+.sub-title {
     grid-column: 1/4;
     width: 100%;
     text-align: center;
@@ -138,7 +138,6 @@
     font-weight: 300;
     margin-top: 50px;
     margin-bottom: 10px;
-    text-decoration: underline;
 }
 
 .runner-up {
@@ -146,6 +145,31 @@
     grid-column: 1/4;
     font-size: 10pt;
     margin: 0;
+}
+
+.runner-up-watchable {
+    grid-column: 1/4;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
+.runner-up-watchable-item {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
+.runner-up-watchable-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.runner-up-super-choice {
+    position: absolute;
+    width: 15%;
 }
 
 .providers-list {
@@ -157,10 +181,11 @@
 
 .details-provider-list {
     display: grid;
-    grid-column: 3/16;
+    grid-column: 2/17;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 10px;
     margin-top: 10px;
+    animation: appear .5s ease-in-out;
 }
 
 .provider-img {
@@ -174,12 +199,21 @@
     margin-top: 20px;
     color: #FCB016;
     font-weight: bold;
+    text-align: center;
+}
+
+.details-provider-seperator {
+    grid-column: 2/17;
+    width: 100%;
+    height: 2px;
+    background-color: #5c5c5c;
 }
 
 .providers-not-available {
-    grid-column: 3/16;
+    grid-column: 2/17;
     width: 100%;
     margin-top: 10px;
+    text-align: center;
 }
 
 .super-choice-star {
@@ -342,6 +376,7 @@
     grid-column: 1/18;
     width: 30%;
     animation: shake-base 1s ease-in-out;
+    transform-origin: top;
 }
 
 @keyframes shake-base {
@@ -404,6 +439,17 @@
     }
   }
 
+  @keyframes appear {
+    0% {
+      transform: scaleY(0);
+      transform-origin: top;
+    }
+    100% {
+      transform: scaleY(1);
+      transform-origin: top;
+    }
+  }
+
 @media only screen and (min-width: 700px) {
     .collection-content-other {
         grid-template-columns: repeat(3, 1fr);
@@ -448,6 +494,19 @@
     .game-img + p {
         width: 90%;
     }
+
+    .runner-up-watchable {
+        grid-template-columns: repeat(5, 1fr);
+        width: 85%;
+    }
+
+    .runner-up-super-choice {
+        width: 10%;
+    }
+
+    .providers-list {
+        width: 70%;
+    }
 }
 
 @media only screen and (min-width: 1600px) {
@@ -463,7 +522,7 @@
     }
 
     .winner-img {
-        width: 30%;
+        width: 20%;
     }
 
     .winner-img-game {
@@ -480,5 +539,18 @@
 
     .collection-content-game {
         grid-column: 6/13;
+    }
+
+    .runner-up-watchable {
+        grid-template-columns: repeat(7, 1fr);
+        width: 70%;
+    }
+
+    .runner-up-super-choice {
+        width: 5%;
+    }
+
+    .providers-list {
+        width: 40%;
     }
 }

@@ -597,7 +597,7 @@ const Party = ({ socket }) => {
                         {
                             (mediaType === 'movie' || mediaType === 'tv') && (
                                 <React.Fragment>
-                                    <p className='runner-up-title'>
+                                    <p className='sub-title'>
                                         Where to Watch
                                     </p>
                                     <div className='providers-list'>
@@ -612,6 +612,7 @@ const Party = ({ socket }) => {
                                                     providers.stream ? ( <span className='provider-arrow'> ▾</span> ) : null
                                             }
                                         </div>
+                                        <div className='details-provider-seperator'></div>
                                         { 
                                             providers.stream ?
                                             (
@@ -641,6 +642,7 @@ const Party = ({ socket }) => {
                                                 providers.buy ? ( <span className='provider-arrow'> ▾</span> ) : null
                                             }
                                         </div>
+                                        <div className='details-provider-seperator'></div>
                                         { 
                                             providers.buy ?
                                             (
@@ -672,6 +674,7 @@ const Party = ({ socket }) => {
                                                             providers.rent ? ( <span className='provider-arrow'> ▾</span> ) : null
                                                         }
                                                     </div>
+                                                    <div className='details-provider-seperator'></div>
                                                     { 
                                                         providers.rent ? 
                                                         (
@@ -701,16 +704,39 @@ const Party = ({ socket }) => {
                                 </React.Fragment>
                             )
                         }
-                        <p className='runner-up-title'>
+                        <p className='sub-title'>
                             Runner Ups
                         </p>
-                        { runnerUps.length > 0 && (
-                            runnerUps.map(item => (
-                                item.superChoice ? 
-                                <p className='runner-up' key={item.id}>{item.title}<span className='super-choice-star'> ★</span></p>
-                                : <p className='runner-up' key={item.id}>{item.title}</p>
-                            ))
-                        )}
+                        {
+                            (mediaType === 'movie' || mediaType === 'tv') ? (
+                                runnerUps.length > 0 && (
+                                    <div className='runner-up-watchable'>
+                                    {
+                                        runnerUps.map(item => (
+                                            <div key={item.id} className='runner-up-watchable-item'>
+                                                <img src={item.poster} className='runner-up-watchable-img' />
+                                                { 
+                                                    item.superChoice &&
+                                                        <img 
+                                                            className='runner-up-super-choice'
+                                                            src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692" 
+                                                        />
+                                                }
+                                            </div>
+                                        ))
+                                    }
+                                    </div>
+                                )
+                             ) : (
+                                runnerUps.length > 0 && (
+                                    runnerUps.map(item => (
+                                        item.superChoice ? 
+                                        <p className='runner-up' key={item.id}>{item.title}<span className='super-choice-star'> ★</span></p>
+                                        : <p className='runner-up' key={item.id}>{item.title}</p>
+                                    ))
+                                )
+                             )
+                        }
                     </div>
                 ) : [...collectionItems].reverse().map(item => (
                     <div className='item-section' key={item.id} onClick={changeCount.bind(this, item.id)}>
