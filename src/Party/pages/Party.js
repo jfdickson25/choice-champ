@@ -36,6 +36,11 @@ const Party = ({ socket }) => {
     const [randomSelected, setRandomSelected] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
 
+    // Variables for watch dropdowns
+    const [showStream, setShowStream] = useState(false);
+    const [showBuy, setShowBuy] = useState(false);
+    const [showRent, setShowRent] = useState(false);
+
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
     const usersReadyCountRef = useRef(usersReadyCount);
@@ -157,7 +162,7 @@ const Party = ({ socket }) => {
 
                     // Grab the watch options for the winner but only if the media type is movie or tv
                     if(mediaType === 'movie' || mediaType === 'tv') {
-                        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${id}`,
+                        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${item.itemId}`,
                         {
                             method: 'GET',
                             headers: {
@@ -167,6 +172,7 @@ const Party = ({ socket }) => {
                         .then(response => response.json())
                         .then(body => {
                             setProviders(body.media.providers);
+                            console.log(body.media);
                         });
                     }
 
@@ -591,56 +597,99 @@ const Party = ({ socket }) => {
                         {
                             (mediaType === 'movie' || mediaType === 'tv') && (
                                 <React.Fragment>
+                                    <p className='runner-up-title'>
+                                        Where to Watch
+                                    </p>
                                     <div className='providers-list'>
-                                        <div className='details-provider-title'>Stream</div>
+                                        <div className='details-provider-title' onClick={() => { setShowStream(!showStream) }}>
+                                            <span>Stream</span>
+                                            {
+                                                // Q: What other characters are there for down arrow?
+                                                // A: ▼ ▽ ▾ ▿
+                                                // Q: What other characters are there for up arrow?
+                                                // A: ▲ △ ▴ ▵
+                                                showStream && providers.stream ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                    providers.stream ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                            }
+                                        </div>
                                         { 
                                             providers.stream ?
                                             (
-                                                <div className='details-provider-list'>
-                                                    {
-                                                        providers.stream.map(provider => (
-                                                            (<div className='details-provider-item' key={provider.provider_name}>
-                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                            </div>)
-                                                        ))
-                                                    }
-                                                </div>
-                                            ) : (
-                                                <div className='providers-not-available'>Not available to stream</div>
-                                            )
-                                        }
-                                        <div className='details-provider-title'>Buy</div>
-                                        { 
-                                            providers.buy ?
-                                            (
-                                                <div className='details-provider-list'>
-                                                    {
-                                                        providers.buy.map(provider => (
-                                                            (<div className='details-provider-item' key={provider.provider_name}>
-                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                            </div>)
-                                                        ))
-                                                    }
-                                                </div>
-                                            ) : (
-                                                <div className='providers-not-available'>Not available to buy</div>
-                                            )
-                                        }
-                                        {   mediaType === 'movie' && (
                                                 <React.Fragment>
-                                                    <div className='details-provider-title'>Rent</div>
-                                                    { 
-                                                        providers.rent ? 
-                                                        (
+                                                    {
+                                                        showStream ? (
                                                             <div className='details-provider-list'>
                                                                 {
-                                                                    providers.rent.map(provider => (
+                                                                    providers.stream.map(provider => (
                                                                         (<div className='details-provider-item' key={provider.provider_name}>
                                                                             <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
                                                                         </div>)
                                                                     ))
                                                                 }
                                                             </div>
+                                                        ) : null
+                                                    }
+                                                </React.Fragment>
+                                            ) : (
+                                                <div className='providers-not-available'>Not available to stream</div>
+                                            )
+                                        }
+                                        <div className='details-provider-title' onClick={() => { setShowBuy(!showBuy) }}>
+                                            <span>Buy</span>
+                                            {
+                                                showBuy && providers.buy ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                providers.buy ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                            }
+                                        </div>
+                                        { 
+                                            providers.buy ?
+                                            (
+                                                <React.Fragment>
+                                                    {
+                                                        showBuy ? (
+                                                            <div className='details-provider-list'>
+                                                                {
+                                                                    providers.buy.map(provider => (
+                                                                        (<div className='details-provider-item' key={provider.provider_name}>
+                                                                            <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                        </div>)
+                                                                    ))
+                                                                }
+                                                            </div>
+                                                        ) : null
+                                                    }
+                                                </React.Fragment>
+                                            ) : (
+                                                <div className='providers-not-available'>Not available to buy</div>
+                                            )
+                                        }
+                                        {   mediaType === 'movie' && (
+                                                <React.Fragment>
+                                                    <div className='details-provider-title' onClick={() => { setShowRent(!showRent) }}>
+                                                        <span>Rent</span>
+                                                        {
+                                                            showRent && providers.rent ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                            providers.rent ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                        }
+                                                    </div>
+                                                    { 
+                                                        providers.rent ? 
+                                                        (
+                                                            <React.Fragment>
+                                                                {
+                                                                    showRent ? (
+                                                                        <div className='details-provider-list'>
+                                                                            {
+                                                                                providers.rent.map(provider => (
+                                                                                    (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                        <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                    </div>)
+                                                                                ))
+                                                                            }
+                                                                        </div>
+                                                                    ) : null
+                                                                }
+                                                            </React.Fragment>
                                                         ) : (
                                                             <div className='providers-not-available'>Not available to rent</div>
                                                         )
