@@ -155,6 +155,21 @@ const Party = ({ socket }) => {
                     // Scroll user back to the top of the page
                     window.scrollTo(0, 0);
 
+                    // Grab the watch options for the winner but only if the media type is movie or tv
+                    if(mediaType === 'movie' || mediaType === 'tv') {
+                        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${id}`,
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(body => {
+                            setProviders(body.media.providers);
+                        });
+                    }
+
                     // Set the rest of the items that are not the random item to be the runner ups
                     const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
                     setRunnerUps(runnerUps);
@@ -488,6 +503,21 @@ const Party = ({ socket }) => {
                 setCollectionItems([randomItem]);
                 collectionPointRef.current = [randomItem];
 
+                // Grab the watch options for the winner but only if the media type is movie or tv
+                if(mediaType === 'movie' || mediaType === 'tv') {
+                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${randomItem.itemId}`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(body => {
+                        setProviders(body.media.providers);
+                    });
+                }
+
                 // Scroll user back to the top of the page
                 window.scrollTo(0, 0);
 
@@ -561,9 +591,6 @@ const Party = ({ socket }) => {
                         {
                             (mediaType === 'movie' || mediaType === 'tv') && (
                                 <React.Fragment>
-                                    <p className='runner-up-title'>
-                                        Where to Watch
-                                    </p>
                                     <div className='providers-list'>
                                         <div className='details-provider-title'>Stream</div>
                                         { 
