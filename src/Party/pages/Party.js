@@ -40,6 +40,10 @@ const Party = ({ socket }) => {
     const [showStream, setShowStream] = useState(false);
     const [showBuy, setShowBuy] = useState(false);
     const [showRent, setShowRent] = useState(false);
+    const [activeRunnerup, setActiveRunnerup] = useState({});
+    const [showRunnerStream, setShowRunnerStream] = useState(false);
+    const [showRunnerBuy, setShowRunnerBuy] = useState(false);
+    const [showRunnerRent, setShowRunnerRent] = useState(false);
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
@@ -142,7 +146,7 @@ const Party = ({ socket }) => {
             setCollectionItems([...collectionPointRef.current]);
         });
 
-        socket.on('random-selected', (id) => {
+        socket.on('random-selected', async (id) => {
             socket.emit('leave-room', code);
 
             if(ready) {
@@ -150,6 +154,27 @@ const Party = ({ socket }) => {
             }
 
             setRandomSelected(true);
+
+            // Set the rest of the items that are not the random item to be the runner ups
+            const runnerUpsTemp = collectionPointRef.current.filter(item => item.id !== id);
+
+            // Make a fetch request for each item in the runnerUps array and add a provider property to each item
+            // that contains the providers for that item
+            for (let i = 0; i < runnerUpsTemp.length; i++) {
+                let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+
+                let body = await response.json();
+                runnerUpsTemp[i].providers = body.media.providers;
+
+                if(i === 0) {
+                    runnerUpsTemp[i].active = true;
+                } else {
+                    runnerUpsTemp[i].active = false;
+                }
+            }
+
+            setRunnerUps(runnerUpsTemp);
+            setActiveRunnerup(runnerUpsTemp[0]);
 
             setTimeout(() => {
                 setSlideDown(true);
@@ -176,17 +201,13 @@ const Party = ({ socket }) => {
                         });
                     }
 
-                    // Set the rest of the items that are not the random item to be the runner ups
-                    const runnerUps = collectionPointRef.current.filter(item => item.id !== id);
-                    setRunnerUps(runnerUps);
-
                     setCollectionItems([item]);
                     collectionPointRef.current = [item];
                 }, 2000);
             }, 1000);
         });
 
-        socket.on('user-ready', () => {
+        socket.on('user-ready', async () => {
             usersReadyCountRef.current += 1;
             setUsersReadyCount(usersReadyCountRef.current);
 
@@ -203,6 +224,29 @@ const Party = ({ socket }) => {
                     setUsersReadyCount(usersReadyCountRef.current);
                     return;
                 } else {
+                    if (filteredItems.length === 1) {
+                        // Set runners up to the remaining items
+                        const runnerUpsTemp = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
+                        // Make a fetch request for each item in the runnerUps array and add a provider property to each item
+                        // that contains the providers for that item
+
+                        for (let i = 0; i < runnerUpsTemp.length; i++) {
+                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+
+                            let body = await response.json();
+                            runnerUpsTemp[i].providers = body.media.providers;
+
+                            if(i === 0) {
+                                runnerUpsTemp[i].active = true;
+                            } else {
+                                runnerUpsTemp[i].active = false;
+                            }
+                        }
+
+                        setRunnerUps(runnerUpsTemp);
+                        setActiveRunnerup(runnerUpsTemp[0]);
+                    }
+
                     setTimeout(() => {
                         // Set slideDown to true to slide down the ready overlay
                         setSlideDown(true);
@@ -229,10 +273,6 @@ const Party = ({ socket }) => {
                                         setProviders(body.media.providers);
                                     });
                                 }
-
-                                // Set runners up to the remaining items
-                                const runnerUps = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
-                                setRunnerUps(runnerUps);
                             } else {
                                 // Reset votes and voted for all filtered items
                                 filteredItems.forEach(item => {
@@ -341,7 +381,7 @@ const Party = ({ socket }) => {
         }
     }
 
-    const userReady = () => {
+    const userReady = async () => {
         if(userType === 'owner' && votesNeededRef.current === '') {
             alert('Please enter a number for the votes needed.');
             return;
@@ -367,15 +407,34 @@ const Party = ({ socket }) => {
                     socket.emit('user-ready-remote', code);
                     return;
                 } else {
+                    if (filteredItems.length === 1) {
+                        // Set runners up to the remaining items
+                        const runnerUpsTemp = collectionItems.filter(item => item.votes < votesNeededRef.current);
+                        // Make a fetch request for each item in the runnerUps array and add a provider property to each item
+                        // that contains the providers for that item
+
+                        for (let i = 0; i < runnerUpsTemp.length; i++) {
+                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+
+                            let body = await response.json();
+                            runnerUpsTemp[i].providers = body.media.providers;
+
+                            if(i === 0) {
+                                runnerUpsTemp[i].active = true;
+                            } else {
+                                runnerUpsTemp[i].active = false;
+                            }
+                        }
+
+                        setRunnerUps(runnerUpsTemp);
+                        setActiveRunnerup(runnerUpsTemp[0]);
+                    }
+
                     setTimeout(() => {
                         // Set slideDown to true to slide down the ready overlay
                         setSlideDown(true);
                         setTimeout(() => {
                             if(filteredItems.length === 1) {
-                                // Set runners up to the remaining items
-                                const runnerUps = collectionItems.filter(item => item.votes < votesNeededRef.current);
-                                setRunnerUps(runnerUps);
-
                                 // Scroll user back to the top of the page
                                 window.scrollTo(0, 0);
 
@@ -484,7 +543,7 @@ const Party = ({ socket }) => {
         }
     }
 
-    const selectRandom = () => {
+    const selectRandom = async () => {
         // Don't do anything if there is only one item in the collection
         if (collectionItems.length === 1) {
             return;
@@ -500,12 +559,29 @@ const Party = ({ socket }) => {
         randomItem.voted = false;
 
         // Set the rest of the items that are not the random item to be the runner ups
-        const runnerUps = collectionItems.filter(item => item.id !== randomItem.id);
+        const runnerUpsTemp = collectionItems.filter(item => item.id !== randomItem.id);
+
+        // Make a fetch request for each item in the runnerUps array and add a provider property to each item
+        // that contains the providers for that item
+        for (let i = 0; i < runnerUpsTemp.length; i++) {
+            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+
+            let body = await response.json();
+            runnerUpsTemp[i].providers = body.media.providers;
+
+            if(i === 0) {
+                runnerUpsTemp[i].active = true;
+            } else {
+                runnerUpsTemp[i].active = false;
+            }
+        }
+
+        setRunnerUps(runnerUpsTemp);
+        setActiveRunnerup(runnerUpsTemp[0]);
 
         setTimeout(() => {
             setSlideDown(true);
             setTimeout(() => {
-                setRunnerUps(runnerUps);
                 setCollectionItems([randomItem]);
                 collectionPointRef.current = [randomItem];
 
@@ -538,6 +614,21 @@ const Party = ({ socket }) => {
         }, 1000);
 
         socket.emit('random-remote-selected', randomItem.id, code);
+    }
+
+    const changeActiveRunnerUp = (id) => {
+
+        const item = runnerUps.find(item => item.itemId === id);
+        const activeItem = runnerUps.find(item => item.active === true);
+
+        if(item.itemId === activeItem.itemId) {
+            return;
+        } else {
+            activeItem.active = false;
+            item.active = true;
+            setActiveRunnerup(item);
+            setRunnerUps([...runnerUps]);
+        }
     }
 
   return (
@@ -704,28 +795,135 @@ const Party = ({ socket }) => {
                                 </React.Fragment>
                             )
                         }
+                        <div className='winner-divider'></div>
                         <p className='sub-title'>
                             Runner Ups
                         </p>
                         {
                             (mediaType === 'movie' || mediaType === 'tv') ? (
                                 runnerUps.length > 0 && (
-                                    <div className='runner-up-watchable'>
-                                    {
-                                        runnerUps.map(item => (
-                                            <div key={item.id} className='runner-up-watchable-item'>
-                                                <img src={item.poster} className='runner-up-watchable-img' />
+                                    <React.Fragment>
+                                        <div className='runner-up-watchable'>
+                                            {
+                                                runnerUps.map(item => (
+                                                    <div key={item.id} className='runner-up-watchable-item' onClick={() => { changeActiveRunnerUp(item.itemId) }}>
+                                                        <img src={item.poster} className='runner-up-watchable-img' style={item.active ? {border: 'solid 5px #FCB016'} : null } />
+                                                        { 
+                                                            item.superChoice &&
+                                                                <img 
+                                                                    className='runner-up-super-choice'
+                                                                    src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692" 
+                                                                />
+                                                        }
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                        <div className='runner-up-active-title'>{activeRunnerup.title}</div>
+                                        <div className='runner-up-providers'>
+                                            <div className='providers-list'>
+                                                <div className='details-provider-title' onClick={() => { setShowRunnerStream(!showRunnerStream) }}>
+                                                    <span>Stream</span>
+                                                    {
+                                                        // Q: What other characters are there for down arrow?
+                                                        // A: ▼ ▽ ▾ ▿
+                                                        // Q: What other characters are there for up arrow?
+                                                        // A: ▲ △ ▴ ▵
+                                                        showRunnerStream && activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                            activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                    }
+                                                </div>
+                                                <div className='details-provider-seperator'></div>
                                                 { 
-                                                    item.superChoice &&
-                                                        <img 
-                                                            className='runner-up-super-choice'
-                                                            src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692" 
-                                                        />
+                                                    activeRunnerup.providers.stream ?
+                                                    (
+                                                        <React.Fragment>
+                                                            {
+                                                                showRunnerStream ? (
+                                                                    <div className='details-provider-list'>
+                                                                        {
+                                                                            activeRunnerup.providers.stream.map(provider => (
+                                                                                (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                    <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                </div>)
+                                                                            ))
+                                                                        }
+                                                                    </div>
+                                                                ) : null
+                                                            }
+                                                        </React.Fragment>
+                                                    ) : (
+                                                        <div className='providers-not-available'>Not available to stream</div>
+                                                    )
+                                                }
+                                                <div className='details-provider-title' onClick={() => { setShowRunnerBuy(!showRunnerBuy) }}>
+                                                    <span>Buy</span>
+                                                    {
+                                                        showRunnerBuy && activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                        activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                    }
+                                                </div>
+                                                <div className='details-provider-seperator'></div>
+                                                { 
+                                                    activeRunnerup.providers.buy ?
+                                                    (
+                                                        <React.Fragment>
+                                                            {
+                                                                showRunnerBuy ? (
+                                                                    <div className='details-provider-list'>
+                                                                        {
+                                                                            activeRunnerup.providers.buy.map(provider => (
+                                                                                (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                    <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                </div>)
+                                                                            ))
+                                                                        }
+                                                                    </div>
+                                                                ) : null
+                                                            }
+                                                        </React.Fragment>
+                                                    ) : (
+                                                        <div className='providers-not-available'>Not available to buy</div>
+                                                    )
+                                                }
+                                                {   mediaType === 'movie' && (
+                                                        <React.Fragment>
+                                                            <div className='details-provider-title' onClick={() => { setShowRunnerRent(!showRunnerRent) }}>
+                                                                <span>Rent</span>
+                                                                {
+                                                                    showRunnerRent && activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                                    activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                                }
+                                                            </div>
+                                                            <div className='details-provider-seperator'></div>
+                                                            { 
+                                                                activeRunnerup.providers.rent ? 
+                                                                (
+                                                                    <React.Fragment>
+                                                                        {
+                                                                            showRunnerRent ? (
+                                                                                <div className='details-provider-list'>
+                                                                                    {
+                                                                                        activeRunnerup.providers.rent.map(provider => (
+                                                                                            (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                            </div>)
+                                                                                        ))
+                                                                                    }
+                                                                                </div>
+                                                                            ) : null
+                                                                        }
+                                                                    </React.Fragment>
+                                                                ) : (
+                                                                    <div className='providers-not-available'>Not available to rent</div>
+                                                                )
+                                                            }
+                                                        </React.Fragment>
+                                                    )
                                                 }
                                             </div>
-                                        ))
-                                    }
-                                    </div>
+                                        </div>
+                                    </React.Fragment>
                                 )
                              ) : (
                                 runnerUps.length > 0 && (
