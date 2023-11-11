@@ -157,8 +157,22 @@
     font-size: 18pt;
     color: #FCB016;
     font-weight: 300;
-    margin-top: 30px;
     margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.runner-up-section {
+    grid-column: 1/4;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 30px 30px 70px 30px;
+    background-color: rgb(39 39 39 / 88%);
+    margin-top: 40px;
+    border-radius: 20px;
+    align-items: center;
+    justify-items: center;
+
 }
 
 .runner-up {
@@ -530,6 +544,10 @@
         width: 90%;
     }
 
+    .runner-up-section {
+        width: 85%;
+    }
+
     .runner-up-watchable {
         grid-template-columns: repeat(5, 1fr);
         width: 85%;
@@ -574,6 +592,10 @@
 
     .collection-content-game {
         grid-column: 6/13;
+    }
+
+    .runner-up-section {
+        width: 70%;
     }
 
     .runner-up-watchable {
