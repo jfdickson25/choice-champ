@@ -157,24 +157,18 @@ const Party = ({ socket }) => {
 
             // Set the rest of the items that are not the random item to be the runner ups
             const runnerUpsTemp = collectionPointRef.current.filter(item => item.id !== id);
+            setRunnerUps(runnerUpsTemp);
 
-            // Make a fetch request for each item in the runnerUps array and add a provider property to each item
-            // that contains the providers for that item
-            for (let i = 0; i < runnerUpsTemp.length; i++) {
-                let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+            if(mediaType === 'movie' || mediaType === 'tv') {
+                // Make a fetch request for the first item in the runnerUps array and add a provider property to it
+                let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
 
                 let body = await response.json();
-                runnerUpsTemp[i].providers = body.media.providers;
+                runnerUpsTemp[0].providers = body.media.providers;
+                runnerUpsTemp[0].active = true;
 
-                if(i === 0) {
-                    runnerUpsTemp[i].active = true;
-                } else {
-                    runnerUpsTemp[i].active = false;
-                }
+                setActiveRunnerup(runnerUpsTemp[0]);
             }
-
-            setRunnerUps(runnerUpsTemp);
-            setActiveRunnerup(runnerUpsTemp[0]);
 
             setTimeout(() => {
                 setSlideDown(true);
@@ -197,7 +191,6 @@ const Party = ({ socket }) => {
                         .then(response => response.json())
                         .then(body => {
                             setProviders(body.media.providers);
-                            console.log(body.media);
                         });
                     }
 
@@ -227,24 +220,18 @@ const Party = ({ socket }) => {
                     if (filteredItems.length === 1) {
                         // Set runners up to the remaining items
                         const runnerUpsTemp = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
-                        // Make a fetch request for each item in the runnerUps array and add a provider property to each item
-                        // that contains the providers for that item
+                        setRunnerUps(runnerUpsTemp);
 
-                        for (let i = 0; i < runnerUpsTemp.length; i++) {
-                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+                        if(mediaType === 'movie' || mediaType === 'tv') {
+                            // Make a fetch request for the first item in the runnerUps array and add a provider property to it
+                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
 
                             let body = await response.json();
-                            runnerUpsTemp[i].providers = body.media.providers;
+                            runnerUpsTemp[0].providers = body.media.providers;
+                            runnerUpsTemp[0].active = true;
 
-                            if(i === 0) {
-                                runnerUpsTemp[i].active = true;
-                            } else {
-                                runnerUpsTemp[i].active = false;
-                            }
+                            setActiveRunnerup(runnerUpsTemp[0]);
                         }
-
-                        setRunnerUps(runnerUpsTemp);
-                        setActiveRunnerup(runnerUpsTemp[0]);
                     }
 
                     setTimeout(() => {
@@ -410,24 +397,18 @@ const Party = ({ socket }) => {
                     if (filteredItems.length === 1) {
                         // Set runners up to the remaining items
                         const runnerUpsTemp = collectionItems.filter(item => item.votes < votesNeededRef.current);
-                        // Make a fetch request for each item in the runnerUps array and add a provider property to each item
-                        // that contains the providers for that item
+                        setRunnerUps(runnerUpsTemp);
 
-                        for (let i = 0; i < runnerUpsTemp.length; i++) {
-                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+                        if(mediaType === 'movie' || mediaType === 'tv') {
+                            // Make a fetch request for the first item in the runnerUps array and add a provider property to it
+                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
 
                             let body = await response.json();
-                            runnerUpsTemp[i].providers = body.media.providers;
+                            runnerUpsTemp[0].providers = body.media.providers;
+                            runnerUpsTemp[0].active = true;
 
-                            if(i === 0) {
-                                runnerUpsTemp[i].active = true;
-                            } else {
-                                runnerUpsTemp[i].active = false;
-                            }
+                            setActiveRunnerup(runnerUpsTemp[0]);
                         }
-
-                        setRunnerUps(runnerUpsTemp);
-                        setActiveRunnerup(runnerUpsTemp[0]);
                     }
 
                     setTimeout(() => {
@@ -560,24 +541,19 @@ const Party = ({ socket }) => {
 
         // Set the rest of the items that are not the random item to be the runner ups
         const runnerUpsTemp = collectionItems.filter(item => item.id !== randomItem.id);
+        setRunnerUps(runnerUpsTemp);
 
-        // Make a fetch request for each item in the runnerUps array and add a provider property to each item
-        // that contains the providers for that item
-        for (let i = 0; i < runnerUpsTemp.length; i++) {
-            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[i].itemId}`);
+        if(mediaType === 'movie' || mediaType === 'tv') {
+            // Make a fetch request for the first item in the runnerUps array and add a provider property to it
+            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
 
             let body = await response.json();
-            runnerUpsTemp[i].providers = body.media.providers;
+            runnerUpsTemp[0].providers = body.media.providers;
 
-            if(i === 0) {
-                runnerUpsTemp[i].active = true;
-            } else {
-                runnerUpsTemp[i].active = false;
-            }
+            runnerUpsTemp[0].active = true;
+
+            setActiveRunnerup(runnerUpsTemp[0]);
         }
-
-        setRunnerUps(runnerUpsTemp);
-        setActiveRunnerup(runnerUpsTemp[0]);
 
         setTimeout(() => {
             setSlideDown(true);
@@ -624,10 +600,30 @@ const Party = ({ socket }) => {
         if(item.itemId === activeItem.itemId) {
             return;
         } else {
-            activeItem.active = false;
-            item.active = true;
-            setActiveRunnerup(item);
-            setRunnerUps([...runnerUps]);
+            if(item.providers) {
+                setActiveRunnerup(item);
+                activeItem.active = false;
+                item.active = true;
+                setRunnerUps([...runnerUps]);
+                return;
+            } else {
+                activeItem.active = false;
+                item.active = true;
+                fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${item.itemId}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(body => {
+                    item.providers = body.media.providers;
+                    setActiveRunnerup(item);
+                    setRunnerUps([...runnerUps]);
+                });
+            
+            }
         }
     }
 
@@ -688,7 +684,7 @@ const Party = ({ socket }) => {
                         {
                             (mediaType === 'movie' || mediaType === 'tv') && (
                                 <React.Fragment>
-                                    <p className='sub-title'>
+                                    <p className='sub-title-where-to-watch'>
                                         Where to Watch
                                     </p>
                                     <div className='providers-list'>
@@ -796,7 +792,7 @@ const Party = ({ socket }) => {
                             )
                         }
                         <div className='winner-divider'></div>
-                        <p className='sub-title'>
+                        <p className='sub-title-runners-up'>
                             Runner Ups
                         </p>
                         {
@@ -820,108 +816,107 @@ const Party = ({ socket }) => {
                                             }
                                         </div>
                                         <div className='runner-up-active-title'>{activeRunnerup.title}</div>
-                                        <div className='runner-up-providers'>
-                                            <div className='providers-list'>
-                                                <div className='details-provider-title' onClick={() => { setShowRunnerStream(!showRunnerStream) }}>
-                                                    <span>Stream</span>
-                                                    {
-                                                        // Q: What other characters are there for down arrow?
-                                                        // A: ▼ ▽ ▾ ▿
-                                                        // Q: What other characters are there for up arrow?
-                                                        // A: ▲ △ ▴ ▵
-                                                        showRunnerStream && activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▴</span> ) : 
-                                                            activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▾</span> ) : null
-                                                    }
-                                                </div>
-                                                <div className='details-provider-seperator'></div>
-                                                { 
-                                                    activeRunnerup.providers.stream ?
-                                                    (
-                                                        <React.Fragment>
-                                                            {
-                                                                showRunnerStream ? (
-                                                                    <div className='details-provider-list'>
-                                                                        {
-                                                                            activeRunnerup.providers.stream.map(provider => (
-                                                                                (<div className='details-provider-item' key={provider.provider_name}>
-                                                                                    <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                                                </div>)
-                                                                            ))
-                                                                        }
-                                                                    </div>
-                                                                ) : null
-                                                            }
-                                                        </React.Fragment>
-                                                    ) : (
-                                                        <div className='providers-not-available'>Not available to stream</div>
-                                                    )
-                                                }
-                                                <div className='details-provider-title' onClick={() => { setShowRunnerBuy(!showRunnerBuy) }}>
-                                                    <span>Buy</span>
-                                                    {
-                                                        showRunnerBuy && activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▴</span> ) : 
-                                                        activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▾</span> ) : null
-                                                    }
-                                                </div>
-                                                <div className='details-provider-seperator'></div>
-                                                { 
-                                                    activeRunnerup.providers.buy ?
-                                                    (
-                                                        <React.Fragment>
-                                                            {
-                                                                showRunnerBuy ? (
-                                                                    <div className='details-provider-list'>
-                                                                        {
-                                                                            activeRunnerup.providers.buy.map(provider => (
-                                                                                (<div className='details-provider-item' key={provider.provider_name}>
-                                                                                    <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                                                </div>)
-                                                                            ))
-                                                                        }
-                                                                    </div>
-                                                                ) : null
-                                                            }
-                                                        </React.Fragment>
-                                                    ) : (
-                                                        <div className='providers-not-available'>Not available to buy</div>
-                                                    )
-                                                }
-                                                {   mediaType === 'movie' && (
-                                                        <React.Fragment>
-                                                            <div className='details-provider-title' onClick={() => { setShowRunnerRent(!showRunnerRent) }}>
-                                                                <span>Rent</span>
-                                                                {
-                                                                    showRunnerRent && activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▴</span> ) : 
-                                                                    activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▾</span> ) : null
-                                                                }
-                                                            </div>
-                                                            <div className='details-provider-seperator'></div>
-                                                            { 
-                                                                activeRunnerup.providers.rent ? 
-                                                                (
-                                                                    <React.Fragment>
-                                                                        {
-                                                                            showRunnerRent ? (
-                                                                                <div className='details-provider-list'>
-                                                                                    {
-                                                                                        activeRunnerup.providers.rent.map(provider => (
-                                                                                            (<div className='details-provider-item' key={provider.provider_name}>
-                                                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                                                            </div>)
-                                                                                        ))
-                                                                                    }
-                                                                                </div>
-                                                                            ) : null
-                                                                        }
-                                                                    </React.Fragment>
-                                                                ) : (
-                                                                    <div className='providers-not-available'>Not available to rent</div>
-                                                                )
-                                                            }
-                                                        </React.Fragment>
-                                                    )
+                                        
+                                        <div className='providers-list'>
+                                            <div className='details-provider-title' onClick={() => { setShowRunnerStream(!showRunnerStream) }}>
+                                                <span>Stream</span>
+                                                {
+                                                    // Q: What other characters are there for down arrow?
+                                                    // A: ▼ ▽ ▾ ▿
+                                                    // Q: What other characters are there for up arrow?
+                                                    // A: ▲ △ ▴ ▵
+                                                    showRunnerStream && activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                        activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▾</span> ) : null
                                                 }
                                             </div>
+                                            <div className='details-provider-seperator'></div>
+                                            { 
+                                                activeRunnerup.providers.stream ?
+                                                (
+                                                    <React.Fragment>
+                                                        {
+                                                            showRunnerStream ? (
+                                                                <div className='details-provider-list'>
+                                                                    {
+                                                                        activeRunnerup.providers.stream.map(provider => (
+                                                                            (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                            </div>)
+                                                                        ))
+                                                                    }
+                                                                </div>
+                                                            ) : null
+                                                        }
+                                                    </React.Fragment>
+                                                ) : (
+                                                    <div className='providers-not-available'>Not available to stream</div>
+                                                )
+                                            }
+                                            <div className='details-provider-title' onClick={() => { setShowRunnerBuy(!showRunnerBuy) }}>
+                                                <span>Buy</span>
+                                                {
+                                                    showRunnerBuy && activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                    activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                }
+                                            </div>
+                                            <div className='details-provider-seperator'></div>
+                                            { 
+                                                activeRunnerup.providers.buy ?
+                                                (
+                                                    <React.Fragment>
+                                                        {
+                                                            showRunnerBuy ? (
+                                                                <div className='details-provider-list'>
+                                                                    {
+                                                                        activeRunnerup.providers.buy.map(provider => (
+                                                                            (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                            </div>)
+                                                                        ))
+                                                                    }
+                                                                </div>
+                                                            ) : null
+                                                        }
+                                                    </React.Fragment>
+                                                ) : (
+                                                    <div className='providers-not-available'>Not available to buy</div>
+                                                )
+                                            }
+                                            {   mediaType === 'movie' && (
+                                                    <React.Fragment>
+                                                        <div className='details-provider-title' onClick={() => { setShowRunnerRent(!showRunnerRent) }}>
+                                                            <span>Rent</span>
+                                                            {
+                                                                showRunnerRent && activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                                activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                            }
+                                                        </div>
+                                                        <div className='details-provider-seperator'></div>
+                                                        { 
+                                                            activeRunnerup.providers.rent ? 
+                                                            (
+                                                                <React.Fragment>
+                                                                    {
+                                                                        showRunnerRent ? (
+                                                                            <div className='details-provider-list'>
+                                                                                {
+                                                                                    activeRunnerup.providers.rent.map(provider => (
+                                                                                        (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                            <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                        </div>)
+                                                                                    ))
+                                                                                }
+                                                                            </div>
+                                                                        ) : null
+                                                                    }
+                                                                </React.Fragment>
+                                                            ) : (
+                                                                <div className='providers-not-available'>Not available to rent</div>
+                                                            )
+                                                        }
+                                                    </React.Fragment>
+                                                )
+                                            }
                                         </div>
                                     </React.Fragment>
                                 )
