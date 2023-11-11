@@ -632,7 +632,7 @@ const Party = ({ socket }) => {
 
   return (
     <div className='content'>
-        { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight} style={{width: '100%'}}/> )}
+        { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
         <img src={back} alt="Back symbol" onClick={navToParty} className='top-left clickable'
             style={navingBack ? {animation: 'button-press .75s'} : null}
         />
