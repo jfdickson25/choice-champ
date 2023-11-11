@@ -44,6 +44,7 @@ const Party = ({ socket }) => {
     const [showRunnerStream, setShowRunnerStream] = useState(false);
     const [showRunnerBuy, setShowRunnerBuy] = useState(false);
     const [showRunnerRent, setShowRunnerRent] = useState(false);
+    const [loadingRunnerUpProviders, setLoadingRunnerUpProviders] = useState(false);
 
     const collectionPointRef = useRef(collectionItems);
     const votesNeededRef = useRef(votesNeeded);
@@ -609,6 +610,7 @@ const Party = ({ socket }) => {
             } else {
                 activeItem.active = false;
                 item.active = true;
+                setLoadingRunnerUpProviders(true);
                 fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${item.itemId}`,
                 {
                     method: 'GET',
@@ -621,6 +623,7 @@ const Party = ({ socket }) => {
                     item.providers = body.media.providers;
                     setActiveRunnerup(item);
                     setRunnerUps([...runnerUps]);
+                    setLoadingRunnerUpProviders(false);
                 });
             
             }
@@ -816,91 +819,31 @@ const Party = ({ socket }) => {
                                             }
                                         </div>
                                         <div className='runner-up-active-title'>{activeRunnerup.title}</div>
-                                        
-                                        <div className='providers-list'>
-                                            <div className='details-provider-title' onClick={() => { setShowRunnerStream(!showRunnerStream) }}>
-                                                <span>Stream</span>
-                                                {
-                                                    // Q: What other characters are there for down arrow?
-                                                    // A: ▼ ▽ ▾ ▿
-                                                    // Q: What other characters are there for up arrow?
-                                                    // A: ▲ △ ▴ ▵
-                                                    showRunnerStream && activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▴</span> ) : 
-                                                        activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▾</span> ) : null
-                                                }
-                                            </div>
-                                            <div className='details-provider-seperator'></div>
+                                        <React.Fragment>
                                             { 
-                                                activeRunnerup.providers.stream ?
-                                                (
-                                                    <React.Fragment>
-                                                        {
-                                                            showRunnerStream ? (
-                                                                <div className='details-provider-list'>
-                                                                    {
-                                                                        activeRunnerup.providers.stream.map(provider => (
-                                                                            (<div className='details-provider-item' key={provider.provider_name}>
-                                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                                            </div>)
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                            ) : null
-                                                        }
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <div className='providers-not-available'>Not available to stream</div>
-                                                )
-                                            }
-                                            <div className='details-provider-title' onClick={() => { setShowRunnerBuy(!showRunnerBuy) }}>
-                                                <span>Buy</span>
-                                                {
-                                                    showRunnerBuy && activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▴</span> ) : 
-                                                    activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▾</span> ) : null
-                                                }
-                                            </div>
-                                            <div className='details-provider-seperator'></div>
-                                            { 
-                                                activeRunnerup.providers.buy ?
-                                                (
-                                                    <React.Fragment>
-                                                        {
-                                                            showRunnerBuy ? (
-                                                                <div className='details-provider-list'>
-                                                                    {
-                                                                        activeRunnerup.providers.buy.map(provider => (
-                                                                            (<div className='details-provider-item' key={provider.provider_name}>
-                                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                                            </div>)
-                                                                        ))
-                                                                    }
-                                                                </div>
-                                                            ) : null
-                                                        }
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <div className='providers-not-available'>Not available to buy</div>
-                                                )
-                                            }
-                                            {   mediaType === 'movie' && (
-                                                    <React.Fragment>
-                                                        <div className='details-provider-title' onClick={() => { setShowRunnerRent(!showRunnerRent) }}>
-                                                            <span>Rent</span>
+                                                !loadingRunnerUpProviders ? (
+                                                    <div className='providers-list'>
+                                                        <div className='details-provider-title' onClick={() => { setShowRunnerStream(!showRunnerStream) }}>
+                                                            <span>Stream</span>
                                                             {
-                                                                showRunnerRent && activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▴</span> ) : 
-                                                                activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                                // Q: What other characters are there for down arrow?
+                                                                // A: ▼ ▽ ▾ ▿
+                                                                // Q: What other characters are there for up arrow?
+                                                                // A: ▲ △ ▴ ▵
+                                                                showRunnerStream && activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                                    activeRunnerup.providers.stream ? ( <span className='provider-arrow'> ▾</span> ) : null
                                                             }
                                                         </div>
                                                         <div className='details-provider-seperator'></div>
                                                         { 
-                                                            activeRunnerup.providers.rent ? 
+                                                            activeRunnerup.providers.stream ?
                                                             (
                                                                 <React.Fragment>
                                                                     {
-                                                                        showRunnerRent ? (
+                                                                        showRunnerStream ? (
                                                                             <div className='details-provider-list'>
                                                                                 {
-                                                                                    activeRunnerup.providers.rent.map(provider => (
+                                                                                    activeRunnerup.providers.stream.map(provider => (
                                                                                         (<div className='details-provider-item' key={provider.provider_name}>
                                                                                             <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
                                                                                         </div>)
@@ -911,13 +854,78 @@ const Party = ({ socket }) => {
                                                                     }
                                                                 </React.Fragment>
                                                             ) : (
-                                                                <div className='providers-not-available'>Not available to rent</div>
+                                                                <div className='providers-not-available'>Not available to stream</div>
                                                             )
                                                         }
-                                                    </React.Fragment>
-                                                )
+                                                        <div className='details-provider-title' onClick={() => { setShowRunnerBuy(!showRunnerBuy) }}>
+                                                            <span>Buy</span>
+                                                            {
+                                                                showRunnerBuy && activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                                activeRunnerup.providers.buy ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                            }
+                                                        </div>
+                                                        <div className='details-provider-seperator'></div>
+                                                        { 
+                                                            activeRunnerup.providers.buy ?
+                                                            (
+                                                                <React.Fragment>
+                                                                    {
+                                                                        showRunnerBuy ? (
+                                                                            <div className='details-provider-list'>
+                                                                                {
+                                                                                    activeRunnerup.providers.buy.map(provider => (
+                                                                                        (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                            <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                        </div>)
+                                                                                    ))
+                                                                                }
+                                                                            </div>
+                                                                        ) : null
+                                                                    }
+                                                                </React.Fragment>
+                                                            ) : (
+                                                                <div className='providers-not-available'>Not available to buy</div>
+                                                            )
+                                                        }
+                                                        {   mediaType === 'movie' && (
+                                                                <React.Fragment>
+                                                                    <div className='details-provider-title' onClick={() => { setShowRunnerRent(!showRunnerRent) }}>
+                                                                        <span>Rent</span>
+                                                                        {
+                                                                            showRunnerRent && activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▴</span> ) : 
+                                                                            activeRunnerup.providers.rent ? ( <span className='provider-arrow'> ▾</span> ) : null
+                                                                        }
+                                                                    </div>
+                                                                    <div className='details-provider-seperator'></div>
+                                                                    { 
+                                                                        activeRunnerup.providers.rent ? 
+                                                                        (
+                                                                            <React.Fragment>
+                                                                                {
+                                                                                    showRunnerRent ? (
+                                                                                        <div className='details-provider-list'>
+                                                                                            {
+                                                                                                activeRunnerup.providers.rent.map(provider => (
+                                                                                                    (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                                        <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                                    </div>)
+                                                                                                ))
+                                                                                            }
+                                                                                        </div>
+                                                                                    ) : null
+                                                                                }
+                                                                            </React.Fragment>
+                                                                        ) : (
+                                                                            <div className='providers-not-available'>Not available to rent</div>
+                                                                        )
+                                                                    }
+                                                                </React.Fragment>
+                                                            )
+                                                        }
+                                                    </div> 
+                                                ) : <Loading type='beat' className='runner-up-providers-loading' size={20} speed={.5} />
                                             }
-                                        </div>
+                                        </React.Fragment>
                                     </React.Fragment>
                                 )
                              ) : (
