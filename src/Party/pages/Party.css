@@ -201,8 +201,10 @@
 }
 
 .runner-up-providers-loading {
-    width: 100%;
     text-align: center;
+    grid-column: 1/4;
+    margin-top: 20px;
+
 }
 
 .providers-list {
