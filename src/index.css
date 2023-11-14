@@ -206,6 +206,11 @@ input {
   cursor: pointer;
 }
 
+button:disabled {
+  background-color: #fcaf168a;
+  color: #454545;
+}
+
 @keyframes button-press {
   0% {
     transform: translateY(0);
