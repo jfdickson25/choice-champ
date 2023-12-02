@@ -4,15 +4,13 @@ import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import _ from 'lodash';
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
 import './Search.css';
 
 import back from '../../shared/assets/img/back.svg';
 import circle from '../../shared/assets/img/circle.png';
 import filledCircle from '../../shared/assets/img/filled-circle.png';
 import check from '../../shared/assets/img/check.png';
+import { set } from 'react-hook-form';
 
 const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -31,21 +29,9 @@ const Search = ({ socket }) => {
     const [collection, setCollection] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
-    const [sendingData, setSendingData] = useState(false);
 
     // Create a ref of collection
     const collectionRef = useRef(collection);
-
-    const notify = () => toast.success(`Items saved to ${collectionName} collection`, {
-        position: "bottom-center",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-    });
 
     useEffect(() => {
         auth.showFooterHandler(false);
@@ -60,8 +46,15 @@ const Search = ({ socket }) => {
         .then(data => {
             // Verify that data.items is not undefined
             if(data.items) {
-                setCollection(data.items);
-                collectionRef.current = data.items;
+                // Set collection to the items in the collection but only the id
+                collectionRef.current = data.items.map(item => {
+                    return {
+                        itemId: item.itemId,
+                        mongoId: item._id
+                    }
+                });
+
+                setCollection(collectionRef.current);
             }
         });
     }, [auth, collectionType, collectionId]);
@@ -149,65 +142,62 @@ const Search = ({ socket }) => {
         debounced(event.target.value);
     }
 
-    const checkUncheckItem = (itemId) => {
-        // Find the item in the array and toggle the selected value
+    const removeItem = (itemId) => {
+        // Find the collection item with the itemId and remove it from the collection
+        const collectionItem = collectionRef.current.find(item => item.itemId === itemId);
+
+        fetch(`http://localhost:5000/collections/items/${collectionId}/${collectionItem.mongoId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        // Find the item with the id and set inCollection to false
         const updatedItems = items.map(item => {
             if(item.id === itemId) {
-                item.selected = !item.selected;
+                item.inCollection = false;
             }
             return item;
         });
 
         setItems(updatedItems);
+
+        // Remove the item from the collection
+        const updatedCollection = collectionRef.current.filter(item => item.itemId !== itemId);
+        collectionRef.current = updatedCollection;
+        setCollection(collectionRef.current);
     }
 
-    const addItems = () => {
-        // Filter the items to only get the selected ones
-        const selectedItems = items.filter(item => item.selected === true);
+    const addItem = (itemId, itemTitle, itemPoster) => {
+        // Make a fetch post request to add an item to a collection
+        fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify([{
+                title: itemTitle,
+                id: itemId,
+                poster: itemPoster
+            }])
+        })
+        .then(res => res.json())
+        .then(data => {
+            collectionRef.current.push({itemId: itemId, mongoId: data.newItems[0]._id});
+            setCollection(collectionRef.current);
 
-        // Check to make sure selectedItems is not empty
-        if(selectedItems.length !== 0) {
+            // socket.emit('add-remote-items', [{}], collectionId);
 
-            setSendingData(true);
-
-            setTimeout(() => {
-                setSendingData(false);
-            }, 1000);
-
-            // Send the selected items to the backend to be added to the collection
-            fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(selectedItems)
-            })
-            .then(res => res.json())
-            .then(data => {
-                // Update to set selected to false and set inCollection to true in selectedItems then setItems to selectedItems
-                const updatedItems = items.map(item => {
-                    if(item.selected === true) {
-                        item.selected = false;
-                        item.inCollection = true;
-                    }
-                    return item;
-                });
-            
-                selectedItems.forEach(item => {
-                    collectionRef.current.push({
-                        title: item.title,
-                        poster: item.poster,
-                        watched: false,
-                        itemId: item.id
-                    })
-                });
-
-                socket.emit('add-remote-items', data.newItems, collectionId);
-
-                setItems(updatedItems);
-                notify();
+            // Update the items inCollection value
+            const updatedItems = items.map(item => {
+                if(item.id === itemId) {
+                    item.inCollection = true;
+                }
+                return item;
             });
-        }
+            setItems(updatedItems);
+        });
     }
 
     const navBack = () => {
@@ -220,26 +210,10 @@ const Search = ({ socket }) => {
 
     return (
         <div className='content'>
-            <ToastContainer
-                position="bottom-center"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-                style={{ textAlign: "center" }}
-            />
             <img src={back} alt="Back symbol" className="top-left clickable" onClick={navBack} 
                 style={navingBack ? {animation: 'button-press .75s'} : null}
             />
             <h2 className='title'>{collectionName}</h2>
-            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/save.png?v=1682564025941' id='save-icon' className="save-icon clickable" alt='Save icon' onClick={addItems} 
-                style={sendingData ? {animation: 'button-press .75s'} : null}
-            />
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
@@ -255,12 +229,17 @@ const Search = ({ socket }) => {
                                 }
                                 { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
                             {
-                                item.inCollection ? (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'}  />) :
-                                (
-                                    item.selected 
-                                    ? (<img id={item.id} src={filledCircle} alt={`${item.title} selected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { checkUncheckItem(item.id) }} />)
-                                    : (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { checkUncheckItem(item.id) }} />)
-                                )
+                                item.inCollection ? 
+                                (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item.id) }} />) :
+                                (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} 
+                                    onClick={() => { 
+                                        if(collectionType === 'board') {
+                                            addItem(item.id, item.title);
+                                        } else {
+                                            addItem(item.id, item.title, item.poster);
+                                        }
+                                    }}
+                                />)
                             }
                             </div>
                     ))}
