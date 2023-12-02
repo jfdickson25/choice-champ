@@ -99,6 +99,15 @@ const Details = () => {
     }
 
     const addToCollection = (addCollectionId, index) => {
+
+        let tempId = itemId;
+
+        // For collections that are not games or boards, we need to parse the id to an int
+        // this is because we grab the id from the url and it is a string
+        if(collectionType !== 'board') {
+            tempId = parseInt(tempId);
+        }
+
         // Make a fetch post request to add an item to a collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${addCollectionId}`, {
             method: 'POST',
@@ -107,7 +116,7 @@ const Details = () => {
             },
             body: JSON.stringify([{
                 title: details.title,
-                id: itemId,
+                id: tempId,
                 poster: details.poster
             }])
         })
