@@ -146,7 +146,7 @@ const Search = ({ socket }) => {
         // Find the collection item with the itemId and remove it from the collection
         const collectionItem = collectionRef.current.find(item => item.itemId === itemId);
 
-        fetch(`http://localhost:5000/collections/items/${collectionId}/${collectionItem.mongoId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}/${collectionItem.mongoId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -167,11 +167,14 @@ const Search = ({ socket }) => {
         const updatedCollection = collectionRef.current.filter(item => item.itemId !== itemId);
         collectionRef.current = updatedCollection;
         setCollection(collectionRef.current);
+
+        // Emit to the server that an item has been removed
+        socket.emit('remove-remote-item', collectionItem.mongoId, collectionId);
     }
 
     const addItem = (itemId, itemTitle, itemPoster) => {
         // Make a fetch post request to add an item to a collection
-        fetch(`http://localhost:5000/collections/items/${collectionId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -187,7 +190,7 @@ const Search = ({ socket }) => {
             collectionRef.current.push({itemId: itemId, mongoId: data.newItems[0]._id});
             setCollection(collectionRef.current);
 
-            // socket.emit('add-remote-items', [{}], collectionId);
+            socket.emit('add-remote-item', {title: itemTitle, itemId: itemId, poster: itemPoster, _id: data.newItems[0]._id, watched: false}, collectionId);
 
             // Update the items inCollection value
             const updatedItems = items.map(item => {

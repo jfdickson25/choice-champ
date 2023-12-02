@@ -93,17 +93,16 @@ const Collection = ({ socket }) => {
             setItems(itemsRef.current);
         });
 
-        socket.on('add-items', (newItems) => {
-            // Push all newItems onto itemsRef.current
-            let newArray = [...itemsRef.current, ...newItems];
-            itemsRef.current = newArray;
+        socket.on('add-item', (newItem) => {
+            // Add the new item to the list
+            itemsRef.current = [...itemsRef.current, newItem];
             setItems(itemsRef.current);
         });
 
         return () => {
             socket.off('remove-item');
             socket.off('watched-item');
-            socket.off('add-items');
+            socket.off('add-item');
         }
     }, [socket]);
 
@@ -148,8 +147,8 @@ const Collection = ({ socket }) => {
             }
         })
         .then(res => {
-            setItems(items.filter(item => item._id !== id));
-            itemsRef.current = items;
+            itemsRef.current = itemsRef.current.filter(item => item._id !== id);
+            setItems(items.filter(itemsRef.current));
             // Emit to the server that an item has been removed
             socket.emit('remove-remote-item', id, collectionId);
         });
