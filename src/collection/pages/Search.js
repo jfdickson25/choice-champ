@@ -222,7 +222,17 @@ const Search = ({ socket }) => {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
                 (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
                     {items.map(item => (
-                        <div className='item-section' key={item.id}>
+                        <div className='item-section' key={item.id} onClick={() => {
+                            if(!item.inCollection) {
+                                if(collectionType === 'board') {
+                                    addItem(item.id, item.title);
+                                } else {
+                                    addItem(item.id, item.title, item.poster);
+                                }
+                            } else {
+                                removeItem(item.id);
+                            }
+                        }}>
 
                                 { 
                                     collectionType !== 'board' ?
@@ -233,16 +243,8 @@ const Search = ({ socket }) => {
                                 { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
                             {
                                 item.inCollection ? 
-                                (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item.id) }} />) :
-                                (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} 
-                                    onClick={() => { 
-                                        if(collectionType === 'board') {
-                                            addItem(item.id, item.title);
-                                        } else {
-                                            addItem(item.id, item.title, item.poster);
-                                        }
-                                    }}
-                                />)
+                                (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />) :
+                                (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />)
                             }
                             </div>
                     ))}
