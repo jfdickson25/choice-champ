@@ -164,26 +164,27 @@ const Search = ({ socket }) => {
             headers: {
                 'Content-Type': 'application/json'
             }
+        })
+        .then(res => {
+            // Find the item with the id and set inCollection to false
+            const updatedItems = items.map(item => {
+                if(item.id === itemId) {
+                    item.inCollection = false;
+                    item.loadingUpdate = false;
+                }
+                return item;
+            });
+
+            setItems(updatedItems);
+
+            // Remove the item from the collection
+            const updatedCollection = collectionRef.current.filter(item => item.itemId !== itemId);
+            collectionRef.current = updatedCollection;
+            setCollection(collectionRef.current);
+
+            // Emit to the server that an item has been removed
+            socket.emit('remove-remote-item', collectionItem.mongoId, collectionId);
         });
-
-        // Find the item with the id and set inCollection to false
-        const updatedItems = items.map(item => {
-            if(item.id === itemId) {
-                item.inCollection = false;
-                item.loadingUpdate = false;
-            }
-            return item;
-        });
-
-        setItems(updatedItems);
-
-        // Remove the item from the collection
-        const updatedCollection = collectionRef.current.filter(item => item.itemId !== itemId);
-        collectionRef.current = updatedCollection;
-        setCollection(collectionRef.current);
-
-        // Emit to the server that an item has been removed
-        socket.emit('remove-remote-item', collectionItem.mongoId, collectionId);
     }
 
     const addItem = (itemId, itemTitle, itemPoster) => {

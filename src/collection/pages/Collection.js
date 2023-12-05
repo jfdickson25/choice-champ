@@ -148,7 +148,7 @@ const Collection = ({ socket }) => {
         })
         .then(res => {
             itemsRef.current = itemsRef.current.filter(item => item._id !== id);
-            setItems(items.filter(itemsRef.current));
+            setItems(itemsRef.current);
             // Emit to the server that an item has been removed
             socket.emit('remove-remote-item', id, collectionId);
         });
