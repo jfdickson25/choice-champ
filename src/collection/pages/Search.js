@@ -91,7 +91,8 @@ const Search = ({ socket }) => {
                         title: mediaItem.title,
                         poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
                         selected: false,
-                        inCollection: inCollection
+                        inCollection: inCollection,
+                        loadingUpdate: false
                     }]);
 
                     setIsLoading(false);
@@ -101,7 +102,8 @@ const Search = ({ socket }) => {
                         title: mediaItem.name,
                         poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
                         selected: false,
-                        inCollection: inCollection
+                        inCollection: inCollection,
+                        loadingUpdate: false
                     }]);
 
                     setIsLoading(false);
@@ -111,7 +113,8 @@ const Search = ({ socket }) => {
                         title: mediaItem.name,
                         poster: mediaItem.background_image,
                         selected: false,
-                        inCollection: inCollection
+                        inCollection: inCollection,
+                        loadingUpdate: false
                     }]);
 
                     setIsLoading(false);
@@ -120,7 +123,8 @@ const Search = ({ socket }) => {
                         id: mediaItem.id,
                         title: mediaItem.name,
                         selected: false,
-                        inCollection: inCollection
+                        inCollection: inCollection,
+                        loadingUpdate: false
                     }]);
 
                     setIsLoading(false);
@@ -146,6 +150,15 @@ const Search = ({ socket }) => {
         // Find the collection item with the itemId and remove it from the collection
         const collectionItem = collectionRef.current.find(item => item.itemId === itemId);
 
+        // Find the item with the id and set loadingUpdate to true
+        const loadingSetItems = items.map(item => {
+            if(item.id === itemId) {
+                item.loadingUpdate = true;
+            }
+            return item;
+        });
+        setItems(loadingSetItems);
+
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}/${collectionItem.mongoId}`, {
             method: 'DELETE',
             headers: {
@@ -157,6 +170,7 @@ const Search = ({ socket }) => {
         const updatedItems = items.map(item => {
             if(item.id === itemId) {
                 item.inCollection = false;
+                item.loadingUpdate = false;
             }
             return item;
         });
@@ -173,6 +187,15 @@ const Search = ({ socket }) => {
     }
 
     const addItem = (itemId, itemTitle, itemPoster) => {
+        // Find the item with the id and set loadingUpdate to true
+        const loadingSetItems = items.map(item => {
+            if(item.id === itemId) {
+                item.loadingUpdate = true;
+            }
+            return item;
+        });
+        setItems(loadingSetItems);
+
         // Make a fetch post request to add an item to a collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'POST',
@@ -196,6 +219,7 @@ const Search = ({ socket }) => {
             const updatedItems = items.map(item => {
                 if(item.id === itemId) {
                     item.inCollection = true;
+                    item.loadingUpdate = false;
                 }
                 return item;
             });
@@ -234,17 +258,23 @@ const Search = ({ socket }) => {
                             }
                         }}>
 
-                                { 
-                                    collectionType !== 'board' ?
-                                    <img src={item.poster} alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : 'game-img'} /> 
-                                    :
-                                    <div className='board-img-search' /> 
-                                }
-                                { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
+                            { 
+                                collectionType !== 'board' ?
+                                <img src={item.poster} alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : 'game-img'} /> 
+                                :
+                                <div className='board-img-search' /> 
+                            }
+                            { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
                             {
-                                item.inCollection ? 
-                                (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />) :
-                                (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />)
+                                item.loadingUpdate ? 
+                                (
+                                    <Loading type='beat' size={15} speed={.5} className='loading-save' />
+                                ) :
+                                (
+                                    item.inCollection ? 
+                                    (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />) :
+                                    (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />)
+                                )
                             }
                             </div>
                     ))}
