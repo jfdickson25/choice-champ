@@ -4,6 +4,9 @@ import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import _ from 'lodash';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './Search.css';
 
 import back from '../../shared/assets/img/back.svg';
@@ -32,6 +35,28 @@ const Search = ({ socket }) => {
 
     // Create a ref of collection
     const collectionRef = useRef(collection);
+
+    const notify = () => toast.success(`Item saved to ${collectionName} collection`, {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+    });
+
+    const notifyRemove = () => toast(`Item removed from ${collectionName} collection`, {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+    });
 
     useEffect(() => {
         auth.showFooterHandler(false);
@@ -182,6 +207,8 @@ const Search = ({ socket }) => {
             collectionRef.current = updatedCollection;
             setCollection(collectionRef.current);
 
+            notifyRemove();
+
             // Emit to the server that an item has been removed
             socket.emit('remove-remote-item', collectionItem.mongoId, collectionId);
         });
@@ -225,6 +252,7 @@ const Search = ({ socket }) => {
                 return item;
             });
             setItems(updatedItems);
+            notify();
         });
     }
 
@@ -238,6 +266,7 @@ const Search = ({ socket }) => {
 
     return (
         <div className='content'>
+            <ToastContainer />
             <img src={back} alt="Back symbol" className="top-left clickable" onClick={navBack} 
                 style={navingBack ? {animation: 'button-press .75s'} : null}
             />

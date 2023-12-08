@@ -128,6 +128,9 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     height: auto;
     top: 5px;
     left: 5px;
+    background-color: rgba(31, 31, 31, 0.515);
+    border-radius: 50%;
+    padding: 2px;
 }
 
 .item-action-watched-game {
