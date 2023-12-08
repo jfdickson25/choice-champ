@@ -261,3 +261,15 @@ button:disabled {
     grid-column: 13;
   }
 }
+
+@media only screen and (min-width: 900px) {
+  .item-action-game {
+      width: 12%;
+  }
+}
+
+@media only screen and (min-width: 1600px) {
+  .item-action-game {
+      width: 10%;
+  }
+}

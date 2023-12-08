@@ -139,6 +139,9 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     height: auto;
     top: 5px;
     left: 5px;
+    background-color: rgba(31, 31, 31, 0.515);
+    border-radius: 50%;
+    padding: 2px;
 }
 
 .share-code {
@@ -213,6 +216,10 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     .divider-other {
         grid-column: 1/6;
     }
+
+    .item-action-watched-game {
+        width: 12%;
+    }
 }
 
 @media only screen and (min-width: 1600px) {
@@ -224,5 +231,9 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
 
     .collection-content-game {
         grid-column: 6/13;
+    }
+
+    .item-action-watched-game {
+        width: 10%;
     }
 }
