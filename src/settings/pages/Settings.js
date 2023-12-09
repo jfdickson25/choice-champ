@@ -166,12 +166,12 @@ const Settings = props => {
                             <a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by dr.iconsart - Flaticon</a>
                         </div>
                         <div className='flaticon-link'>
-                            <img src={back} />
-                            <a href="https://www.flaticon.com/free-icons/previous" title="previous icons">Previous icons created by Freepik - Flaticon</a>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668' />
+                            <a href="https://www.flaticon.com/free-icons/back-button" title="back button icons">Back button icons created by The Chohans - Flaticon</a>
                         </div>
                         <div className='flaticon-link'>
-                            <img src={add} />
-                            <a href="https://www.flaticon.com/free-icons/read-more" title="read more icons">Read more icons created by Royyan Wijaya - Flaticon</a>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button.png?v=1702138169050' />
+                            <a href="https://www.flaticon.com/free-icons/read-more" title="read more icons">Read more icons created by Bharat Icons - Flaticon</a>
                         </div>
                         <div className='flaticon-link'>
                             <img src={edit} />
@@ -180,6 +180,14 @@ const Settings = props => {
                         <div className='flaticon-link'>
                             <img src={editing} />
                             <a href="https://www.flaticon.com/free-icons/edit" title="edit icons">Edit icons created by iconixar - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button-active.png?v=1702137193420' />
+                            <a href="https://www.flaticon.com/free-icons/back-button" title="back button icons">Back button icons created by The Chohans - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button-active.png?v=1702137827635' />
+                            <a href="https://www.flaticon.com/free-icons/read-more" title="read more icons">Read more icons created by Bharat Icons - Flaticon</a>
                         </div>
                         <div className='flaticon-link'>
                             <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' />

@@ -142,11 +142,11 @@ const Details = () => {
 
     return (
         <div className='content'>
-            <img 
-                src={back} alt="Back symbol" className="top-left clickable" onClick={navBack}
-                // Add a button-press animation when navigating back
-                style={navingBack ? {animation: 'button-press .75s'} : null}
-            />
+            {
+                navingBack ? 
+                (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button-active.png?v=1702137193420" alt="Back symbol" className="top-left clickable" style={{animation: 'button-press .75s'}} />) : 
+                (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
+            }
             { 
                 loading ? <Loading type='beat' className='list-loading' size={20} /> : 
                 <React.Fragment>
