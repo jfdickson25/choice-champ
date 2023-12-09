@@ -627,9 +627,11 @@ const Party = ({ socket }) => {
   return (
     <div className='content'>
         { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
-        <img src={back} alt="Back symbol" onClick={navToParty} className='top-left clickable'
-            style={navingBack ? {animation: 'button-press .75s'} : null}
-        />
+        {
+            navingBack ? 
+            (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button-active.png?v=1702137193420" alt="Back symbol" className="top-left clickable" style={{animation: 'button-press .75s'}} />) : 
+            (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navToParty} />)
+        }
         { (userType === 'owner' && collectionItems.length > 1) ? (
             <div className='votes-needed-section'>
                 <p className='votes-needed-title'>Votes Needed</p>
