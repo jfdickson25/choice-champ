@@ -35,6 +35,13 @@
     right: 5px;
 }
 
+.no-match {
+    grid-column: 1/18;
+    margin-top: 50px;
+    font-weight: bold;
+    color: #FCB016;
+}
+
 @media only screen and (min-width: 900px) {
     .save-icon {
         width: 10%;

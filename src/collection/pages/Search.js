@@ -9,9 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import './Search.css';
 
-import back from '../../shared/assets/img/back.svg';
 import circle from '../../shared/assets/img/circle.png';
-import filledCircle from '../../shared/assets/img/filled-circle.png';
 import check from '../../shared/assets/img/check.png';
 import { set } from 'react-hook-form';
 
@@ -32,6 +30,7 @@ const Search = ({ socket }) => {
     const [collection, setCollection] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
+    const [noMatch, setNoMatch] = useState(false);
 
     // Create a ref of collection
     const collectionRef = useRef(collection);
@@ -87,6 +86,7 @@ const Search = ({ socket }) => {
     const updateList = (search) => {
         if (search === '' || search === undefined || search === null) {
             setItems([]);
+            setNoMatch(false);
             setIsLoading(false);
             return;
         }
@@ -95,10 +95,17 @@ const Search = ({ socket }) => {
         fetch(`https://choice-champ-backend.glitch.me/media/${collectionType}/${search}/1`)
         .then(res => res.json())
         .then(res => {
+            if(res.media.results.length === 0) {
+                setItems([]);
+                setIsLoading(false);
+                setNoMatch(true);
+                return;
+            }
+
             // Reset the items to populate with updated value
             setItems([]);
 
-                res.media.results.forEach(mediaItem => {
+            res.media.results.forEach(mediaItem => {
 
                 // Make sure the item is not already in the collection
                 let inCollection = false;
@@ -155,6 +162,10 @@ const Search = ({ socket }) => {
                     setIsLoading(false);
                 }
             });
+        })
+        .catch(err => {
+            console.log(err);
+            setIsLoading(false);
         });
     };
 
@@ -166,6 +177,7 @@ const Search = ({ socket }) => {
     // Functions for handling change to input
     const changeHandler = (event) => {
         setIsLoading(true);
+        setNoMatch(false);
         // Debounce example from web dev simplified (TODO: Watch rest on throttle)
         // https://www.youtube.com/watch?v=cjIswDCKgu0
         debounced(event.target.value);
@@ -274,6 +286,7 @@ const Search = ({ socket }) => {
             }
             <h2 className='title'>{collectionName}</h2>
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
+            { noMatch && <p className='no-match'>No matches found</p>}
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
                 (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
