@@ -25,6 +25,10 @@
 .item-title {
     height: 100% !important;
     border-radius: 9px !important;
+    color: #FCB016;
+    position: absolute;
+    top: 40%;
+    text-align: center;
 }
 
 .loading-save {

@@ -85,6 +85,7 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
     display: grid;
     align-items: end;
     border-radius: 10px;
+    background-color: #232323;
 }
 
 .item-action-watched {
