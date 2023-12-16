@@ -36,7 +36,7 @@ const Search = ({ socket }) => {
     const collectionRef = useRef(collection);
 
     const notify = () => toast.success(`Item saved to ${collectionName} collection`, {
-        position: "top-center",
+        position: "bottom-center",
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
@@ -47,7 +47,7 @@ const Search = ({ socket }) => {
     });
 
     const notifyRemove = () => toast(`Item removed from ${collectionName} collection`, {
-        position: "top-center",
+        position: "bottom-center",
         autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
