@@ -326,17 +326,27 @@ const Collection = ({ socket }) => {
                                 {
                                     // Logic to check if we should show the items in alphabetical order or not
                                     showWatched && (
-                                        [...filteredItems]
-                                            .filter(item => item.watched)
-                                            .sort((a, b) => a.timestamp - b.timestamp)
-                                            .reverse().map(item => (
-                                                <div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                    <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
-                                                    { (collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
-                                                    { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
-                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-watched-game clickable' : 'item-action-watched clickable'} onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
-                                                </div>
-                                        ))
+                                        [...filteredItems].filter(item => item.watched).length === 0 ? (
+                                            
+                                                collectionType === 'game' || collectionType === 'board' ? 
+                                                <p className='no-items'>No played items</p>
+                                                :
+                                                <p className='no-items'>No watched items</p>
+                                        )
+                                        : 
+                                        (
+                                            [...filteredItems]
+                                                .filter(item => item.watched)
+                                                .sort((a, b) => a.timestamp - b.timestamp)
+                                                .reverse().map(item => (
+                                                    <div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
+                                                        <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : collectionType === 'game' ? 'game-img' : 'board-img'} src={item.poster} />
+                                                        { (collectionType === 'game' || collectionType === 'board') && <p>{item.title}</p>}
+                                                        { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} onClick={() => { removeItem(item._id) }} />) : null }
+                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className={ collectionType === 'game' ? 'item-action-watched-game clickable' : 'item-action-watched clickable'} onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                    </div>
+                                            ))
+                                        )
                                     )
                                 }
                             </div>
