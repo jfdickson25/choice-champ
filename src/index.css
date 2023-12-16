@@ -149,14 +149,6 @@ input {
   right: 5px;
 }
 
-.item-action-game {
-  position: absolute;
-  width: 15%;
-  height: auto;
-  top: 5px;
-  right: 5px;
-}
-
 .add {
     grid-column: 8/11;
     width: 70%;
@@ -259,17 +251,5 @@ button:disabled {
   #install-never {
     font-size: 12pt;
     grid-column: 13;
-  }
-}
-
-@media only screen and (min-width: 900px) {
-  .item-action-game {
-      width: 12%;
-  }
-}
-
-@media only screen and (min-width: 1600px) {
-  .item-action-game {
-      width: 10%;
   }
 }

@@ -55,20 +55,6 @@
     padding-right: 10px;
 }
 
-.collection-content-game {
-    box-sizing: border-box;
-    grid-column: 1/18;
-    width: 100%;
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    column-gap: 15px;
-    row-gap: 20px;
-    margin-top: 30px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
 .item-section {
     width: 100%;
     column-count: 1;
@@ -94,15 +80,6 @@
 .winner-img {
     height: auto;
     width: 85%;
-    grid-column: 1/4;
-    border: #FCB016 solid 5px;
-    border-radius: 22px;
-    animation: zoomWinner .8s ease-in-out;
-}
-
-.winner-img-game {
-    height: auto;
-    width: 100%;
     grid-column: 1/4;
     border: #FCB016 solid 5px;
     border-radius: 22px;
@@ -295,23 +272,6 @@
     display: grid;
     align-items: end;
     border-radius: 10px;
-}
-
-.item-section p {
-    box-sizing: border-box;
-    display: grid;
-    align-content: center;
-    grid-column: 1/4;
-    width: 100%;
-    height: 10vh;
-    color: #FCB016;
-    text-align: center;
-    margin: 0;
-    padding: 5px;
-    background-color: rgba(17, 17, 17, 0.877);
-    border-radius: 0px 0px 9px 9px;
-    position: absolute;
-    bottom: 0;
 }
 
 .item-votes {
@@ -513,10 +473,6 @@
     .winner-img {
         width: 50%;
     }
-
-    .collection-content-game {
-        grid-column: 4/15;
-    }
 }
 
 @media only screen and (min-width: 900px) {
@@ -531,10 +487,6 @@
 
     .winner-img {
         width: 40%;
-    }
-
-    .winner-img-game {
-        width: 70%;
     }
 
     .game-img {
@@ -579,20 +531,12 @@
         width: 20%;
     }
 
-    .winner-img-game {
-        width: 50%;
-    }
-
     .game-img {
         width: 70%;
     }
 
     .game-img + p {
         width: 70%;
-    }
-
-    .collection-content-game {
-        grid-column: 6/13;
     }
 
     .runner-up-section {

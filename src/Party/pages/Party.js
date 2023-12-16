@@ -668,7 +668,7 @@ const Party = ({ socket }) => {
             : <div className='guest-banner'></div>
         }
         { (userType === 'owner' && collectionItems.length > 1) && (<img src={dice} className="edit clickable" alt='Dice' onClick={selectRandom} />) }
-        <div className={mediaType === 'game' ? 'collection-content-game' : 'collection-content-other' }>
+        <div className='collection-content-other'>
             { 
                 collectionItems.length === 1 ? (
                     <div className='winner'>
@@ -676,7 +676,7 @@ const Party = ({ socket }) => {
                             CHOICE CHAMPION!
                         </p>
                         <img
-                            className={ mediaType === 'game' ? 'winner-img-game' :'winner-img' }
+                            className='winner-img'
                             src={collectionItems[0].poster}
                         />
                         {
@@ -791,16 +791,6 @@ const Party = ({ socket }) => {
                                 (item.voted) ? { border: '5px solid #FCB016' } : null
                             }
                         />
-                        {
-                            (mediaType === 'game') && 
-                            <p 
-                                style={
-                                    (item.voted) ? { borderLeft: '5px solid #FCB016', borderRight: '5px solid #FCB016', borderBottom: '5px solid #FCB016', borderRadius: '0px 0px 9px 9px' } : null
-                                }
-                            >
-                                {item.title}
-                            </p>
-                        }
                         { (item.votes > 0 && !secretMode) && <div className='item-votes'>{item.votes}</div> }
                         { 
                             ((item.tempSuperChoice || item.superChoice) && superChoiceMode) && 

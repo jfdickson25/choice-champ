@@ -141,9 +141,9 @@ const Search = ({ socket }) => {
                     setIsLoading(false);
                 } else if (collectionType === 'game') {
                     setItems(prevState => [...prevState, {
-                        id: mediaItem.id,
+                        id: mediaItem.guid,
                         title: mediaItem.name,
-                        poster: mediaItem.background_image,
+                        poster: mediaItem.image.original_url,
                         selected: false,
                         inCollection: inCollection,
                         loadingUpdate: false
@@ -289,7 +289,7 @@ const Search = ({ socket }) => {
             { noMatch && <p className='no-match'>No matches found</p>}
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
-                (<div className={collectionType === 'game' ? 'collection-content-game' : 'collection-content'}>
+                (<div className='collection-content'>
                     {items.map(item => (
                         <div className='item-section' key={item.id} onClick={() => {
                             if(!item.inCollection) {
@@ -317,8 +317,8 @@ const Search = ({ socket }) => {
                                 ) :
                                 (
                                     item.inCollection ? 
-                                    (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />) :
-                                    (<img id={item.id} src={circle} alt={`${item.title} unselected`} className={collectionType === 'game' ? 'item-action-game clickable' : 'item-action clickable'} />)
+                                    (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className='item-action clickable' />) :
+                                    (<img id={item.id} src={circle} alt={`${item.title} unselected`} className='item-action clickable' />)
                                 )
                             }
                             </div>

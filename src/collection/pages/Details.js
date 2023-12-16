@@ -57,6 +57,11 @@ const Details = () => {
                 data.media.details.overview = string6;
             }
 
+            if(collectionType === 'game') {
+                data.media.details.title = data.media.details.name;
+                data.media.details.name = undefined;
+            }
+
             setDetails(data.media.details);
 
             if(collectionType !== 'board' || collectionType !== 'game') {
@@ -102,11 +107,13 @@ const Details = () => {
 
         let tempId = itemId;
 
-        // For collections that are not games or boards, we need to parse the id to an int
+        // For collections that are not games or board games, we need to parse the id to an int
         // this is because we grab the id from the url and it is a string
-        if(collectionType !== 'board') {
+        if(collectionType !== 'board' && collectionType !== 'game') {
             tempId = parseInt(tempId);
         }
+
+        console.log(details);
 
         // Make a fetch post request to add an item to a collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${addCollectionId}`, {
@@ -152,21 +159,21 @@ const Details = () => {
                 <React.Fragment>
                     <div id="content-details">
                         <img
-                            className={ collectionType === 'game' ? 'details-img-game' :'details-img' }
+                            className='details-img'
                             src={details.poster}
                         />
                         <div className='details-title'>{details.title}</div>
                         {
+                            collectionType !== 'game' &&
                                 <div className='details-section'>
                                     <span className='details-section-title'>
-                                        { (collectionType === 'game' || collectionType === 'board') && ' Play Time:' } 
+                                        { collectionType === 'board' && ' Play Time:' } 
                                         { collectionType === 'movie' && ' Runtime:' }
                                         { collectionType === 'tv' && ' Seasons:' }
                                     </span> 
                                     {
                                         details.runtime > 0 ? details.runtime : 'N/A'
                                     }
-                                    { (collectionType === 'game' && details.runtime > 0) && ' hour' } 
                                     { (collectionType === 'movie' || collectionType === 'board') && ' minute' } 
                                     { collectionType === 'tv' && ' season' }
                                     { details.runtime > 1 && 's' }
@@ -226,12 +233,12 @@ const Details = () => {
                                         {
                                             providers.platforms && (
                                                 providers.platforms.map((platform, index) => (
-                                                    (<span key={platform.platform.name}>
+                                                    (<span key={platform.name}>
                                                         {
                                                             index === providers.platforms.length - 1 ? (
-                                                                platform.platform.name
+                                                                platform.name
                                                             ) : 
-                                                                platform.platform.name + ', '
+                                                                platform.name + ', '
                                                         }
                                                     </span>)
                                                 ))
