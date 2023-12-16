@@ -33,6 +33,16 @@ svg.svg-inline--fa.fa-eye.fa-xl {
     margin-top: 20px;
 }
 
+svg.svg-inline--fa.fa-gamepad.fa-xl {
+    grid-column: 11/14;
+    margin-top: 20px;
+}
+
+svg.svg-inline--fa.fa-chess-pawn.fa-xl {
+    grid-column: 11/14;
+    margin-top: 20px;
+}
+
 svg.svg-inline--fa.fa-clock.fa-xl {
     grid-column: 5/8;
     margin-top: 20px;

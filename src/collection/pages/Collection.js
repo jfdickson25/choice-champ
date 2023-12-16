@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownAZ, faClock, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownAZ, faClock, faEye, faGamepad, faChessPawn } from '@fortawesome/free-solid-svg-icons';
 
 import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
@@ -262,7 +262,7 @@ const Collection = ({ socket }) => {
                     setShowAlphabetical(true);
                     setShowWatched(false);
                 }} className={showAlphabetical ? 'active-categorize clickable' : 'clickable'} />
-                <FontAwesomeIcon icon={faEye} size="xl" onClick={() => {
+                <FontAwesomeIcon icon={ collectionType === 'game' ? faGamepad : collectionType === 'board' ? faChessPawn :faEye} size="xl" onClick={() => {
                     setShowWatched(true);
                     setShowAlphabetical(false);
                 }} className={showWatched ? 'active-categorize clickable' : 'clickable'} />
