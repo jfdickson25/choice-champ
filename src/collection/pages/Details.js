@@ -31,7 +31,7 @@ const Details = () => {
     const [currentCollectionExists, setCurrentCollectionExists] = useState(true);
 
     useEffect(() => {
-        auth.showFooterHandler(false);
+        auth.showFooterHandler(true);
         setLoading(true);
         setLoadingCollectionList(true);
         // Get all the items in the collection to check if any items in the search are already in the collection

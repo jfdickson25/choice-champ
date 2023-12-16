@@ -36,6 +36,7 @@ const CreateParty = props => {
         .then(res => res.json())
         .then(data => {
             setCollections(data.collections);
+            console.log(data.collections);
             setIsLoading(false);
         })
     }, []);
@@ -155,7 +156,8 @@ const CreateParty = props => {
                     
                 { isLoading ? <Loading type='beat' className='list-loading-create' size={20} /> : 
                         collections.length > 0 ?
-                            collections.map(collection => (
+                            collections.map(collection => (   
+                                collection.items.length > 0 &&
                                 <div key={collection._id} className='create-party-collection'>
                                     <img id={ collection._id } src={ collection.selected ? check : circle} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />
                                     <div className='create-party-collection-name'>{collection.name}</div>

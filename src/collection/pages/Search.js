@@ -11,7 +11,6 @@ import './Search.css';
 
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
-import { set } from 'react-hook-form';
 
 const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -58,7 +57,7 @@ const Search = ({ socket }) => {
     });
 
     useEffect(() => {
-        auth.showFooterHandler(false);
+        auth.showFooterHandler(true);
         // Get all the items in the collection to check if any items in the search are already in the collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'GET',

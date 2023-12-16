@@ -5,8 +5,6 @@ import Loading from '../../shared/components/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDownAZ, faClock, faEye } from '@fortawesome/free-solid-svg-icons';
 
-import back from '../../shared/assets/img/back.svg';
-import add from '../../shared/assets/img/add.png';
 import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
 
