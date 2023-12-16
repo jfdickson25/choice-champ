@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownAZ, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownAZ, faClock, faEye } from '@fortawesome/free-solid-svg-icons';
 
 import back from '../../shared/assets/img/back.svg';
 import add from '../../shared/assets/img/add.png';
@@ -30,6 +30,7 @@ const Collection = ({ socket }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [collectionName, setCollectionName] = useState(useParams().name);
     const [showAlphabetical, setShowAlphabetical] = useState(false);
+    const [showWatched, setShowWatched] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
     const [navingAdd, setNavingAdd] = useState(false);
 
@@ -255,8 +256,18 @@ const Collection = ({ socket }) => {
                     (<img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button.png?v=1702138169050' alt='Add icon' className='add clickable' onClick={navAdd} />)
                 }
                 <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
-                <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {setShowAlphabetical(true)}} className={showAlphabetical ? 'active-categorize clickable' : 'clickable'} />
-                <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {setShowAlphabetical(false)}} className={!showAlphabetical ? 'active-categorize clickable' : 'clickable'} />
+                <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {
+                    setShowAlphabetical(true);
+                    setShowWatched(false);
+                }} className={showAlphabetical ? 'active-categorize clickable' : 'clickable'} />
+                <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {
+                    setShowAlphabetical(false);
+                    setShowWatched(false);
+                }} className={!showAlphabetical && !showWatched ? 'active-categorize clickable' : 'clickable'} />
+                <FontAwesomeIcon icon={faEye} size="xl" onClick={() => {
+                    setShowWatched(true);
+                    setShowAlphabetical(false);
+                }} className={showWatched ? 'active-categorize clickable' : 'clickable'} />
                 {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
                         (
@@ -269,7 +280,7 @@ const Collection = ({ socket }) => {
                                 }
                                 {
                                     // Logic to check if we should show the items in alphabetical order or not
-                                    showAlphabetical ? (
+                                    showAlphabetical && !showWatched ? (
                                         [...filteredItems].sort((a, b) => a.title.localeCompare(b.title)).map(item => (
                                            // Only show if the item is not watched
                                            !item.watched ?
@@ -295,7 +306,7 @@ const Collection = ({ socket }) => {
                                         */ 
                                         [...filteredItems].reverse().map(item => (
                                             // Only show if the item is not watched
-                                            !item.watched ?
+                                            !item.watched && !showWatched ?
                                                 (<div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     { 
                                                         !isEdit ? 
@@ -314,7 +325,14 @@ const Collection = ({ socket }) => {
                                 }
                                 { 
                                     // Add a divider if there are watched items
-                                    filteredItems.filter(item => item.watched).length > 0 ? <div className={ collectionType === 'game' ? 'divider-game' : 'divider-other'}></div> : null 
+                                    filteredItems.filter(item => item.watched).length > 0 && !showWatched ? (
+                                        <React.Fragment>
+                                        {
+                                            (collectionType === 'game' || collectionType === 'board') ? (<div className={ collectionType === 'game' ? 'watched-game' : 'watched'}>Played</div>) : (<div className='watched'>Watched</div>)
+                                        }
+                                        </React.Fragment>
+                                    )
+                                    : null 
                                 }
                                 {
                                     // Logic to check if we should show the items in alphabetical order or not
