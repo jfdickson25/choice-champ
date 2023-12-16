@@ -305,11 +305,11 @@ const Search = ({ socket }) => {
 
                             { 
                                 collectionType !== 'board' ?
-                                <img src={item.poster} alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' ? 'item-img' : 'game-img'} /> 
+                                <img src={item.poster} alt={`${item.title} poster`} className='item-img' /> 
                                 :
                                 <div className='board-img-search' /> 
                             }
-                            { (collectionType !== 'movie' && collectionType !== 'tv') && ( <p className={ collectionType === 'board' ? 'item-title' : undefined }>{item.title}</p> ) }                      
+                            { (collectionType !== 'movie' && collectionType !== 'tv' && collectionType !== 'game') && ( <p className='item-title'>{item.title}</p> ) }                      
                             {
                                 item.loadingUpdate ? 
                                 (
@@ -317,7 +317,7 @@ const Search = ({ socket }) => {
                                 ) :
                                 (
                                     item.inCollection ? 
-                                    (<img src={check} alt={`${item.title} saved`} style={collectionType === 'game' ? {width: '15%'} : null} className='item-action clickable' />) :
+                                    (<img src={check} alt={`${item.title} saved`} className='item-action clickable' />) :
                                     (<img id={item.id} src={circle} alt={`${item.title} unselected`} className='item-action clickable' />)
                                 )
                             }
