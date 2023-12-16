@@ -64,9 +64,6 @@ const CreateParty = props => {
             return;
         }
 
-        // Generate a random 4 digit party code
-        const partyCode = Math.floor(1000 + Math.random() * 9000);
-
         const collectionIds = selectedCollections.map(collection => collection._id);
 
         fetch('https://choice-champ-backend.glitch.me/party', {
@@ -76,7 +73,6 @@ const CreateParty = props => {
             },
             body: JSON.stringify({
                     collections: collectionIds,
-                    partyCode: partyCode,
                     mediaType: mediaType,
                     secretMode: secretMode,
                     includeWatched: includeWatched,
@@ -85,8 +81,11 @@ const CreateParty = props => {
             })
         })
         .then(res => {
+            return res.json();
+        })
+        .then(data => {
             // Route to the party page
-            navigate(`/party/wait/${partyCode}`);
+            navigate(`/party/wait/${data.partyCode}`);
         });
     }
 
