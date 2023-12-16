@@ -792,7 +792,7 @@ const Party = ({ socket }) => {
                             }
                         />
                         {
-                            (mediaType === 'game' || mediaType === 'board') && 
+                            (mediaType === 'game') && 
                             <p 
                                 style={
                                     (item.voted) ? { borderLeft: '5px solid #FCB016', borderRight: '5px solid #FCB016', borderBottom: '5px solid #FCB016', borderRadius: '0px 0px 9px 9px' } : null
