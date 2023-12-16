@@ -112,7 +112,9 @@ const Search = ({ socket }) => {
 
                 // Check if item exists in collection ref
                 collectionRef.current.forEach(item => {
-                    if(item.itemId === mediaItem.id) {
+                    if(collectionType !== 'game' && item.itemId === mediaItem.id) {
+                        inCollection = true;
+                    } else if (collectionType === 'game' && item.itemId === mediaItem.guid) {
                         inCollection = true;
                     }
                 });
