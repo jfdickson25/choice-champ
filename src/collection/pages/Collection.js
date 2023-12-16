@@ -247,7 +247,7 @@ const Collection = ({ socket }) => {
                     : (<h2 className='title'>{collectionName}</h2>)
                 }
 
-                <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} />
+                <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} style={isEdit ? {animation: 'button-press .75s'} : null} />
                 <div className='share-code'>share code: {shareCode}</div>
                 {
                     navingAdd ?

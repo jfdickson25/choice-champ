@@ -257,8 +257,13 @@ const Collections = props => {
                     (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
                 }
                 <h2 className='title'>{title}</h2>
-                <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} />
-                <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button.png?v=1702138169050' className='add clickable' alt='Add icon' onClick={handleOpen} />
+                <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} style={isEdit ? {animation: 'button-press .75s'} : null} />
+                {
+                    open ? 
+                        <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button-active.png?v=1702137827635' className='add clickable' alt='Add icon' style={{animation: 'button-press .75s'}} />
+                    :
+                    <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button.png?v=1702138169050' className='add clickable' alt='Add icon' onClick={handleOpen} />
+                }
 
                 {
                     isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
