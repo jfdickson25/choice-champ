@@ -28,29 +28,37 @@
     margin-top: 30px;
 }
 
-svg.svg-inline--fa.fa-eye.fa-xl {
+#category-watch {
     grid-column: 11/14;
-    margin-top: 20px;
 }
 
-svg.svg-inline--fa.fa-gamepad.fa-xl {
-    grid-column: 11/14;
-    margin-top: 20px;
-}
-
-svg.svg-inline--fa.fa-chess-pawn.fa-xl {
-    grid-column: 11/14;
-    margin-top: 20px;
-}
-
-svg.svg-inline--fa.fa-clock.fa-xl {
+#category-clock {
     grid-column: 5/8;
+}
+
+#category-alph {
+    grid-column: 8/11;
+}
+
+.category-icon {
     margin-top: 20px;
 }
 
-svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
+#chrono-label {
+    grid-column: 5/8;
+}
+
+#alph-label {
     grid-column: 8/11;
-    margin-top: 20px;
+}
+
+#watched-label {
+    grid-column: 11/14;
+}
+
+.category-label {
+    font-size: 8pt;
+    margin-top: 2px;
 }
 
 .active-categorize {
@@ -100,13 +108,14 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
 
 .item-action-watched {
     position: absolute;
-    width: 22%;
+    width: 17%;
     height: auto;
     top: 5px;
     left: 5px;
     background-color: rgba(31, 31, 31, 0.515);
-    border-radius: 30%;
+    border-radius: 50%;
     padding: 5px;
+    aspect-ratio: 1/1;
 }
 
 .share-code {
