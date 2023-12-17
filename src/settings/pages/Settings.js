@@ -150,6 +150,14 @@ const Settings = props => {
                             <a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icons created by Lizel Arina - Flaticon</a>
                         </div>
                         <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/gamepad.png?v=1702830617327' />
+                            <a href="https://www.flaticon.com/free-icons/joystick" title="joystick icons">Joystick icons created by Freepik - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/chess-piece.png?v=1702830919549' />
+                            <a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by Vector Stall - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
                             <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/movie.png?v=1682271238203' />
                             <a href="https://www.flaticon.com/free-icons/video-production" title="video production icons">Video production icons created by Uniconlabs - Flaticon</a>
                         </div>
@@ -224,6 +232,14 @@ const Settings = props => {
                         <div className='flaticon-link'>
                             <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692' />
                             <a href="https://www.flaticon.com/free-icons/rating" title="rating icons">Rating icons created by Corner Pixel - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/gamepad-played.png?v=1702830632013' />
+                            <a href="https://www.flaticon.com/free-icons/joystick" title="joystick icons">Joystick icons created by Freepik - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/chess-piece-played.png?v=1702830917014' />
+                            <a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by Vector Stall - Flaticon</a>
                         </div>
                     </div>
                 </div>

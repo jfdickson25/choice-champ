@@ -11,6 +11,15 @@ import editing from '../../shared/assets/img/editing.png';
 import './Collection.css';
 
 const Collection = ({ socket }) => {
+    const eye = 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813';
+    const eyeWatched = 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141';
+
+    const controller = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/gamepad.png?v=1702830617327';
+    const controllerPlayed = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/gamepad-played.png?v=1702830632013';
+
+    const chess = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/chess-piece.png?v=1702830919549';
+    const chessPlayed = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/chess-piece-played.png?v=1702830917014';
+
     const auth = useContext(AuthContext);
     let navigate = useNavigate();
     /************************************************************
@@ -290,7 +299,9 @@ const Collection = ({ socket }) => {
                                                             <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img' : 'board-img'} src={item.poster} />
                                                     }
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
-                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched clickable' onClick={() => {updateWatched(item._id)}} />) : null }
+                                                    { isEdit ? (<img 
+                                                        src={collectionType === 'movie' || collectionType === 'tv' ? eye : collectionType === 'game' ? controller : chess} 
+                                                        alt={`${item.title} poster`} className='item-action-watched clickable' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
                                                 )
                                             :   null
@@ -312,7 +323,9 @@ const Collection = ({ socket }) => {
                                                             <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img' : 'board-img'} src={item.poster} />
                                                     }
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
-                                                    { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813'} alt={`${item.title} poster`} className='item-action-watched clickable' onClick={() => {updateWatched(item._id)}} />) : null }
+                                                    { isEdit ? (<img 
+                                                        src={collectionType === 'movie' || collectionType === 'tv' ? eye : collectionType === 'game' ? controller : chess}  
+                                                        alt={`${item.title} poster`} className='item-action-watched clickable' onClick={() => {updateWatched(item._id)}} />) : null }
                                                 </div>
                                                 )
                                             :   null
@@ -338,7 +351,9 @@ const Collection = ({ socket }) => {
                                                     <div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                         <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img' : 'board-img'} src={item.poster} />
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
-                                                        { isEdit ? (<img src={item.watched ? 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141' : 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813' } alt={`${item.title} poster`} className='item-action-watched clickable' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
+                                                        { isEdit ? (<img 
+                                                            src={collectionType === 'movie' || collectionType === 'tv' ? eyeWatched : collectionType === 'game' ? controllerPlayed : chessPlayed} 
+                                                            alt={`${item.title} poster`} className='item-action-watched clickable' onClick={() => {updateWatched(item._id, item.watched)}} />) : null }
                                                     </div>
                                             ))
                                         )

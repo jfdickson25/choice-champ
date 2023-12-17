@@ -100,12 +100,12 @@ svg.svg-inline--fa.fa-arrow-down-a-z.fa-xl {
 
 .item-action-watched {
     position: absolute;
-    width: 25%;
+    width: 20%;
     height: auto;
     top: 5px;
     left: 5px;
     background-color: rgba(31, 31, 31, 0.515);
-    border-radius: 50%;
+    border-radius: 30%;
     padding: 2px;
 }
 
