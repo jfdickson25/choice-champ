@@ -285,7 +285,7 @@ const Collection = ({ socket }) => {
                         (
                             <div className='collection-content'>
                                 {
-                                    (filteredItems.length === 0 && query === '') && <p className='no-items'>No items in this collection</p>
+                                    (filteredItems.length === 0 && query === '' && !showWatched) && <p className='no-items'>No items in this collection</p>
                                 }
                                 {
                                     (filteredItems.length === 0 && query !== '') && <p className='no-items'>No items match search</p>
@@ -342,7 +342,7 @@ const Collection = ({ socket }) => {
                                 {
                                     // Logic to check if we should show the items in alphabetical order or not
                                     showWatched && (
-                                        [...filteredItems].filter(item => item.watched).length === 0 ? (
+                                        [...filteredItems].filter(item => item.watched).length === 0 && query === '' ? (
                                             
                                                 collectionType === 'game' || collectionType === 'board' ? 
                                                 <p className='no-items'>No played items</p>
