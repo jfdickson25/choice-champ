@@ -28,16 +28,16 @@
     margin-top: 30px;
 }
 
-#category-watch {
-    grid-column: 11/14;
-}
-
 #category-clock {
     grid-column: 5/8;
 }
 
 #category-alph {
     grid-column: 8/11;
+}
+
+#category-watch {
+    grid-column: 11/14;
 }
 
 .category-icon {
@@ -135,6 +135,30 @@
 @media only screen and (min-width: 500px) {
     .collection-content {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    #category-clock {
+        grid-column: 6/9;
+    }
+
+    #category-alph {
+        grid-column: 9;
+    }
+    
+    #category-watch {
+        grid-column: 10/13;
+    }
+
+    #chrono-label {
+        grid-column: 6/9;
+    }
+
+    #alph-label {
+        grid-column: 9;
+    }
+    
+    #watched-label {
+        grid-column: 10/13;
     }
 }
 

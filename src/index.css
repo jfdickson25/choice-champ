@@ -215,18 +215,18 @@ button:disabled {
   }
 }
 
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 600px) {
 
   .top-left {
-    width: 40%;
+    width: 50%;
   }
 
   .edit {
-    width: 40%;
+    width: 50%;
   }
 
   .add {
-    width: 30%;
+    width: 40%;
   }
 
   #download-banner {
@@ -251,5 +251,50 @@ button:disabled {
   #install-never {
     font-size: 12pt;
     grid-column: 13;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+
+  .top-left {
+    width: 35%;
+  }
+
+  .edit {
+    width: 35%;
+  }
+
+  .add {
+    width: 28%;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+
+  .top-left {
+    width: 30%;
+  }
+
+  .edit {
+    width: 30%;
+  }
+
+  .add {
+    width: 25%;
+  }
+}
+
+@media only screen and (min-width: 1600px) {
+
+  .top-left {
+    width: 25%;
+  }
+
+  .edit {
+    width: 25%;
+  }
+
+  .add {
+    width: 20%;
   }
 }

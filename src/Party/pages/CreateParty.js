@@ -142,6 +142,7 @@ const CreateParty = props => {
                 </p>  
                 <div className='create-divider'></div>
 
+                <p className='option-subtext'>Choose collection type for party</p> 
                 <label className='radio-btn-label' htmlFor="movie">Movies</label>
                 <input className='radio-btn' type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 
                 <label className='radio-btn-label' htmlFor="tv">TV Shows</label>

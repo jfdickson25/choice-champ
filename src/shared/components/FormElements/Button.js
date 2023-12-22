@@ -23,7 +23,7 @@ const Button = props => {
                         type={props.type} 
                         disabled={props.disabled}
                         className={props.className}
-                        style={{animation: 'button-press .75s', backgroundColor: '#dd9b14'}}
+                        style={ props.backgroundColor ? {animation: 'button-press .75s', backgroundColor: props.backgroundColor} : {animation: 'button-press .75s', backgroundColor: '#dd9b14' }}
                     >
                         {props.children}
                     </button>

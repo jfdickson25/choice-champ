@@ -111,13 +111,24 @@
     margin-bottom: 20px;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 600px) {
+    .option-img {
+        width: 40%;
+    }
+
+    .create-party-selectable {
+        width: 60%;
+    }
+}
+
+@media screen and (min-width: 1000px) {
     .create-party-collections {
         grid-column: 6/13;
     }
 
     .create-party-selectable {
         grid-column: 1/3;
+        width: 100%;
     }
 
     .create-party-btn {
@@ -129,14 +140,8 @@
     }
 
     .option-subtext {
-        grid-column: 8/10;
+        grid-column: 8/11;
         font-size: 9pt;
-    }
-    
-    .option-img {
-        grid-column: 10;
-        margin-bottom: 10px;
-        width: 30%;
     }
 
     .radio-btn-label {
@@ -145,6 +150,19 @@
     
     .radio-btn {
         grid-column: 10;
+    }
+
+    .option-img {
+        width: 50%;
+        grid-column: 10;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .option-img {
+        grid-column: 10;
+        margin-bottom: 10px;
+        width: 40%;
     }
 }
 
