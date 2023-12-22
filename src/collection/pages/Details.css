@@ -108,6 +108,18 @@
     
 }
 
+@media only screen and (min-width: 500px) {
+    .details-img {
+        width: 60%;
+    }
+}
+
+@media only screen and (min-width: 700px) {
+    .details-img {
+        width: 55%;
+    }
+}
+
 @media only screen and (min-width: 900px) {
     #content-details {
         width: 70%;
@@ -119,6 +131,14 @@
 
     .collections-list {
         width: 70%;
+    }
+
+    .details-img {
+        width: 45%;
+    }
+
+    .colleciton-item-status {
+        width: 20%;
     }
 }
 

@@ -259,35 +259,29 @@ const Details = () => {
                             <div className='collections-list-title'>Collections:</div>
                             {
                                 collectionList.map((collection, index) => (
-                                    <div className='collection-item' key={collection._id}>
-                                        <div className='collection-item-title'>{collection.name}</div>
-                                        {
-                                            collection.exists ? (
-                                                <img src={check} className='colleciton-item-status' onClick={() => { 
-                                                    let tempCollectionList = [...collectionList];
-                                                    tempCollectionList[index].exists = false;
-                                                    if(tempCollectionList[index].collectionId === collectionId) {
-                                                        setCurrentCollectionExists(false); 
-                                                    }
+                                    <div className='collection-item' key={collection._id} onClick={() => { 
+                                        let tempCollectionList = [...collectionList];
 
-                                                    removeFromCollection(tempCollectionList[index].collectionId, tempCollectionList[index].itemId);
+                                        if(collection.exists) {
+                                            tempCollectionList[index].exists = false;
+                                            if(tempCollectionList[index].collectionId === collectionId) {
+                                                setCurrentCollectionExists(false); 
+                                            }
 
-                                                    setCollectionList([...tempCollectionList]);
-                                                }} />
-                                            ) : (
-                                                <img src={circle} className='colleciton-item-status' onClick={() => { 
-                                                    let tempCollectionList = [...collectionList];
-                                                    tempCollectionList[index].exists = true;
-                                                    if(tempCollectionList[index].collectionId === collectionId) {
-                                                        setCurrentCollectionExists(true); 
-                                                    }
+                                            removeFromCollection(tempCollectionList[index].collectionId, tempCollectionList[index].itemId);
+                                        } else {
+                                            tempCollectionList[index].exists = true;
+                                            if(tempCollectionList[index].collectionId === collectionId) {
+                                                setCurrentCollectionExists(true); 
+                                            }
 
-                                                    addToCollection(tempCollectionList[index].collectionId, index);
-
-                                                    setCollectionList([...tempCollectionList]); 
-                                                }} />
-                                            )
+                                            addToCollection(tempCollectionList[index].collectionId, index); 
                                         }
+
+                                        setCollectionList([...tempCollectionList]);
+                                    }}>
+                                        <div className='collection-item-title'>{collection.name}</div>
+                                        <img src={ collection.exists ? check : circle} className='colleciton-item-status' />
                                     </div>
                                 ))
                             }

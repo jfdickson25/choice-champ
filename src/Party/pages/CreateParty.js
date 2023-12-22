@@ -159,8 +159,8 @@ const CreateParty = props => {
                         collections.length > 0 ?
                             collections.map(collection => (   
                                 collection.items.length > 0 &&
-                                <div key={collection._id} className='create-party-collection'>
-                                    <img id={ collection._id } src={ collection.selected ? check : circle} className='create-party-selectable' onClick={() => { addRemoveItem(collection._id) }} />
+                                <div key={collection._id} className='create-party-collection' onClick={() => { addRemoveItem(collection._id) }}>
+                                    <img id={ collection._id } src={ collection.selected ? check : circle} className='create-party-selectable' />
                                     <div className='create-party-collection-name'>{collection.name}</div>
                                 </div>
                         ))
