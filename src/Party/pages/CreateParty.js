@@ -36,7 +36,6 @@ const CreateParty = props => {
         .then(res => res.json())
         .then(data => {
             setCollections(data.collections);
-            console.log(data.collections);
             setIsLoading(false);
         })
     }, []);

@@ -3,8 +3,6 @@ import React, { useEffect, useState, useRef, useContext }  from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Button from '../../shared/components/FormElements/Button';
 import Confetti from 'react-confetti';
-import back from '../../shared/assets/img/back.svg';
-import dice from '../../shared/assets/img/dices.png';
 import Loading from '../../shared/components/Loading';
 import { AuthContext } from '../../shared/context/auth-context';
 
@@ -17,7 +15,7 @@ const Party = ({ socket }) => {
     const { code } = useParams();
 
     const [collectionItems, setCollectionItems] = useState([]);
-    const [mediaType, setMediaType] = useState('movie');
+    const [mediaType, setMediaType] = useState('');
     const [votesNeeded, setVotesNeeded] = useState(1);
     const [secretMode, setSecretMode] = useState(false);
     const [superChoiceMode, setSuperChoiceMode] = useState(false);
@@ -44,6 +42,7 @@ const Party = ({ socket }) => {
     const votesNeededRef = useRef(votesNeeded);
     const usersReadyCountRef = useRef(usersReadyCount);
     const totalUsersRef = useRef(totalUsers);
+    const mediaTypeRef = useRef(mediaType);
   
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
@@ -93,6 +92,7 @@ const Party = ({ socket }) => {
             items = items.sort(() => Math.random() - 0.5);
 
             setMediaType(body.party.mediaType);
+            mediaTypeRef.current = body.party.mediaType;
             setSecretMode(body.party.secretMode);
             setSuperChoiceMode(body.party.superChoice);
             setTotalUsers(body.party.memberCount);
@@ -154,9 +154,9 @@ const Party = ({ socket }) => {
             const runnerUpsTemp = collectionPointRef.current.filter(item => item.id !== id);
             setRunnerUps(runnerUpsTemp);
 
-            if(mediaType === 'movie' || mediaType === 'tv') {
+            if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
                 // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-                let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
+                let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
                 let body = await response.json();
                 runnerUpsTemp[0].providers = body.media.providers;
@@ -175,8 +175,8 @@ const Party = ({ socket }) => {
                     window.scrollTo(0, 0);
 
                     // Grab the watch options for the winner but only if the media type is movie or tv
-                    if(mediaType === 'movie' || mediaType === 'tv') {
-                        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${item.itemId}`,
+                    if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
+                        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${item.itemId}`,
                         {
                             method: 'GET',
                             headers: {
@@ -217,9 +217,9 @@ const Party = ({ socket }) => {
                         const runnerUpsTemp = collectionPointRef.current.filter(item => item.votes < votesNeededRef.current);
                         setRunnerUps(runnerUpsTemp);
 
-                        if(mediaType === 'movie' || mediaType === 'tv') {
+                        if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
                             // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
+                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
                             let body = await response.json();
                             runnerUpsTemp[0].providers = body.media.providers;
@@ -242,8 +242,8 @@ const Party = ({ socket }) => {
                                 window.scrollTo(0, 0);
 
                                 // Grab the watch options for the winner but only if the media type is movie or tv
-                                if(mediaType === 'movie' || mediaType === 'tv') {
-                                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${filteredItems[0].itemId}`,
+                                if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
+                                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${filteredItems[0].itemId}`,
                                     {
                                         method: 'GET',
                                         headers: {
@@ -394,9 +394,9 @@ const Party = ({ socket }) => {
                         const runnerUpsTemp = collectionItems.filter(item => item.votes < votesNeededRef.current);
                         setRunnerUps(runnerUpsTemp);
 
-                        if(mediaType === 'movie' || mediaType === 'tv') {
+                        if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
                             // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
+                            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
                             let body = await response.json();
                             runnerUpsTemp[0].providers = body.media.providers;
@@ -424,8 +424,8 @@ const Party = ({ socket }) => {
                                 });
 
                                 // Grab the watch options for the winner but only if the media type is movie or tv
-                                if(mediaType === 'movie' || mediaType === 'tv') {
-                                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${filteredItems[0].itemId}`,
+                                if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
+                                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${filteredItems[0].itemId}`,
                                     {
                                         method: 'GET',
                                         headers: {
@@ -538,9 +538,9 @@ const Party = ({ socket }) => {
         const runnerUpsTemp = collectionItems.filter(item => item.id !== randomItem.id);
         setRunnerUps(runnerUpsTemp);
 
-        if(mediaType === 'movie' || mediaType === 'tv') {
+        if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
             // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${runnerUpsTemp[0].itemId}`);
+            let response = await fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
             let body = await response.json();
             runnerUpsTemp[0].providers = body.media.providers;
@@ -557,8 +557,8 @@ const Party = ({ socket }) => {
                 collectionPointRef.current = [randomItem];
 
                 // Grab the watch options for the winner but only if the media type is movie or tv
-                if(mediaType === 'movie' || mediaType === 'tv') {
-                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${randomItem.itemId}`,
+                if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
+                    fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${randomItem.itemId}`,
                     {
                         method: 'GET',
                         headers: {
@@ -605,7 +605,7 @@ const Party = ({ socket }) => {
                 activeItem.active = false;
                 item.active = true;
                 setLoadingRunnerUpProviders(true);
-                fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaType}/${item.itemId}`,
+                fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${mediaTypeRef.current}/${item.itemId}`,
                 {
                     method: 'GET',
                     headers: {
@@ -667,7 +667,7 @@ const Party = ({ socket }) => {
             </div>)
             : <div className='guest-banner'></div>
         }
-        { (userType === 'owner' && collectionItems.length > 1) && (<img src={dice} className="edit clickable" alt='Dice' onClick={selectRandom} />) }
+        { (userType === 'owner' && collectionItems.length > 1) && (<img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/dices.png?v=1703952034117'} className="edit clickable" alt='Dice' onClick={selectRandom} />) }
         <div className='collection-content-other'>
             { 
                 collectionItems.length === 1 ? (
@@ -843,7 +843,7 @@ const Party = ({ socket }) => {
                         slideDown ? { transform: 'translateY(100vh)', transition: 'transform 2s ease-in-out' } : null
                     }
                 >
-                    <img src={dice} className='random-selected-dice' alt='Dice' />
+                    <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/dices.png?v=1703952034117'} className='random-selected-dice' alt='Dice' />
                 </div>
             )
         }

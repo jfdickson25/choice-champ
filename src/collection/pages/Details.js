@@ -113,8 +113,6 @@ const Details = () => {
             tempId = parseInt(tempId);
         }
 
-        console.log(details);
-
         // Make a fetch post request to add an item to a collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${addCollectionId}`, {
             method: 'POST',
