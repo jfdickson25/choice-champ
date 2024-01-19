@@ -719,6 +719,44 @@ const Party = ({ socket }) => {
                             {
                                     runnerUps.length > 0 && (
                                         <React.Fragment>
+                                            {
+                                                (mediaType === 'movie' || mediaType === 'tv') ? (
+                                                    <React.Fragment>
+                                                        <p className='sub-title-where-to-watch'>
+                                                            Where to Watch
+                                                        </p>
+                                                        <div className='runner-up-active-title'>{activeRunnerup.title}</div>
+                                                        <React.Fragment>
+                                                            { 
+                                                                !loadingRunnerUpProviders ? (
+                                                                    <div className='providers-list'>
+                                                                        <div className='details-provider-title'>
+                                                                            <span>Stream</span>
+                                                                        </div>
+                                                                        <div className='details-provider-seperator'></div>
+                                                                        { 
+                                                                            activeRunnerup.providers.stream ?
+                                                                            (
+                                                                                <div className='details-provider-list'>
+                                                                                    {
+                                                                                        activeRunnerup.providers.stream.map(provider => (
+                                                                                            (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                                <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                            </div>)
+                                                                                        ))
+                                                                                    }
+                                                                                </div>
+                                                                            ) : (
+                                                                                <div className='providers-not-available'>Not available to stream</div>
+                                                                            )
+                                                                        }
+                                                                    </div> 
+                                                                ) : <Loading type='beat' className='runner-up-providers-loading' size={20} speed={.5} />
+                                                            }
+                                                        </React.Fragment>
+                                                    </React.Fragment>
+                                                ) : null
+                                            }
                                             <div className='runner-up-watchable'>
                                                 {
                                                     runnerUps.map(item => (
@@ -740,44 +778,6 @@ const Party = ({ socket }) => {
                                                     ))
                                                 }
                                             </div>
-                                    {
-                                        (mediaType === 'movie' || mediaType === 'tv') ? (
-                                            <React.Fragment>
-                                                <p className='sub-title-where-to-watch'>
-                                                    Where to Watch
-                                                </p>
-                                                <div className='runner-up-active-title'>{activeRunnerup.title}</div>
-                                                <React.Fragment>
-                                                    { 
-                                                        !loadingRunnerUpProviders ? (
-                                                            <div className='providers-list'>
-                                                                <div className='details-provider-title'>
-                                                                    <span>Stream</span>
-                                                                </div>
-                                                                <div className='details-provider-seperator'></div>
-                                                                { 
-                                                                    activeRunnerup.providers.stream ?
-                                                                    (
-                                                                        <div className='details-provider-list'>
-                                                                            {
-                                                                                activeRunnerup.providers.stream.map(provider => (
-                                                                                    (<div className='details-provider-item' key={provider.provider_name}>
-                                                                                        <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                                                    </div>)
-                                                                                ))
-                                                                            }
-                                                                        </div>
-                                                                    ) : (
-                                                                        <div className='providers-not-available'>Not available to stream</div>
-                                                                    )
-                                                                }
-                                                            </div> 
-                                                        ) : <Loading type='beat' className='runner-up-providers-loading' size={20} speed={.5} />
-                                                    }
-                                                </React.Fragment>
-                                            </React.Fragment>
-                                        ) : null
-                                        }
                                         </React.Fragment>
                                     )
                                 }

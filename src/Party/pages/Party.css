@@ -123,9 +123,8 @@
     font-size: 18pt;
     color: #FCB016;
     font-weight: 300;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-bottom: 0px;
-    font-weight: bold;
 }
 
 .sub-title-runners-up {
@@ -137,6 +136,7 @@
     font-weight: 300;
     margin-bottom: 15px;
     margin-top: 0;
+    font-weight: bold;
 }
 
 .runner-up-section {
@@ -197,7 +197,7 @@
     text-align: center;
     grid-column: 1/4;
     margin-top: 20px;
-
+    margin-bottom: 50px;
 }
 
 .providers-list {
@@ -205,6 +205,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: repeat(17, 1fr);
+    padding-bottom: 50px;
 }
 
 .details-provider-list {
