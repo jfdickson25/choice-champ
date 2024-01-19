@@ -717,13 +717,17 @@ const Party = ({ socket }) => {
                                 Runner Ups
                             </p>
                             {
-                                (mediaType === 'movie' || mediaType === 'tv') ? (
                                     runnerUps.length > 0 && (
                                         <React.Fragment>
                                             <div className='runner-up-watchable'>
                                                 {
                                                     runnerUps.map(item => (
-                                                        <div key={item.id} className='runner-up-watchable-item' onClick={() => { changeActiveRunnerUp(item.itemId) }}>
+                                                        <div key={item.id} className='runner-up-watchable-item' 
+                                                        onClick={() => { 
+                                                            if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
+                                                                changeActiveRunnerUp(item.itemId) 
+                                                            }
+                                                        }}>
                                                             <img src={item.poster} className='runner-up-watchable-img' style={item.active ? {border: 'solid 5px #FCB016'} : null } />
                                                             { 
                                                                 item.superChoice &&
@@ -736,50 +740,47 @@ const Party = ({ socket }) => {
                                                     ))
                                                 }
                                             </div>
-                                            <p className='sub-title-where-to-watch'>
-                                                Where to Watch
-                                            </p>
-                                            <div className='runner-up-active-title'>{activeRunnerup.title}</div>
+                                    {
+                                        (mediaType === 'movie' || mediaType === 'tv') ? (
                                             <React.Fragment>
-                                                { 
-                                                    !loadingRunnerUpProviders ? (
-                                                        <div className='providers-list'>
-                                                            <div className='details-provider-title'>
-                                                                <span>Stream</span>
-                                                            </div>
-                                                            <div className='details-provider-seperator'></div>
-                                                            { 
-                                                                activeRunnerup.providers.stream ?
-                                                                (
-                                                                    <div className='details-provider-list'>
-                                                                        {
-                                                                            activeRunnerup.providers.stream.map(provider => (
-                                                                                (<div className='details-provider-item' key={provider.provider_name}>
-                                                                                    <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                                                </div>)
-                                                                            ))
-                                                                        }
-                                                                    </div>
-                                                                ) : (
-                                                                    <div className='providers-not-available'>Not available to stream</div>
-                                                                )
-                                                            }
-                                                        </div> 
-                                                    ) : <Loading type='beat' className='runner-up-providers-loading' size={20} speed={.5} />
-                                                }
+                                                <p className='sub-title-where-to-watch'>
+                                                    Where to Watch
+                                                </p>
+                                                <div className='runner-up-active-title'>{activeRunnerup.title}</div>
+                                                <React.Fragment>
+                                                    { 
+                                                        !loadingRunnerUpProviders ? (
+                                                            <div className='providers-list'>
+                                                                <div className='details-provider-title'>
+                                                                    <span>Stream</span>
+                                                                </div>
+                                                                <div className='details-provider-seperator'></div>
+                                                                { 
+                                                                    activeRunnerup.providers.stream ?
+                                                                    (
+                                                                        <div className='details-provider-list'>
+                                                                            {
+                                                                                activeRunnerup.providers.stream.map(provider => (
+                                                                                    (<div className='details-provider-item' key={provider.provider_name}>
+                                                                                        <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                                                    </div>)
+                                                                                ))
+                                                                            }
+                                                                        </div>
+                                                                    ) : (
+                                                                        <div className='providers-not-available'>Not available to stream</div>
+                                                                    )
+                                                                }
+                                                            </div> 
+                                                        ) : <Loading type='beat' className='runner-up-providers-loading' size={20} speed={.5} />
+                                                    }
+                                                </React.Fragment>
                                             </React.Fragment>
+                                        ) : null
+                                        }
                                         </React.Fragment>
                                     )
-                                ) : (
-                                    runnerUps.length > 0 && (
-                                        runnerUps.map(item => (
-                                            item.superChoice ? 
-                                            <p className='runner-up' key={item.id}>{item.title}<span className='super-choice-star'> ★</span></p>
-                                            : <p className='runner-up' key={item.id}>{item.title}</p>
-                                        ))
-                                    )
-                                )
-                            }
+                                }
                         </div>
                     </div>
                 ) : [...collectionItems].reverse().map(item => (

@@ -21,8 +21,8 @@ const Category = props => {
     }, []);
 
     return (
-        <Link to={`/collections/${props.id}`} className='category' id={props.id} >
-            <div className='category-overlay' id={props.id}>
+        <Link to={`/collections/${props.id}`} className='category'>
+            <div className='category-overlay' id={props.id} >
                 <img 
                     className='category-img' 
                     src={source} 
