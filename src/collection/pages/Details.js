@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
+import Showdown from 'showdown';
 
 import './Details.css';
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
-import back from '../../shared/assets/img/back.svg';
 
 const Details = () => {
     const auth = useContext(AuthContext);
@@ -46,15 +46,7 @@ const Details = () => {
             // Remove all the html tags from the overview string
             // This is specifically for board games because the overview is in html
             if(collectionType === 'board') {
-                const regex = /(<([^>]+)>)/gi;
-                let string = data.media.details.overview.replace(regex, " ");
-                let string2 = string.replace(/&mdash;/g, "-");
-                let string3 = string2.replace(/&nbsp;/g, " ");
-                let string4 = string3.replace(/&quot;/g, '"');
-                let string5 = string4.replace(/&amp;/g, "&");
-                let string6 = string5.replace(/&rsquo;/g, "'");
-                
-                data.media.details.overview = string6;
+                data.media.details.overview = new Showdown.Converter().makeHtml(data.media.details.overview);
             }
 
             if(collectionType === 'game') {
@@ -191,7 +183,7 @@ const Details = () => {
                         }
                         <div className='details-section'>
                             <div className='details-section-title'>Overview:</div>
-                            <div className='details-overview'>{details.overview}</div>
+                            <div className='details-overview' dangerouslySetInnerHTML={{ __html: details.overview }}></div>
                         </div>
 
                         { 
