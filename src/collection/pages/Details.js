@@ -181,6 +181,16 @@ const Details = () => {
                                 </React.Fragment>
                             )
                         }
+                        {
+                            (collectionType === 'movie' || collectionType === 'tv') && (
+                                <React.Fragment>
+                                    <div className='details-section'>
+                                        <span className='details-section-title'>Rating: </span>
+                                        {details.rating} / 10
+                                    </div>
+                                </React.Fragment>
+                            )
+                        }
                         <div className='details-section'>
                             <div className='details-section-title'>Overview:</div>
                             <div className='details-overview' dangerouslySetInnerHTML={{ __html: details.overview }}></div>
