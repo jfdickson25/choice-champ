@@ -286,7 +286,7 @@ const Collections = props => {
                                         </div>
                                     </Link>
                                 )
-                            )) : <div style={{textAlign: 'center', gridColumn: '1/5', fontWeight: 'bold'}}>No Collections</div>
+                            )) : <div className='no-collections-txt'>No Collections</div>
                         }
                     </div>)
                 }

@@ -13,6 +13,12 @@
     padding-right: 10px;
 }
 
+.no-collections-txt {
+    text-align: center;
+    grid-column: 1/3;
+    font-weight: bold;
+}
+
 .collections-item {
     width: 100%;
     height: 20vh;
@@ -85,5 +91,9 @@
 @media screen and (min-width: 768px) {
     .collections-content {
         grid-template-columns: repeat(4, 1fr);
+    }
+
+    .no-collections-txt {
+        grid-column: 1/5;
     }
 }
