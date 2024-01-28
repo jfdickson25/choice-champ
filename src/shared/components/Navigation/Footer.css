@@ -3,13 +3,13 @@ footer {
     background-color: #000000;
     height: 10vh;
     position: fixed;
-    left: 0;
     bottom: 0;
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     justify-content: center;
     align-items: center;
     text-align: center;
+    max-width: 1200px;
 }
 
 .nav-links a {
@@ -43,4 +43,12 @@ p.active {
 #settings {
     grid-column: 7/10;
 }
+
+@media only screen and (min-width: 1200px) {
+    footer {
+        bottom: 20px;
+        border-radius: 20px;
+        width: 100%;
+    }
+  }
 

@@ -173,6 +173,7 @@ const Party = ({ socket }) => {
 
                     // Scroll user back to the top of the page
                     window.scrollTo(0, 0);
+                    setRandomSelected(false);
 
                     // Grab the watch options for the winner but only if the media type is movie or tv
                     if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
@@ -573,6 +574,7 @@ const Party = ({ socket }) => {
 
                 // Scroll user back to the top of the page
                 window.scrollTo(0, 0);
+                setRandomSelected(false);
 
                 fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
                 {
@@ -626,7 +628,7 @@ const Party = ({ socket }) => {
 
   return (
     <div className='content'>
-        { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight}/> )}
+        { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight} width={window.innerWidth}/> )}
         {
             navingBack ? 
             (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button-active.png?v=1702137193420" alt="Back symbol" className="top-left clickable" style={{animation: 'button-press .75s'}} />) : 

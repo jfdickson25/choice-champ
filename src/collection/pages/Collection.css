@@ -171,6 +171,9 @@
 @media only screen and (min-width: 900px) {
     .collection-content {
         grid-template-columns: repeat(5, 1fr);
+        padding-left: 50px;
+        padding-right: 50px;
+        grid-gap: 30px;
     }
 
     .search-bar {
@@ -180,8 +183,8 @@
 
 @media only screen and (min-width: 1600px) {
     .collection-content {
-        padding-left: 300px;
-        padding-right: 300px;
+        padding-left: 100px;
+        padding-right: 100px;
         grid-gap: 50px;
     }
 }

@@ -422,8 +422,11 @@
     90% {
       transform: translateX(-5px);
     }
-    100% {
+    99% {
       transform: translateX(0px);
+    }
+    100% {
+      display: none;
     }
   }
 
@@ -479,49 +482,8 @@
 
 @media only screen and (min-width: 900px) {
     .collection-content-other {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .winner {
-        width: 100%;
-        grid-column: 1/5;
-    }
-
-    .winner-img {
-        width: 40%;
-    }
-
-    .game-img {
-        width: 90%;
-    }
-
-    .game-img + p {
-        width: 90%;
-    }
-
-    .runner-up-section {
-        width: 85%;
-    }
-
-    .runner-up-watchable {
         grid-template-columns: repeat(5, 1fr);
-        width: 85%;
-    }
-
-    .runner-up-super-choice {
-        width: 10%;
-    }
-
-    .providers-list {
-        width: 70%;
-    }
-}
-
-@media only screen and (min-width: 1600px) {
-    .collection-content-other {
-        grid-template-columns: repeat(5, 1fr);
-        margin-left: 300px;
-        margin-right: 300px;
+        grid-gap: 30px;
     }
 
     .winner {
@@ -530,15 +492,15 @@
     }
 
     .winner-img {
-        width: 20%;
+        width: 30%;
     }
 
     .game-img {
-        width: 70%;
+        width: 90%;
     }
 
     .game-img + p {
-        width: 70%;
+        width: 90%;
     }
 
     .runner-up-section {
@@ -546,15 +508,19 @@
     }
 
     .runner-up-watchable {
-        grid-template-columns: repeat(7, 1fr);
-        width: 70%;
+        grid-template-columns: repeat(5, 1fr);
+        width: 80%;
     }
 
     .runner-up-super-choice {
-        width: 5%;
+        width: 10%;
     }
 
     .providers-list {
-        width: 40%;
+        width: 60%;
+    }
+
+    .random-selected-dice {
+        width: 10%;
     }
 }
