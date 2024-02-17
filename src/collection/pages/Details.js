@@ -296,9 +296,7 @@ const Details = () => {
                                 ))
                             }
                         </div>
-                    ) : (
-                        <Loading type='beat' className='list-loading' size={20} />
-                    )
+                    ) : null
             }
         </div>
     );
