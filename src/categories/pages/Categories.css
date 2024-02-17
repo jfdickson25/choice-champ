@@ -16,6 +16,18 @@
     margin-top: 0;
 }
 
+#tv {
+    border: #F04C53 2px solid;
+}
+
+#game {
+    border: #2482C5 2px solid;
+}
+
+#board {
+    border: #45B859 2px solid;
+}
+
 @media only screen and (min-width: 800px) {
     #categories {
         grid-column: 4/15;

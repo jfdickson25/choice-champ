@@ -17,6 +17,22 @@
     padding-right: 10px;
 }
 
+.active-movie {
+    color: #FCB016;
+}
+
+.active-tv {
+    color: #F04C53;
+}
+
+.active-game {
+    color: #2482C5;
+}
+
+.active-board {
+    color: #45B859;
+}
+
 .search-bar {
     grid-column: 2/17;
     border-radius: 30px;
@@ -61,8 +77,23 @@
     margin-top: 2px;
 }
 
-.active-categorize {
+.category-label-active-movie {
     color: #FCB016;
+}
+
+.category-label-active-tv {
+    color: #F04C53;
+}
+
+.category-label-active-game {
+    color: #2482C5;
+}
+
+.category-label-active-board {
+    color: #45B859;
+}
+
+.active-categorize {
     border-bottom: 2px solid;
     padding-bottom: 2px;
 }

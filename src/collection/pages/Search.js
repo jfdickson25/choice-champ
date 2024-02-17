@@ -285,7 +285,7 @@ const Search = ({ socket }) => {
                 (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button-active.png?v=1702137193420" alt="Back symbol" className="top-left clickable" style={{animation: 'button-press .75s'}} />) : 
                 (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
             }
-            <h2 className='title'>{collectionName}</h2>
+            <h2 className={`title color-${collectionType}`}>{collectionName}</h2>
             <input className='search-bar' placeholder='Search' onChange={changeHandler} />
             { noMatch && <p className='no-match'>No matches found</p>}
             {

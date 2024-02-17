@@ -252,7 +252,7 @@ const Collection = ({ socket }) => {
                 }
                 { isEdit 
                     ? (<input className='title' style={{gridColumn:"5/14", marginBottom: "10px"}} value={collectionName} onChange={e => setCollectionName(e.target.value)} />)
-                    : (<h2 className='title'>{collectionName}</h2>)
+                    : (<h2 className={`title color-${collectionType}`}>{collectionName}</h2>)
                 }
 
                 <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} style={isEdit ? {animation: 'button-press .75s'} : null} />
@@ -266,18 +266,18 @@ const Collection = ({ socket }) => {
                 <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {
                     setShowAlphabetical(false);
                     setShowWatched(false);
-                }} className={!showAlphabetical && !showWatched ? 'active-categorize category-icon clickable' : 'category-icon clickable'} id='category-clock' />
+                }} className={!showAlphabetical && !showWatched ? `active-categorize active-${collectionType} category-icon clickable` : 'category-icon clickable'} id='category-clock' />
                 <FontAwesomeIcon icon={faArrowDownAZ} size="xl" onClick={() => {
                     setShowAlphabetical(true);
                     setShowWatched(false);
-                }} className={showAlphabetical ? 'active-categorize category-icon clickable' : 'category-icon clickable'} id='category-alph' />
+                }} className={showAlphabetical ? `active-categorize active-${collectionType} category-icon clickable` : 'category-icon clickable'} id='category-alph' />
                 <FontAwesomeIcon icon={collectionType === 'game' ? faGamepad : collectionType === 'board' ? faChessPawn :faEye} size="xl" onClick={() => {
                     setShowWatched(true);
                     setShowAlphabetical(false);
-                }} className={showWatched ? 'active-categorize category-icon clickable' : 'category-icon clickable'} id='category-watch'/>
-                <span id='chrono-label' className='category-label' style={!showAlphabetical && !showWatched ? { color: '#FCB016'} : null}>recent</span>
-                <span id='alph-label' className='category-label' style={(showAlphabetical) ? { color: '#FCB016'} : null}>a-z</span>
-                <span id='watched-label' className='category-label' style={(showWatched) ? { color: '#FCB016'} : null}>
+                }} className={showWatched ? `active-categorize active-${collectionType} category-icon clickable` : 'category-icon clickable'} id='category-watch'/>
+                <span id='chrono-label' className={!showAlphabetical && !showWatched ? `category-label category-label-active-${collectionType}` : 'category-label'}>recent</span>
+                <span id='alph-label' className={(showAlphabetical) ? `category-label category-label-active-${collectionType}` : 'category-label'}>a-z</span>
+                <span id='watched-label' className={(showWatched) ? `category-label category-label-active-${collectionType}` : 'category-label'}>
                     { collectionType === 'game' || collectionType === 'board' ? 'played' : 'watched'}
                 </span> 
                 {
@@ -360,7 +360,7 @@ const Collection = ({ socket }) => {
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
                                                         { isEdit ? (
                                                             <FontAwesomeIcon icon={collectionType === 'game' ? faGamepad : collectionType === 'board' ? faChessPawn :faEye} size="xl" 
-                                                            className='item-action-watched clickable' onClick={() => {updateWatched(item._id, item.watched)}} style={{color: '#FCB016'}} /> 
+                                                            className={`item-action-watched color-${collectionType} clickable`} onClick={() => {updateWatched(item._id, item.watched)}} /> 
                                                         ) : null }
                                                     </div>
                                             ))

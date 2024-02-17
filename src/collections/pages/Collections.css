@@ -35,10 +35,25 @@
 .collection-text {
     font-size: 12pt;
     font-weight: bold;
-    color: #FCB016;
     text-align: center;
     width: 100%;
     grid-column: 5/14;
+}
+
+.collection-text-movie {
+    color: #FCB016;
+}
+
+.collection-text-tv {
+    color: #F04C53;
+}
+
+.collection-text-game {
+    color: #2482C5;
+}
+
+.collection-text-board {
+    color: #45B859;
 }
 
 .dialog-content {

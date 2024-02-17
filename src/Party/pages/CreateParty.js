@@ -142,13 +142,13 @@ const CreateParty = props => {
                 <div className='create-divider'></div>
 
                 <p className='option-subtext'>Choose collection type for party</p> 
-                <label className='radio-btn-label' htmlFor="movie">Movies</label>
+                <label className='radio-btn-label color-movie' htmlFor="movie">Movies</label>
                 <input className='radio-btn' type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 
-                <label className='radio-btn-label' htmlFor="tv">TV Shows</label>
+                <label className='radio-btn-label color-tv' htmlFor="tv">TV Shows</label>
                 <input className='radio-btn' type='radio' name='mediaType' id='tv' value='tv' onChange={mediaTypeHandler} checked={mediaType === 'tv'} />
-                <label className='radio-btn-label' htmlFor="games">Video Games</label>
+                <label className='radio-btn-label color-game' htmlFor="games">Video Games</label>
                 <input className='radio-btn' type='radio' name='mediaType' id='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
-                <label className='radio-btn-label' htmlFor="games">Board Games</label>
+                <label className='radio-btn-label color-board' htmlFor="games">Board Games</label>
                 <input className='radio-btn' type='radio' name='mediaType' id='board' value='board' onChange={mediaTypeHandler} checked={mediaType === 'board'} />
                 
                 <p className='option-subtext'>Choose collections to include in party</p>   
@@ -160,7 +160,7 @@ const CreateParty = props => {
                                 collection.items.length > 0 &&
                                 <div key={collection._id} className='create-party-collection' onClick={() => { addRemoveItem(collection._id) }}>
                                     <img id={ collection._id } src={ collection.selected ? check : circle} className='create-party-selectable' />
-                                    <div className='create-party-collection-name'>{collection.name}</div>
+                                    <div className={`create-party-collection-name color-${mediaType}`}>{collection.name}</div>
                                 </div>
                         ))
                         : <div className='no-collections-found'>No collections found for this media type</div>

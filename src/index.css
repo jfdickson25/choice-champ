@@ -141,6 +141,39 @@ input {
   grid-column: 4/15;
   font-weight: 300;
   text-align: center;
+  font-weight: bold;
+}
+
+.color-movie {
+  color: #FCB016;
+}
+
+.color-tv {
+  color: #F04C53;
+}
+
+.color-game {
+  color: #2482C5;
+}
+
+.color-board {
+  color: #45B859;
+}
+
+#title-movie {
+  color: #FCB016;
+}
+
+#title-tv {
+  color: #F04C53;
+}
+
+#title-game {
+  color: #2482C5;
+}
+
+#title-board {
+  color: #45B859;
 }
 
 .edit {
