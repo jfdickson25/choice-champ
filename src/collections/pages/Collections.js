@@ -3,8 +3,6 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Dialog } from '@mui/material';
 import Loading from '../../shared/components/Loading';
 
-import back from '../../shared/assets/img/back.svg';
-import add from '../../shared/assets/img/add.png';
 import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
 

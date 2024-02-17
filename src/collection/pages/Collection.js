@@ -22,23 +22,35 @@ const Collection = ({ socket }) => {
     let collectionId = useParams().id;
     let collectionNameParam = useParams().name;
 
-    const [items, setItems] = useState([]);
-    const [isEdit, setIsEdit] = useState(false);
-    const [shareCode, setShareCode] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
-    const [collectionName, setCollectionName] = useState(useParams().name);
-    const [showAlphabetical, setShowAlphabetical] = useState(false);
-    const [showWatched, setShowWatched] = useState(false);
-    const [navingBack, setNavingBack] = useState(false);
-    const [navingAdd, setNavingAdd] = useState(false);
-
-    const itemsRef = useRef(items);
-
     // Grab filter query parameters from the url
     const search = window.location.search;
     const params = new URLSearchParams(search);
     const filter = params.get('filter');
     const hash = params.get('hash');
+
+    const [items, setItems] = useState([]);
+    const [isEdit, setIsEdit] = useState(false);
+    const [shareCode, setShareCode] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const [collectionName, setCollectionName] = useState(useParams().name);
+    const [showAlphabetical, setShowAlphabetical] = useState(() => {
+        if(filter === 'alphabetical') {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    const [showWatched, setShowWatched] = useState(() => {
+        if(filter === 'watched') {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    const [navingBack, setNavingBack] = useState(false);
+    const [navingAdd, setNavingAdd] = useState(false);
+
+    const itemsRef = useRef(items);
 
     useEffect(() => {
         auth.showFooterHandler(true);
