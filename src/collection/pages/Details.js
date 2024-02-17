@@ -22,6 +22,12 @@ const Details = () => {
     let collectionId = useParams().collectionId;
     let itemId = useParams().itemId;
 
+
+    // Grab filter query parameters from the url
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    const filter = params.get('filter');
+
     const [details, setDetails] = useState({});
     const [providers, setProviders] = useState({}); // List of providers to watch
     const [loading, setLoading] = useState(false); // Loading state for when we are fetching data
@@ -88,7 +94,11 @@ const Details = () => {
         setTimeout(() => {
             setNavingBack(false);
             if(currentCollectionExists) {
-                navigate(`/collections/${collectionType}/${collectionName}/${collectionId}#${itemId}`);
+                if(filter) {
+                    navigate(`/collections/${collectionType}/${collectionName}/${collectionId}?hash=${itemId}&filter=${filter}`);
+                } else {
+                    navigate(`/collections/${collectionType}/${collectionName}/${collectionId}?hash=${itemId}`);
+                }
             } else {
                 navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
             }

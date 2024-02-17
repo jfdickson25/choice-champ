@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useContext, useRef } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,15 +11,6 @@ import editing from '../../shared/assets/img/editing.png';
 import './Collection.css';
 
 const Collection = ({ socket }) => {
-    const eye = 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/unwatched.png?v=1682136649813';
-    const eyeWatched = 'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/watched.png?v=1682136650141';
-
-    const controller = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/gamepad.png?v=1702830617327';
-    const controllerPlayed = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/gamepad-played.png?v=1702830632013';
-
-    const chess = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/chess-piece.png?v=1702830919549';
-    const chessPlayed = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/chess-piece-played.png?v=1702830917014';
-
     const auth = useContext(AuthContext);
     let navigate = useNavigate();
     /************************************************************
@@ -42,7 +33,12 @@ const Collection = ({ socket }) => {
     const [navingAdd, setNavingAdd] = useState(false);
 
     const itemsRef = useRef(items);
-    const { hash } = useLocation();
+
+    // Grab filter query parameters from the url
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    const filter = params.get('filter');
+    const hash = params.get('hash');
 
     useEffect(() => {
         auth.showFooterHandler(true);
@@ -59,6 +55,13 @@ const Collection = ({ socket }) => {
             itemsRef.current = data.items;
             setShareCode(data.shareCode);
 
+            // Check if there is a filter in the url if there is set the filter
+            if(filter === 'alphabetical') {
+                setShowAlphabetical(true);
+            } else if(filter === 'watched') {
+                setShowWatched(true);
+            }
+
             // Give a little time for the items to load
             setTimeout(() => {
                 setIsLoading(false);
@@ -67,8 +70,8 @@ const Collection = ({ socket }) => {
                 if(hash) {
                     // Add a little more time for the items to load
                     setTimeout(() => {
-                        // If there is a hash in the url, scroll to that element
-                            const element = document.getElementById(hash.substring(1));
+                            // If there is a hash in the url, scroll to that element
+                            const element = document.getElementById(hash);
                             element.scrollIntoView({ behavior: "smooth" });
                     }, 500);
                 }
@@ -180,7 +183,12 @@ const Collection = ({ socket }) => {
     }
 
     const navDetails = (id) => {
-        navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/details/${id}`);
+        // Check if filter for alphabetical or watched is on
+        if(showAlphabetical || showWatched) {
+            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/details/${id}?filter=${showAlphabetical ? 'alphabetical' : 'watched'}`);
+        } else {
+            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/details/${id}`);
+        }
     }
 
     const updateWatched = (id, watched) => {
