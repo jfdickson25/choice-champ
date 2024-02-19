@@ -125,16 +125,6 @@
     border-radius: 10px;
 }
 
-.board-img-search {
-    height: 32vh;
-    width: 100%;
-    grid-column: 1/4;
-    display: grid;
-    align-items: end;
-    border-radius: 10px;
-    background-color: #232323;
-}
-
 .item-action-watched {
     position: absolute;
     width: 17%;

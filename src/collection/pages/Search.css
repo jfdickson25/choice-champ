@@ -23,12 +23,14 @@
 }
 
 .item-title {
-    height: 100% !important;
     border-radius: 9px !important;
     color: #FCB016;
     position: absolute;
     top: 40%;
     text-align: center;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .loading-save {
@@ -44,6 +46,16 @@
     margin-top: 50px;
     font-weight: bold;
     color: #FCB016;
+}
+
+.board-img-search {
+    height: 25vh;
+    width: 100%;
+    grid-column: 1/4;
+    display: grid;
+    align-items: end;
+    border-radius: 10px;
+    background-color: #232323;
 }
 
 @media only screen and (min-width: 900px) {
