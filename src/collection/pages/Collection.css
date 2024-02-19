@@ -101,8 +101,6 @@
 .item-section {
     width: 100%;
     column-count: 1;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
     font-weight: bold;
     align-items: center;
     justify-items: center;
