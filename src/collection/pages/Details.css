@@ -143,15 +143,7 @@
 }
 
 @media only screen and (min-width: 1600px) {
-    #content-details {
-        width: 40%;
-    }
-
     .details-img {
         width: 60%;
-    }
-
-    .collections-list {
-        width: 40%;
     }
 }
