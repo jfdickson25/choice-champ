@@ -293,14 +293,16 @@ const Search = ({ socket }) => {
                 (<div className='collection-content'>
                     {items.map(item => (
                         <div className='item-section' key={item.id} onClick={() => {
-                            if(!item.inCollection) {
-                                if(collectionType === 'board') {
-                                    addItem(item.id, item.title);
+                            if(!item.loadingUpdate) {
+                                if(!item.inCollection) {
+                                    if(collectionType === 'board') {
+                                        addItem(item.id, item.title);
+                                    } else {
+                                        addItem(item.id, item.title, item.poster);
+                                    }
                                 } else {
-                                    addItem(item.id, item.title, item.poster);
+                                    removeItem(item.id);
                                 }
-                            } else {
-                                removeItem(item.id);
                             }
                         }}>
 
@@ -322,7 +324,7 @@ const Search = ({ socket }) => {
                                     (<img id={item.id} src={circle} alt={`${item.title} unselected`} className='item-action clickable' />)
                                 )
                             }
-                            </div>
+                        </div>
                     ))}
                 </div>)
             }
