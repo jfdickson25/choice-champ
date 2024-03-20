@@ -4,6 +4,7 @@ import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import _ from 'lodash';
 
+import { Dialog } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,6 +12,7 @@ import './Search.css';
 
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
+import { get } from 'react-hook-form';
 
 const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -30,6 +32,10 @@ const Search = ({ socket }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
     const [noMatch, setNoMatch] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [loadingBoardGame, setLoadingBoardGame] = useState(false);
+
+    const [activeBoardGame, setActiveBoardGame] = useState({});
 
     // Create a ref of collection
     const collectionRef = useRef(collection);
@@ -184,18 +190,25 @@ const Search = ({ socket }) => {
         debounced(event.target.value);
     }
 
-    const removeItem = (itemId) => {
+    const removeItem = (itemId, board) => {
         // Find the collection item with the itemId and remove it from the collection
         const collectionItem = collectionRef.current.find(item => item.itemId === itemId);
 
-        // Find the item with the id and set loadingUpdate to true
-        const loadingSetItems = items.map(item => {
-            if(item.id === itemId) {
-                item.loadingUpdate = true;
-            }
-            return item;
-        });
-        setItems(loadingSetItems);
+        if(!board) {
+            // Find the item with the id and set loadingUpdate to true
+            const loadingSetItems = items.map(item => {
+                if(item.id === itemId) {
+                    item.loadingUpdate = true;
+                }
+                return item;
+            });
+            setItems(loadingSetItems);
+        } else {
+            setActiveBoardGame({
+                ...activeBoardGame,
+                loadingUpdate: true
+            });
+        }
 
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}/${collectionItem.mongoId}`, {
             method: 'DELETE',
@@ -204,16 +217,34 @@ const Search = ({ socket }) => {
             }
         })
         .then(res => {
-            // Find the item with the id and set inCollection to false
-            const updatedItems = items.map(item => {
-                if(item.id === itemId) {
-                    item.inCollection = false;
-                    item.loadingUpdate = false;
-                }
-                return item;
-            });
+            if(!board) {
+                // Find the item with the id and set inCollection to false
+                const updatedItems = items.map(item => {
+                    if(item.id === itemId) {
+                        item.inCollection = false;
+                        item.loadingUpdate = false;
+                    }
+                    return item;
+                });
 
-            setItems(updatedItems);
+                setItems(updatedItems);
+            } else {
+                setActiveBoardGame({
+                    ...activeBoardGame,
+                    collectionStatus: false,
+                    loadingUpdate: false
+                });
+
+                 // Find the item with the id and set inCollection to false
+                 const updatedItems = items.map(item => {
+                    if(item.id === itemId) {
+                        item.inCollection = false;
+                    }
+                    return item;
+                });
+
+                setItems(updatedItems);
+            }
 
             // Remove the item from the collection
             const updatedCollection = collectionRef.current.filter(item => item.itemId !== itemId);
@@ -227,15 +258,23 @@ const Search = ({ socket }) => {
         });
     }
 
-    const addItem = (itemId, itemTitle, itemPoster) => {
-        // Find the item with the id and set loadingUpdate to true
-        const loadingSetItems = items.map(item => {
-            if(item.id === itemId) {
-                item.loadingUpdate = true;
-            }
-            return item;
-        });
-        setItems(loadingSetItems);
+    const addItem = (itemId, itemTitle, itemPoster, board) => {
+
+        if(!board) {
+            // Find the item with the id and set loadingUpdate to true
+            const loadingSetItems = items.map(item => {
+                if(item.id === itemId) {
+                    item.loadingUpdate = true;
+                }
+                return item;
+            });
+            setItems(loadingSetItems);
+        } else {
+            setActiveBoardGame({
+                ...activeBoardGame,
+                loadingUpdate: true
+            });
+        }
 
         // Make a fetch post request to add an item to a collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
@@ -256,16 +295,62 @@ const Search = ({ socket }) => {
 
             socket.emit('add-remote-item', {title: itemTitle, itemId: itemId, poster: itemPoster, _id: data.newItems[0]._id, watched: false}, collectionId);
 
-            // Update the items inCollection value
-            const updatedItems = items.map(item => {
-                if(item.id === itemId) {
-                    item.inCollection = true;
-                    item.loadingUpdate = false;
-                }
-                return item;
-            });
-            setItems(updatedItems);
+            if(!board) {
+                // Update the items inCollection value
+                const updatedItems = items.map(item => {
+                    if(item.id === itemId) {
+                        item.inCollection = true;
+                        item.loadingUpdate = false;
+                    }
+                    return item;
+                });
+                setItems(updatedItems);
+            } else {
+                setActiveBoardGame({
+                    ...activeBoardGame,
+                    collectionStatus: true,
+                    loadingUpdate: false
+                });
+
+                // Update the items inCollection value
+                const updatedItems = items.map(item => {
+                    if(item.id === itemId) {
+                        item.inCollection = true;
+                    }
+                    return item;
+                });
+                setItems(updatedItems);
+            }
+
             notify();
+        });
+    }
+
+    const getActiveBoardGame = (itemId, status) => {
+        setLoadingBoardGame(true);
+        setOpen(true);
+        
+        // Get all the items in the collection to check if any items in the search are already in the collection
+        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${collectionType}/${itemId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            setActiveBoardGame({
+                id: itemId,
+                title: data.media.details.title,
+                poster: data.media.details.poster,
+                maxPlayers: data.media.details.maxPlayers,
+                minPlayers: data.media.details.minPlayers,
+                playingTime: data.media.details.runtime,
+                collectionStatus: status,
+                loadingUpdate: false
+            });
+
+            setLoadingBoardGame(false);
         });
     }
 
@@ -293,16 +378,15 @@ const Search = ({ socket }) => {
                 (<div className='collection-content'>
                     {items.map(item => (
                         <div className='item-section' key={item.id} onClick={() => {
-                            if(!item.loadingUpdate) {
+                            if(!item.loadingUpdate && collectionType !== 'board') {
                                 if(!item.inCollection) {
-                                    if(collectionType === 'board') {
-                                        addItem(item.id, item.title);
-                                    } else {
-                                        addItem(item.id, item.title, item.poster);
-                                    }
+                                        addItem(item.id, item.title, item.poster, false);
                                 } else {
-                                    removeItem(item.id);
+                                    removeItem(item.id, false);
                                 }
+                            } else if (collectionType === 'board') {
+                                getActiveBoardGame(item.id, item.inCollection);
+                                setOpen(true);
                             }
                         }}>
 
@@ -312,22 +396,62 @@ const Search = ({ socket }) => {
                                 :
                                 <div className='board-img-search' /> 
                             }
-                            { (collectionType !== 'movie' && collectionType !== 'tv' && collectionType !== 'game') && ( <p className='item-title'>{item.title}</p> ) }                      
+                            { collectionType === 'board' && ( <p className='item-title'>{item.title}</p> ) }                      
                             {
-                                item.loadingUpdate ? 
-                                (
-                                    <Loading type='beat' size={15} speed={.5} className='loading-save' />
-                                ) :
-                                (
-                                    item.inCollection ? 
-                                    (<img src={check} alt={`${item.title} saved`} className='item-action clickable' />) :
-                                    (<img id={item.id} src={circle} alt={`${item.title} unselected`} className='item-action clickable' />)
+                                collectionType !== "board" && (
+                                    <React.Fragment>
+                                    {
+                                        item.loadingUpdate ? 
+                                        (
+                                            <Loading type='beat' size={15} speed={.5} className='loading-save' />
+                                        ) :
+                                        (
+                                            item.inCollection ? 
+                                            (<img src={check} alt={`${item.title} saved`} className='item-action clickable' />) :
+                                            (<img id={item.id} src={circle} alt={`${item.title} unselected`} className='item-action clickable' />)
+                                        )
+                                    }
+                                    </React.Fragment>
                                 )
                             }
                         </div>
                     ))}
                 </div>)
             }
+            <Dialog open={open} onClose={() => { setOpen(false) }} fullWidth maxWidth='lg'>
+                <div className='dialog-content'>
+                    {
+                        loadingBoardGame ?
+                        (<Loading type='beat' className='board-details-loading' size={20} />) :
+                        (
+                            <React.Fragment>
+                            <div id='status-icon'>
+                                {
+                                    activeBoardGame.loadingUpdate ? 
+                                    (
+                                        <Loading type='beat' size={15} speed={.5} className='loading-save' />
+                                    ) :
+                                    (
+                                        activeBoardGame.collectionStatus ? 
+                                            (<img src={check} alt={`${activeBoardGame.title} saved`} className='item-action-board clickable' onClick={ () => { removeItem(activeBoardGame.id, true ) }} />) :
+                                            (<img id={activeBoardGame.id} src={circle} alt={`${activeBoardGame.title} unselected`} className='item-action-board clickable' onClick={ () => { addItem(activeBoardGame.id, activeBoardGame.title, activeBoardGame.poster, true)} } />)
+                                    )
+                                }
+                            </div>
+                            <img src={activeBoardGame.poster} alt={`${activeBoardGame.title} poster`} className='modal-poster' />
+                                <div className='modal-header'>
+                                    { activeBoardGame.title }
+                                </div>
+                                <div className='modal-details'>
+                                    <p>Min Players: {activeBoardGame.minPlayers}</p>
+                                    <p>Max Players: {activeBoardGame.maxPlayers}</p>
+                                    <p>Play Time: {activeBoardGame.playingTime} min</p>
+                                </div>
+                            </React.Fragment>
+                        )
+                    }
+                </div>
+            </Dialog>
         </div>
     );
 }
