@@ -429,7 +429,7 @@ const Search = ({ socket }) => {
                                 {
                                     activeBoardGame.loadingUpdate ? 
                                     (
-                                        <Loading type='beat' size={15} speed={.5} className='loading-save' />
+                                        <Loading type='beat' size={15} speed={.5} className='loading-save-modal' />
                                     ) :
                                     (
                                         activeBoardGame.collectionStatus ? 

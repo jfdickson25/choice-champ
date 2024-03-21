@@ -43,6 +43,14 @@
     right: 5px;
 }
 
+.loading-save-modal {
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 25px;
+    right: 5px;
+}
+
 .no-match {
     grid-column: 1/18;
     margin-top: 50px;
@@ -67,6 +75,7 @@
     width: 100%;
     font-size: 16pt;
     font-weight: bold;
+    padding: 10px
 }
 
 .dialog-content {
@@ -85,13 +94,16 @@
 
 .MuiPaper-root {
     background-color: rgb(58, 58, 58) !important;
+    border-radius: 20px;
+    border: 2px solid #fcaf16ad !important;
 }
 
 .modal-poster {
     grid-column: 1/18;
     width: 80%;
     justify-self: center;
-    padding: 80px 0 20px 0;
+    margin: 80px 0 20px 0;
+    border-radius: 15px;
 }
 
 .item-action-board {
@@ -119,7 +131,7 @@
 @media screen and (min-width: 600px){
     .modal-poster {
         width: 45%;
-        padding: 110px 0 20px 0;
+        margin: 110px 0 20px 0;
     }
 }
 
@@ -129,12 +141,21 @@
     }
 
     .loading-save {
-        width: 30%;
+        width: 50%;
+        top: 15px;
+        right: 0px;
+    }
+
+    .loading-save-modal {
+        width: 10%;
+        top: 30px;
+        right: 0px;
+        justify-self: right;
     }
 
     .modal-poster {
         width: 40%;
-        padding: 100px 0 20px 0;
+        margin: 100px 0 20px 0;
     }
 
     .item-action-board {
@@ -149,16 +170,13 @@
         top: 20px;
     }
 
-    .loading-save {
-        width: 25%;
-    }
-
     .modal-poster {
         width: 30%;
-        padding: 100px 0 20px 0;
+        margin: 100px 0 20px 0;
     }
 
     .item-action-board {
-        width: 8%;
+        width: 6%;
+        right: 55px;
     }
 }
