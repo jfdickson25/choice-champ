@@ -7,12 +7,14 @@ import _ from 'lodash';
 import { Dialog } from '@mui/material';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import './Search.css';
 
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
-import { get } from 'react-hook-form';
+import searchIcon from '../../shared/assets/img/search.svg';
 
 const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -34,6 +36,7 @@ const Search = ({ socket }) => {
     const [noMatch, setNoMatch] = useState(false);
     const [open, setOpen] = useState(false);
     const [loadingBoardGame, setLoadingBoardGame] = useState(false);
+    const searchRef = useRef('');
 
     const [activeBoardGame, setActiveBoardGame] = useState({});
 
@@ -371,7 +374,14 @@ const Search = ({ socket }) => {
                 (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
             }
             <h2 className={`title color-${collectionType}`}>{collectionName}</h2>
-            <input className='search-bar' placeholder='Search' onChange={changeHandler} />
+            <div className='search-bar-container'>
+                <img src={searchIcon} alt='Search icon' className='search-icon' />
+                <input className='search-bar' id='search' placeholder='Search' onChange={changeHandler} ref={searchRef} />
+                {
+                    searchRef.current.value !== '' &&
+                    <FontAwesomeIcon icon={faXmark} size="lg" className='clear-search clickable' onClick={() => { searchRef.current.value = ''; updateList(''); }} />
+                }
+            </div>
             { noMatch && <p className='no-match'>No matches found</p>}
             {
                 isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :

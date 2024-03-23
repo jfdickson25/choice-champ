@@ -3,10 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowDownAZ, faClock, faEye, faGamepad, faChessPawn } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDownAZ, faClock, faEye, faGamepad, faChessPawn, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 import edit from '../../shared/assets/img/edit.png';
 import editing from '../../shared/assets/img/editing.png';
+import searchIcon from '../../shared/assets/img/search.svg';
 
 import './Collection.css';
 
@@ -282,7 +283,14 @@ const Collection = ({ socket }) => {
                     (<img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button-active.png?v=1702137827635' alt='Add icon' className='add clickable' style={{animation: 'button-press .75s'}} />) :
                     (<img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button.png?v=1702138169050' alt='Add icon' className='add clickable' onClick={navAdd} />)
                 }
-                <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
+                <div className='search-bar-container'>
+                    <img src={searchIcon} alt='Search icon' className='search-icon' />
+                    <input className='search-bar' placeholder='Search Collection' value={query} onChange={e => setQuery(e.target.value)}/>
+                    {
+                        query !== '' &&
+                        <FontAwesomeIcon icon={faXmark} size="lg" className='clear-search clickable' onClick={() => setQuery('')} />
+                    }
+                </div>
                 <FontAwesomeIcon icon={faClock} size="xl" onClick={() => {
                     setShowAlphabetical(false);
                     setShowWatched(false);
