@@ -15,6 +15,7 @@ import './Search.css';
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
 import searchIcon from '../../shared/assets/img/search.svg';
+import { set } from 'react-hook-form';
 
 const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -36,6 +37,7 @@ const Search = ({ socket }) => {
     const [noMatch, setNoMatch] = useState(false);
     const [open, setOpen] = useState(false);
     const [loadingBoardGame, setLoadingBoardGame] = useState(false);
+    const [activeSearch, setActiveSearch] = useState(false);
     const searchRef = useRef('');
 
     const [activeBoardGame, setActiveBoardGame] = useState({});
@@ -96,6 +98,7 @@ const Search = ({ socket }) => {
             setItems([]);
             setNoMatch(false);
             setIsLoading(false);
+            setActiveSearch(false);
             return;
         }
 
@@ -186,6 +189,7 @@ const Search = ({ socket }) => {
 
     // Functions for handling change to input
     const changeHandler = (event) => {
+        setActiveSearch(true)
         setIsLoading(true);
         setNoMatch(false);
         // Debounce example from web dev simplified (TODO: Watch rest on throttle)
@@ -378,8 +382,8 @@ const Search = ({ socket }) => {
                 <img src={searchIcon} alt='Search icon' className='search-icon' />
                 <input className='search-bar' id='search' placeholder='Search' onChange={changeHandler} ref={searchRef} />
                 {
-                    searchRef.current.value !== '' &&
-                    <FontAwesomeIcon icon={faXmark} size="lg" className='clear-search clickable' onClick={() => { searchRef.current.value = ''; updateList(''); }} />
+                    activeSearch &&
+                    <FontAwesomeIcon icon={faXmark} size="lg" className='clear-search clickable' onClick={() => { searchRef.current.value = ''; updateList(''); setActiveSearch(false) }} />
                 }
             </div>
             { noMatch && <p className='no-match'>No matches found</p>}
