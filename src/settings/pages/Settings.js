@@ -96,7 +96,7 @@ const Settings = () => {
                     />
                     <p className='settings-attribution-text'>All illustrated imagery was used from Storyset. For an extensive list of all the illustrations used please press the image to the left.</p>
                     <h1 className='settings-header'>Reach out</h1>
-                    <p id='email'>jfdickson25@gmail.com</p>
+                    <p id='email'>forrestdev25@gmail.com</p>
                     <p id='settings-attribution-text'>If you have any questions, comments, or requests please feel free to reach out to me at the email above.</p>
                 </div>
                 <Button className='btn-logout clickable' onClick={auth.logout}>Logout</Button>
