@@ -261,7 +261,7 @@ const Collections = props => {
                     pressingBtn ?
                     <button 
                         className={`add-btn backgroundColor-${collectionsType} backgroundColorPressed-${collectionsType}`}
-                        style={{animation: 'button-press .75s'}}>Add/Join Collection</button>
+                        style={{animation: 'button-press .75s'}}>Add Collection</button>
                     :
                     <button 
                         className={`add-btn backgroundColor-${collectionsType} clickable`}
@@ -271,7 +271,7 @@ const Collections = props => {
                                 handleOpen();
                                 setPressingBtn(false);
                             }, 750);
-                        }}>Add/Join Collection</button>
+                        }}>Add Collection</button>
                 }
 
                 {
