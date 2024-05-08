@@ -151,11 +151,11 @@ input {
 }
 
 .backgroundColor-movie {
-  background-color: #FCB016;
+  border: solid 2px #FCB016;
 }
 
 .backgroundColorPressed-movie {
-  background-color: #da9814;
+  border: solid 2px #da9814;
 }
 
 .color-tv {
@@ -163,11 +163,11 @@ input {
 }
 
 .backgroundColor-tv {
-  background-color: #F04C53;
+  border: solid 2px #F04C53;
 }
 
 .backgroundColorPressed-tv {
-  background-color: #d13a3f;
+  border: solid 2px #d13a3f;
 }
 
 .color-game {
@@ -175,11 +175,11 @@ input {
 }
 
 .backgroundColor-game {
-  background-color: #2482C5;
+  border: solid 2px #2482C5;
 }
 
 .backgroundColorPressed-game {
-  background-color: #1f6aa3;
+  border: solid 2px #1f6aa3;
 }
 
 .color-board {
@@ -187,11 +187,11 @@ input {
 }
 
 .backgroundColor-board {
-  background-color: #45B859;
+  border: solid 2px #45B859;
 }
 
 .backgroundColorPressed-board {
-  background-color: #3a9b4c;
+  border: solid 2px #3a9b4c;
 }
 
 #title-movie {
@@ -233,6 +233,7 @@ input {
   width: 100%;
   grid-column: 2/17;
   color: white;
+  background-color: #312E2E;
 }
 
 .add img {
