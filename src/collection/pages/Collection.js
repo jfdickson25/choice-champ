@@ -280,8 +280,13 @@ const Collection = ({ socket }) => {
                 <div className='share-code'>share code: {shareCode}</div>
                 {
                     navingAdd ?
-                    (<img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button-active.png?v=1702137827635' alt='Add icon' className='add clickable' style={{animation: 'button-press .75s'}} />) :
-                    (<img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button.png?v=1702138169050' alt='Add icon' className='add clickable' onClick={navAdd} />)
+                    <button 
+                        className={`add-btn backgroundColor-${collectionType} backgroundColorPressed-${collectionType}`}
+                        style={{animation: 'button-press .75s'}}>Add { collectionType === 'movie' ? 'Movie' : collectionType === 'game' || collectionType === 'board' ? 'Game' : 'Show'}</button>
+                    :
+                    <button 
+                        className={`add-btn backgroundColor-${collectionType} clickable`}
+                        onClick={navAdd}>Add { collectionType === 'movie' ? 'Movie' : collectionType === 'game' || collectionType === 'board' ? 'Game' : 'Show'}</button>
                 }
                 <div className='search-bar-container'>
                     <img src={searchIcon} alt='Search icon' className='search-icon' />

@@ -150,16 +150,48 @@ input {
   color: #FCB016;
 }
 
+.backgroundColor-movie {
+  background-color: #FCB016;
+}
+
+.backgroundColorPressed-movie {
+  background-color: #da9814;
+}
+
 .color-tv {
   color: #F04C53;
+}
+
+.backgroundColor-tv {
+  background-color: #F04C53;
+}
+
+.backgroundColorPressed-tv {
+  background-color: #d13a3f;
 }
 
 .color-game {
   color: #2482C5;
 }
 
+.backgroundColor-game {
+  background-color: #2482C5;
+}
+
+.backgroundColorPressed-game {
+  background-color: #1f6aa3;
+}
+
 .color-board {
   color: #45B859;
+}
+
+.backgroundColor-board {
+  background-color: #45B859;
+}
+
+.backgroundColorPressed-board {
+  background-color: #3a9b4c;
 }
 
 #title-movie {
@@ -195,6 +227,12 @@ input {
     grid-column: 8/11;
     width: 70%;
     margin-top: 20px;
+}
+
+.add-btn {
+  width: 100%;
+  grid-column: 2/17;
+  color: white;
 }
 
 .add img {

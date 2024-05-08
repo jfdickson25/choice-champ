@@ -34,7 +34,7 @@
 }
 
 .search-bar-container {
-    width: 80%;
+    width: 100%;
     grid-column: 2/17;
     display: grid;
     grid-template-columns: repeat(17, 1fr);

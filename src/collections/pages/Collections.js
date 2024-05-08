@@ -32,6 +32,7 @@ const Collections = props => {
     const [nameError, setNameError] = useState(null);
     const [joinError, setJoinError] = useState('');
     const [navingBack, setNavingBack] = useState(false);
+    const [pressingBtn, setPressingBtn] = useState(false);
 
     // Empty array will only run on the initial render
     useEffect(() => {
@@ -257,10 +258,20 @@ const Collections = props => {
                 <h2 className={`title color-${collectionsType}`}>{title}</h2>
                 <img src={ isEdit ? editing :  edit } className="edit clickable" alt='Edit icon' onClick={isEditHandler} style={isEdit ? {animation: 'button-press .75s'} : null} />
                 {
-                    open ? 
-                        <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button-active.png?v=1702137827635' className='add clickable' alt='Add icon' style={{animation: 'button-press .75s'}} />
+                    pressingBtn ?
+                    <button 
+                        className={`add-btn backgroundColor-${collectionsType} backgroundColorPressed-${collectionsType}`}
+                        style={{animation: 'button-press .75s'}}>Add/Join Collection</button>
                     :
-                    <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/plus-button.png?v=1702138169050' className='add clickable' alt='Add icon' onClick={handleOpen} />
+                    <button 
+                        className={`add-btn backgroundColor-${collectionsType} clickable`}
+                        onClick={() => {
+                            setPressingBtn(true);
+                            setTimeout(() => {
+                                handleOpen();
+                                setPressingBtn(false);
+                            }, 750);
+                        }}>Add/Join Collection</button>
                 }
 
                 {
