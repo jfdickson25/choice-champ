@@ -89,7 +89,7 @@
 .media-type-btn {
     grid-column: 3 / 16;
     background-color: #312E2E;
-    color: white;
+    color: white !important;
 }
 
 .movie {
