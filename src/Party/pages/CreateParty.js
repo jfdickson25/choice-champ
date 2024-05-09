@@ -22,6 +22,13 @@ const CreateParty = props => {
     const [includeWatched, setIncludeWatched] = useState(false);
     const [superChoice, setSuperChoice] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
+    const [activeMediaType, setActiveMediaType] = useState('movie');
+
+    const [pressingMovie, setPressingMovie] = useState(false);
+    const [pressingTv, setPressingTv] = useState(false);
+    const [pressingGame, setPressingGame] = useState(false);
+    const [pressingBoard, setPressingBoard] = useState(false);
+
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -97,13 +104,13 @@ const CreateParty = props => {
         }, 1000);
     }
 
-    const mediaTypeHandler = (event) => {
+    const mediaTypeHandler = (type) => {
 
         setIsLoading(true);
-        setMediaType(event.target.value);
+        setMediaType(type);
 
         // Make a fetch post request to collections with the userId and setCollections to the response
-        fetch(`https://choice-champ-backend.glitch.me/collections/${event.target.value}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.glitch.me/collections/${type}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -138,20 +145,64 @@ const CreateParty = props => {
                 <p className='option-subtext'>
                     Super choice mode allows for more passionate voting. Double tap to star a choice to ensure it moves on to the next round.
                     All party members will see the star in subsequent rounds and it cannot be starred again.
-                </p>  
-                <div className='create-divider'></div>
-
-                <p className='option-subtext'>Choose collection type for party</p> 
-                <label className='radio-btn-label color-movie' htmlFor="movie">Movies</label>
-                <input className='radio-btn' type='radio' name='mediaType' id='movie' value='movie' onChange={mediaTypeHandler} checked={mediaType === 'movie'} /> 
-                <label className='radio-btn-label color-tv' htmlFor="tv">TV Shows</label>
-                <input className='radio-btn' type='radio' name='mediaType' id='tv' value='tv' onChange={mediaTypeHandler} checked={mediaType === 'tv'} />
-                <label className='radio-btn-label color-game' htmlFor="games">Video Games</label>
-                <input className='radio-btn' type='radio' name='mediaType' id='games' value='game' onChange={mediaTypeHandler} checked={mediaType === 'game'} />
-                <label className='radio-btn-label color-board' htmlFor="games">Board Games</label>
-                <input className='radio-btn' type='radio' name='mediaType' id='board' value='board' onChange={mediaTypeHandler} checked={mediaType === 'board'} />
+                </p>
+                <button 
+                    className={`media-type-btn ${ activeMediaType === 'movie' ? 'active-movie' : 'movie'}`} 
+                    style={ pressingMovie ? {animation: 'button-press .75s', marginTop: '30px'} : { marginTop: '30px' }} 
+                    onClick={() => { 
+                        setActiveMediaType('movie');
+                        setPressingMovie(true);
+                        mediaTypeHandler('movie') 
+                        setTimeout(() => {
+                            setPressingMovie(false);
+                        }, 750);
+                    }}
+                >
+                        Movies
+                </button>
+                <button 
+                    className={`media-type-btn ${ activeMediaType === 'tv' ? 'active-tv' : 'tv'}`} 
+                    style={ pressingTv ? {animation: 'button-press .75s'} : null}
+                    onClick={() => { 
+                        setActiveMediaType('tv');
+                        setPressingTv(true);
+                        mediaTypeHandler('tv');
+                        setTimeout(() => {
+                            setPressingTv(false);
+                        }, 750); 
+                    }}
+                >
+                    TV Shows
+                </button>
+                <button 
+                    className={`media-type-btn ${ activeMediaType === 'game' ? 'active-game' : 'game'}`} 
+                    style={ pressingGame ? {animation: 'button-press .75s'} : null}
+                    onClick={() => { 
+                        setActiveMediaType('game');
+                        setPressingGame(true);
+                        mediaTypeHandler('game');
+                        setTimeout(() => {
+                            setPressingGame(false);
+                        }, 750);
+                    }}
+                >
+                    Video Games
+                </button>
+                <button 
+                    className={`media-type-btn ${ activeMediaType === 'board' ? 'active-board' : 'board'}`} 
+                    style={ pressingBoard ? {animation: 'button-press .75s', marginBottom: '30px'} : { marginBottom: '30px' }}
+                    onClick={() => { 
+                        setActiveMediaType('board');
+                        setPressingBoard(true);
+                        mediaTypeHandler('board');
+                        setTimeout(() => {
+                            setPressingBoard(false);
+                        }, 750);
+                    }}
+                >
+                    Board Games
+                </button>
                 
-                <p className='option-subtext'>Choose collections to include in party</p>   
                 <div className='create-party-collections'>
                     
                 { isLoading ? <Loading type='beat' className='list-loading-create' size={20} /> : 
