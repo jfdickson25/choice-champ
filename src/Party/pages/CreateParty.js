@@ -147,7 +147,7 @@ const CreateParty = props => {
                     All party members will see the star in subsequent rounds and it cannot be starred again.
                 </p>
                 <button 
-                    className={`media-type-btn ${ activeMediaType === 'movie' ? 'active-movie' : 'movie'}`} 
+                    className={`media-type-btn ${ activeMediaType === 'movie' ? 'active-movie-fill' : 'movie'}`} 
                     style={ pressingMovie ? {animation: 'button-press .75s', marginTop: '30px'} : { marginTop: '30px' }} 
                     onClick={() => { 
                         setActiveMediaType('movie');
@@ -161,7 +161,7 @@ const CreateParty = props => {
                         Movies
                 </button>
                 <button 
-                    className={`media-type-btn ${ activeMediaType === 'tv' ? 'active-tv' : 'tv'}`} 
+                    className={`media-type-btn ${ activeMediaType === 'tv' ? 'active-tv-fill' : 'tv'}`} 
                     style={ pressingTv ? {animation: 'button-press .75s'} : null}
                     onClick={() => { 
                         setActiveMediaType('tv');
@@ -175,7 +175,7 @@ const CreateParty = props => {
                     TV Shows
                 </button>
                 <button 
-                    className={`media-type-btn ${ activeMediaType === 'game' ? 'active-game' : 'game'}`} 
+                    className={`media-type-btn ${ activeMediaType === 'game' ? 'active-game-fill' : 'game'}`} 
                     style={ pressingGame ? {animation: 'button-press .75s'} : null}
                     onClick={() => { 
                         setActiveMediaType('game');
@@ -189,7 +189,7 @@ const CreateParty = props => {
                     Video Games
                 </button>
                 <button 
-                    className={`media-type-btn ${ activeMediaType === 'board' ? 'active-board' : 'board'}`} 
+                    className={`media-type-btn ${ activeMediaType === 'board' ? 'active-board-fill' : 'board'}`} 
                     style={ pressingBoard ? {animation: 'button-press .75s', marginBottom: '30px'} : { marginBottom: '30px' }}
                     onClick={() => { 
                         setActiveMediaType('board');
@@ -209,9 +209,8 @@ const CreateParty = props => {
                         collections.length > 0 ?
                             collections.map(collection => (   
                                 collection.items.length > 0 &&
-                                <div key={collection._id} className='create-party-collection' onClick={() => { addRemoveItem(collection._id) }}>
-                                    <img id={ collection._id } src={ collection.selected ? check : circle} className='create-party-selectable' />
-                                    <div className={`create-party-collection-name color-${mediaType}`}>{collection.name}</div>
+                                <div key={collection._id} className={`create-party-collection ${collection.selected ? `active-${collection.type}-fill` : ''}`} onClick={() => { addRemoveItem(collection._id) }}>
+                                    <div className={`create-party-collection-name`}>{collection.name}</div>
                                 </div>
                         ))
                         : <div className='no-collections-found'>No collections found for this media type</div>
