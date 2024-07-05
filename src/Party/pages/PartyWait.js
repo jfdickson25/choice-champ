@@ -231,7 +231,12 @@ const PartyWait = ({ socket }) => {
                     </p>
                 </div>
         }
-        <div className='tip-section' style={{height: '20px'}}></div>
+        {
+            ((userType === 'guest' && superChoiceEnabled) || userType == 'owner') &&
+            (
+                <div className='tip-section' style={{height: '20px'}}></div>
+            )
+        }
     </div>
   )
 }
