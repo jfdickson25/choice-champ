@@ -22,6 +22,28 @@
     --toastify-color-progress-dark: #FCB016;
 }
 
+.label {
+    font-weight: bold;
+    color: #FCB016;
+}
+
+.details-provider-list {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-content:center;
+    align-items:center;
+}
+
+.provider-img {
+    width: 100%;
+    border-radius: 15px;
+    flex: 0 1 auto;
+    align-self:center;
+    width: 60px;
+    padding: 5px;
+}
+
 .item-title {
     border-radius: 9px !important;
     color: #FCB016;
@@ -114,6 +136,14 @@
     right: 10px;
 }
 
+.more-info {
+    position: absolute;
+    width: 25%;
+    height: auto;
+    bottom: 5px;
+    left: 5px;
+}
+
 .board-details-loading {
     grid-column: 1/18;
     margin-top: 50px;
@@ -126,6 +156,7 @@
     text-align: center;
     grid-column: 1/18;
     width: 100%;
+    padding: 0 10px;
 }
 
 .search-bar-container {
@@ -140,6 +171,7 @@
     padding: 10px;
     color: white;
     margin-top: 30px;
+    max-width: 600px;
 }
 
 .search-icon {

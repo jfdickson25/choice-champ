@@ -669,7 +669,16 @@ const Party = ({ socket }) => {
             </div>)
             : <div className='guest-banner'></div>
         }
-        { (userType === 'owner' && collectionItems.length > 1) && (<img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/dices.png?v=1703952034117'} className="edit clickable" alt='Dice' onClick={selectRandom} />) }
+        { (userType === 'owner' && collectionItems.length > 1) && (
+            <div className='flag-section party-icon-section clickable'>
+                <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/racing-flag.png?v=1719917111577'} className="flag" alt='Flag' />
+            </div>
+        )}
+        { (userType === 'owner' && collectionItems.length > 1) && (
+            <div className='dice-section party-icon-section clickable'>
+                <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/dices.png?v=1703952034117'} className="dice" alt='Dice' onClick={selectRandom} />
+            </div>
+        ) }
         <div className='collection-content-other'>
             { 
                 collectionItems.length === 1 ? (
@@ -786,7 +795,7 @@ const Party = ({ socket }) => {
                         </div>
                     </div>
                 ) : [...collectionItems].reverse().map(item => (
-                    <div className='item-section' key={item.id} onClick={changeCount.bind(this, item.id)}>
+                    <div className='item-section clickable' key={item.id} onClick={changeCount.bind(this, item.id)}>
                         <img 
                             className={mediaType === 'movie' || mediaType === 'tv' ? 'item-img' : mediaType === 'game' ? 'game-img' : 'board-img'}  
                             src={item.poster} 

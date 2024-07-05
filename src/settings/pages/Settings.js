@@ -208,6 +208,18 @@ const Settings = () => {
                             <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692' />
                             <a href="https://www.flaticon.com/free-icons/rating" title="rating icons">Rating icons created by Corner Pixel - Flaticon</a>
                         </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/racing-flag.png?v=1719917111577' />
+                            <a href="https://www.flaticon.com/free-icons/finish" title="finish icons">Finish icons created by Freepik - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/info-1.png?v=1720119048801' />
+                            <a href="https://www.flaticon.com/free-icons/information" title="information icons">Information icons created by Anggara - Flaticon</a>
+                        </div>
+                        <div className='flaticon-link'>
+                            <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/img-not-found.png?v=1720192051302' />
+                            <a href="https://www.flaticon.com/free-icons/image-placeholder" title="image placeholder icons">Image placeholder icons created by HideMaru - Flaticon</a>
+                        </div>
                     </div>
                 </div>
             </Dialog>

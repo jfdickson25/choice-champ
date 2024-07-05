@@ -220,9 +220,7 @@ const Details = () => {
                                             <div className='details-provider-list'>
                                                 {
                                                     providers.stream.map(provider => (
-                                                        (<div className='details-provider-item' key={provider.provider_name}>
-                                                            <img className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
-                                                        </div>)
+                                                        <img key={provider.provider_name} className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
                                                     ))
                                                 }
                                             </div>

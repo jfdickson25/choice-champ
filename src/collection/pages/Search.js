@@ -21,6 +21,8 @@ const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
     let navigate = useNavigate();
 
+    const infoImg = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/info-1.png?v=1720119048801';
+
     /************************************************************
      * Initial load and data needed. Here we grab the info we need
      * from the params and set edit and our movies list
@@ -36,11 +38,11 @@ const Search = ({ socket }) => {
     const [navingBack, setNavingBack] = useState(false);
     const [noMatch, setNoMatch] = useState(false);
     const [open, setOpen] = useState(false);
-    const [loadingBoardGame, setLoadingBoardGame] = useState(false);
+    const [loadingInfo, setLoadingInfo] = useState(false);
     const [activeSearch, setActiveSearch] = useState(false);
     const searchRef = useRef('');
 
-    const [activeBoardGame, setActiveBoardGame] = useState({});
+    const [activeItem, setActiveItem] = useState({});
 
     // Create a ref of collection
     const collectionRef = useRef(collection);
@@ -131,10 +133,17 @@ const Search = ({ socket }) => {
                 });
 
                 if (collectionType === 'movie') {
+
+                    if (mediaItem.poster_path === null || mediaItem.poster_path === undefined || mediaItem.poster_path === '') {
+                        mediaItem.poster_path = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/image-not-found-500-750.png?v=1720192338848';
+                    } else {
+                        mediaItem.poster_path = `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`;
+                    }
+
                     setItems(prevState => [...prevState, {
                         id: mediaItem.id,
                         title: mediaItem.title,
-                        poster: `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`,
+                        poster: mediaItem.poster_path,
                         selected: false,
                         inCollection: inCollection,
                         loadingUpdate: false
@@ -142,6 +151,13 @@ const Search = ({ socket }) => {
 
                     setIsLoading(false);
                 } else if (collectionType === 'tv') {
+
+                    if (mediaItem.poster_path === null || mediaItem.poster_path === undefined || mediaItem.poster_path === '') {
+                        mediaItem.poster_path = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/image-not-found-500-750.png?v=1720192338848';
+                    } else {
+                        mediaItem.poster_path = `https://image.tmdb.org/t/p/w500${mediaItem.poster_path}`;
+                    }
+
                     setItems(prevState => [...prevState, {
                         id: mediaItem.id,
                         title: mediaItem.name,
@@ -153,6 +169,11 @@ const Search = ({ socket }) => {
 
                     setIsLoading(false);
                 } else if (collectionType === 'game') {
+
+                    if (mediaItem.image.original_url === null || mediaItem.image.original_url === undefined || mediaItem.image.original_url === '') {
+                        mediaItem.image.original_url = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/image-not-found-500-750.png?v=1720192338848';
+                    }
+                    
                     setItems(prevState => [...prevState, {
                         id: mediaItem.guid,
                         title: mediaItem.name,
@@ -211,8 +232,8 @@ const Search = ({ socket }) => {
             });
             setItems(loadingSetItems);
         } else {
-            setActiveBoardGame({
-                ...activeBoardGame,
+            setActiveItem({
+                ...activeItem,
                 loadingUpdate: true
             });
         }
@@ -236,8 +257,8 @@ const Search = ({ socket }) => {
 
                 setItems(updatedItems);
             } else {
-                setActiveBoardGame({
-                    ...activeBoardGame,
+                setActiveItem({
+                    ...activeItem,
                     collectionStatus: false,
                     loadingUpdate: false
                 });
@@ -277,8 +298,8 @@ const Search = ({ socket }) => {
             });
             setItems(loadingSetItems);
         } else {
-            setActiveBoardGame({
-                ...activeBoardGame,
+            setActiveItem({
+                ...activeItem,
                 loadingUpdate: true
             });
         }
@@ -313,8 +334,8 @@ const Search = ({ socket }) => {
                 });
                 setItems(updatedItems);
             } else {
-                setActiveBoardGame({
-                    ...activeBoardGame,
+                setActiveItem({
+                    ...activeItem,
                     collectionStatus: true,
                     loadingUpdate: false
                 });
@@ -333,8 +354,8 @@ const Search = ({ socket }) => {
         });
     }
 
-    const getActiveBoardGame = (itemId, status) => {
-        setLoadingBoardGame(true);
+    const getActiveItem = (itemId, status) => {
+        setLoadingInfo(true);
         setOpen(true);
         
         // Get all the items in the collection to check if any items in the search are already in the collection
@@ -346,18 +367,40 @@ const Search = ({ socket }) => {
         })
         .then(res => res.json())
         .then(data => {
-            setActiveBoardGame({
-                id: itemId,
-                title: data.media.details.title,
-                poster: data.media.details.poster,
-                maxPlayers: data.media.details.maxPlayers,
-                minPlayers: data.media.details.minPlayers,
-                playingTime: data.media.details.runtime,
-                collectionStatus: status,
-                loadingUpdate: false
-            });
+            if(collectionType === 'board') { 
+                setActiveItem({
+                    id: itemId,
+                    title: data.media.details.title,
+                    poster: data.media.details.poster,
+                    maxPlayers: data.media.details.maxPlayers,
+                    minPlayers: data.media.details.minPlayers,
+                    playingTime: data.media.details.runtime,
+                    collectionStatus: status,
+                    loadingUpdate: false
+                });
+            } else if(collectionType === 'movie' || collectionType === 'tv') {
+                setActiveItem({
+                    id: itemId,
+                    title: data.media.details.title,
+                    poster: data.media.details.poster,
+                    watchTime: data.media.details.runtime,
+                    rating: data.media.details.rating,
+                    providers: data.media.providers.stream,
+                    overview: data.media.details.overview
+                });
+            } else if(collectionType === 'game') {
+                setActiveItem({
+                    id: itemId,
+                    title: data.media.details.name,
+                    poster: data.media.details.poster,
+                    runtime: data.media.details.runtime,
+                    platforms: data.media.providers.platforms,
+                    overview: data.media.details.overview
+                });
+            
+            }
 
-            setLoadingBoardGame(false);
+            setLoadingInfo(false);
         });
     }
 
@@ -399,7 +442,7 @@ const Search = ({ socket }) => {
                                     removeItem(item.id, false);
                                 }
                             } else if (collectionType === 'board') {
-                                getActiveBoardGame(item.id, item.inCollection);
+                                getActiveItem(item.id, item.inCollection);
                                 setOpen(true);
                             }
                         }}>
@@ -425,6 +468,7 @@ const Search = ({ socket }) => {
                                             (<img id={item.id} src={circle} alt={`${item.title} unselected`} className='item-action clickable' />)
                                         )
                                     }
+                                    <img src={infoImg} alt={'More info'} onClick={(e) => { e.stopPropagation(); getActiveItem(item.id, item.inCollection); setOpen(true); }} className='more-info clickable' />
                                     </React.Fragment>
                                 )
                             }
@@ -435,31 +479,96 @@ const Search = ({ socket }) => {
             <Dialog open={open} onClose={() => { setOpen(false) }} fullWidth maxWidth='lg'>
                 <div className='dialog-content'>
                     {
-                        loadingBoardGame ?
+                        loadingInfo ?
                         (<Loading type='beat' className='board-details-loading' size={20} />) :
                         (
                             <React.Fragment>
                             <div id='status-icon'>
                                 {
-                                    activeBoardGame.loadingUpdate ? 
+                                    collectionType === 'board' ?
                                     (
-                                        <Loading type='beat' size={15} speed={.5} className='loading-save-modal' />
-                                    ) :
-                                    (
-                                        activeBoardGame.collectionStatus ? 
-                                            (<img src={check} alt={`${activeBoardGame.title} saved`} className='item-action-board clickable' onClick={ () => { removeItem(activeBoardGame.id, true ) }} />) :
-                                            (<img id={activeBoardGame.id} src={circle} alt={`${activeBoardGame.title} unselected`} className='item-action-board clickable' onClick={ () => { addItem(activeBoardGame.id, activeBoardGame.title, activeBoardGame.poster, true)} } />)
-                                    )
+                                        activeItem.loadingUpdate ? 
+                                        (
+                                            <Loading type='beat' size={15} speed={.5} className='loading-save-modal' />
+                                        ) :
+                                        (
+                                            activeItem.collectionStatus ? 
+                                                (<img src={check} alt={`${activeItem.title} saved`} className='item-action-board clickable' onClick={ () => { removeItem(activeItem.id, true ) }} />) :
+                                                (<img id={activeItem.id} src={circle} alt={`${activeItem.title} unselected`} className='item-action-board clickable' onClick={ () => { addItem(activeItem.id, activeItem.title, activeItem.poster, true)} } />)
+                                        )
+                                    ) : null
                                 }
                             </div>
-                            <img src={activeBoardGame.poster} alt={`${activeBoardGame.title} poster`} className='modal-poster' />
+                            <img src={activeItem.poster} alt={`${activeItem.title} poster`} className='modal-poster' style={ collectionType !== 'board' ? { marginTop: '30px'} : null} />
                                 <div className='modal-header'>
-                                    { activeBoardGame.title }
+                                    { activeItem.title }
                                 </div>
                                 <div className='modal-details'>
-                                    <p>Min Players: {activeBoardGame.minPlayers}</p>
-                                    <p>Max Players: {activeBoardGame.maxPlayers}</p>
-                                    <p>Play Time: {activeBoardGame.playingTime} min</p>
+                                    {
+                                        collectionType === 'board' ?
+                                        (
+                                            <React.Fragment>
+                                                <p><span className='label'>Min Players:</span> {activeItem.minPlayers}</p>
+                                                <p><span className='label'>Max Players:</span> {activeItem.maxPlayers}</p>
+                                                <p><span className='label'>Play Time:</span> {activeItem.playingTime} min</p>
+                                            </React.Fragment>
+                                        ) : (
+                                            collectionType === 'game' ?
+                                            (
+                                                <React.Fragment>
+                                                    <p><span className='label'>Platforms:</span> {
+                                                        activeItem.platforms && (
+                                                            activeItem.platforms.map((platform, index) => (
+                                                                (<span key={platform.name}>
+                                                                    {
+                                                                        index === activeItem.platforms.length - 1 ? (
+                                                                            platform.name
+                                                                        ) : 
+                                                                            platform.name + ', '
+                                                                    }
+                                                                </span>)
+                                                            ))
+                                                        )
+                                                    }
+                                                    </p>
+                                                    <p><span className='label'>Overview:</span><br /> {activeItem.overview}</p>
+                                                </React.Fragment>
+                                            ) : (
+                                                <React.Fragment>
+                                                    {
+                                                        collectionType === 'tv' ? (
+                                                            <p><span className='label'>Seasons:</span> {
+                                                                activeItem.watchTime > 1 ? (
+                                                                    activeItem.watchTime + ' seasons'
+                                                                ) : activeItem.watchTime + ' season'
+                                                            }</p>
+                                                        ) : (
+                                                            <p><span className='label'>Watch Time:</span> {activeItem.watchTime} min</p>
+                                                        )
+                                                    }
+                                                    <p><span className='label'>Rating:</span> {activeItem.rating}</p>
+                                                    <React.Fragment>
+                                                    <span className='label'>Stream:</span>
+                                                    {
+                                                        activeItem.providers ?
+                                                        (
+                                                            <div className='details-provider-list'>
+                                                                {
+                                                                    activeItem.providers.map(provider => (
+                                                                            <img key={provider.provider_name} className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />)
+                                                                    )
+                                                                }
+                                                            </div>
+                                                        ) : (
+                                                            <div className='providers-not-available'>Not available to stream</div>
+                                                        )
+                                                    }
+                                                </React.Fragment>
+                                                    <p><span className='label'>Overview:</span><br /> {activeItem.overview}</p>
+                                                </React.Fragment>
+                                            )
+                                        )
+                                    }
                                 </div>
                             </React.Fragment>
                         )

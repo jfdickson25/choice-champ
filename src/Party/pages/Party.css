@@ -20,11 +20,38 @@
     --toastify-color-success: #FCB016;
 }
 
+.flag-section {
+    grid-column: 1/9;
+}
+
+.dice-section {
+    grid-column: 10/19;
+}
+
+.flag {
+    width: 50px;
+}
+
+.dice {
+    width: 50px;
+}
+
+.party-icon-section {
+    margin-top: 30px;
+    padding: 20px;
+    width: 85%;
+    background-color: rgba(17, 17, 17, 0.7);
+    border-radius: 20px;
+    border: solid 2px #FCB016;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+}
+
 .finish-voting-btn {
     position: fixed;
     bottom: 25px;
     width: 90%;
-    left: 5%;
     z-index: 100;
 }
 
@@ -203,23 +230,31 @@
 .providers-list {
     grid-column: 1/4;
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(17, 1fr);
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-content:center;
+    align-items:center;
     padding-bottom: 50px;
 }
 
 .details-provider-list {
-    display: grid;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    align-content:center;
+    align-items:center;
     grid-column: 2/17;
-    grid-template-columns: repeat(5, 1fr);
-    grid-gap: 10px;
-    margin-top: 10px;
     animation: appear .5s ease-in-out;
 }
 
 .provider-img {
     width: 100%;
     border-radius: 15px;
+    flex: 0 1 auto;
+    align-self:center;
+    width: 60px;
+    padding: 5px;
 }
 
 .details-provider-title {
@@ -478,9 +513,22 @@
     .winner-img {
         width: 50%;
     }
+
+    .finish-voting-btn {
+        width: 50%;
+    }
 }
 
 @media only screen and (min-width: 900px) {
+
+    .flag-section {
+        grid-column: 4/9;
+    }
+    
+    .dice-section {
+        grid-column: 10/15;
+    }
+
     .collection-content-other {
         grid-template-columns: repeat(5, 1fr);
         grid-gap: 30px;
