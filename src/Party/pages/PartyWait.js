@@ -189,6 +189,7 @@ const PartyWait = ({ socket }) => {
         <div className='party-wait-count'>
             Party Count <span className='party-wait-count-num'>{memberCount}</span>
         </div> 
+
         { 
             userType === 'owner' &&
                 <React.Fragment>
@@ -213,8 +214,16 @@ const PartyWait = ({ socket }) => {
                 </React.Fragment>
         }
         {
+            userType === 'guest' &&
+            (
+                <div className='tip-section'>
+                    <p id="tips-title">TIPS</p>
+                </div>
+            )
+        }
+        {
             superChoiceEnabled &&
-                <div class="tip-section" style={{paddingBottom: '30px'}}>
+                <div class="tip-section">
                     <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692' alt="Dice symbol" className="party-wait-icon" />
                     <p className='party-wait-start-text'>
                         Super choices have been enabled. Double tap an item to star it and ensure
@@ -222,6 +231,7 @@ const PartyWait = ({ socket }) => {
                     </p>
                 </div>
         }
+        <div className='tip-section' style={{height: '20px'}}></div>
     </div>
   )
 }
