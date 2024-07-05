@@ -214,7 +214,7 @@ const PartyWait = ({ socket }) => {
                 </React.Fragment>
         }
         {
-            userType === 'guest' &&
+            (userType === 'guest' && superChoiceEnabled) &&
             (
                 <div className='tip-section'>
                     <p id="tips-title">TIPS</p>
