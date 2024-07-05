@@ -1,3 +1,11 @@
+#tips-title {
+    grid-column: 1 / 18;
+    font-size: 18pt;
+    margin: 0;
+    padding-top: 10px;
+    font-weight: 100;
+}
+
 .party-wait-code {
     grid-column: 1/18;
     font-size: 18pt;
@@ -35,12 +43,14 @@
 }
 
 .party-wait-start-text {
-    grid-column: 9/16;
+    grid-column: 8/16;
     font-size: 8pt;
     color: grey;
+    text-align: left;
+    width: 100%;
 }
 
-#tip-section {
+.tip-section {
     grid-column: 1/18;
     width: 100%;
     display: grid;
@@ -64,7 +74,7 @@
     }
 
     .party-wait-icon {
-        grid-column: 5/9;
+        grid-column: 5/8;
     }
 }
 
@@ -80,6 +90,7 @@
 
     .party-wait-icon {
         grid-column: 6/9;
+        width: 40%;
     }
     
     .party-wait-start-text {

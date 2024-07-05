@@ -15,6 +15,8 @@ const PartyWait = ({ socket }) => {
     const auth = useContext(AuthContext);
     // History allows us to redirect the user to another page
     let navigate = useNavigate();
+
+    const flagImg = 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/flag.png?v=1720218335438';
   
     // Get the party code and user type from the url
     const { code } = useParams();
@@ -193,20 +195,29 @@ const PartyWait = ({ socket }) => {
                     <Button className='party-wait-start-btn' onClick={routeToParty}>
                         Start Party
                     </Button>
-                    <div id="tip-section">
+                    <div className='tip-section'>
+                        <p id="tips-title">TIPS</p>
+                    </div>
+                    <div class="tip-section">
                         <img src={dice} alt="Dice symbol" className="party-wait-icon" />
                         <p className='party-wait-start-text'>
-                            TIP: Select this icon for a random item to be chosen as the winner
+                            Select this icon for a random item to be chosen as the winner
+                        </p>
+                    </div>
+                    <div class="tip-section">
+                        <img src={flagImg} alt="Finish symbol" className="party-wait-icon" />
+                        <p className='party-wait-start-text'>
+                            Select this icon to end voting early. Remaining items can be exported to create a new collection
                         </p>
                     </div>
                 </React.Fragment>
         }
         {
             superChoiceEnabled &&
-                <div id="tip-section">
+                <div class="tip-section" style={{paddingBottom: '30px'}}>
                     <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692' alt="Dice symbol" className="party-wait-icon" />
                     <p className='party-wait-start-text'>
-                        TIP: Super choices have been enabled. Double tap an item to star it and ensure
+                        Super choices have been enabled. Double tap an item to star it and ensure
                         it moves on to the next round. Party items can only be starred once per choice party.
                     </p>
                 </div>
