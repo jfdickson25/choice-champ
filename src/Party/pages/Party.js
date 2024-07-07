@@ -32,6 +32,8 @@ const Party = ({ socket }) => {
 
     const [slideDown, setSlideDown] = useState(false);
     const [randomSelected, setRandomSelected] = useState(false);
+    const [finishEarly, setFinishEarly] = useState(false);
+    const [finished, setFinished] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
 
     // Variables for watch dropdowns
@@ -194,6 +196,16 @@ const Party = ({ socket }) => {
                     collectionPointRef.current = [item];
                 }, 2000);
             }, 1000);
+        });
+
+        socket.on('finish-early', () => {
+            socket.emit('leave-room', code);
+            setFinishEarly(true);
+
+            setTimeout(() => {
+                setSlideDown(true);
+                setFinished(true);
+            }, 1500);
         });
 
         socket.on('user-ready', async () => {
@@ -589,6 +601,16 @@ const Party = ({ socket }) => {
         socket.emit('random-remote-selected', randomItem.id, code);
     }
 
+    const selectFlag = () => {
+        socket.emit('finish-early-remote', code);
+        setFinishEarly(true);
+
+        setTimeout(() => {
+            setSlideDown(true);
+            setFinished(true);
+        }, 1500);
+    }
+
     const changeActiveRunnerUp = (id) => {
 
         const item = runnerUps.find(item => item.itemId === id);
@@ -626,15 +648,19 @@ const Party = ({ socket }) => {
         }
     }
 
+    const exportFinished = () => {
+        // TODO: Export collection items to a new collection
+    }
+
   return (
     <div className='content'>
-        { collectionItems.length === 1 && ( <Confetti height={window.outerHeight + window.innerHeight} width={window.innerWidth}/> )}
+        { (collectionItems.length === 1 || finished) && ( <Confetti height={Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight ) } width={window.innerWidth} style={{zIndex: -1}}/> )}
         {
             navingBack ? 
             (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button-active.png?v=1702137193420" alt="Back symbol" className="top-left clickable" style={{animation: 'button-press .75s'}} />) : 
             (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navToParty} />)
         }
-        { (userType === 'owner' && collectionItems.length > 1) ? (
+        { (userType === 'owner' && collectionItems.length > 1 && !finished) ? (
             <div className='votes-needed-section'>
                 <p className='votes-needed-title'>Votes Needed</p>
                 <input 
@@ -669,16 +695,21 @@ const Party = ({ socket }) => {
             </div>)
             : <div className='guest-banner'></div>
         }
-        { (userType === 'owner' && collectionItems.length > 1) && (
+        { (userType === 'owner' && collectionItems.length > 1 && !finished) && (
             <div className='flag-section party-icon-section clickable'>
-                <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/racing-flag.png?v=1719917111577'} className="flag" alt='Flag' />
+                <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/racing-flag.png?v=1719917111577'} className="flag" alt='Flag' onClick={selectFlag} />
             </div>
         )}
-        { (userType === 'owner' && collectionItems.length > 1) && (
+        { (userType === 'owner' && collectionItems.length > 1 && !finished) && (
             <div className='dice-section party-icon-section clickable'>
                 <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/dices.png?v=1703952034117'} className="dice" alt='Dice' onClick={selectRandom} />
             </div>
         ) }
+        {
+            finished && (
+                <div className='finished-title'>CHOICE CHAMPIONS!</div>
+            )
+        }
         <div className='collection-content-other'>
             { 
                 collectionItems.length === 1 ? (
@@ -820,7 +851,7 @@ const Party = ({ socket }) => {
         </div>
         { 
             (collectionItems.length > 1) && ( 
-                !ready ? ( !randomSelected ? <Button className='finish-voting-btn' onClick={userReady}>Finish Voting</Button> : null )
+                !ready ? ( (!randomSelected && !finishEarly) ? <Button className='finish-voting-btn' onClick={userReady}>Ready</Button> : null )
                 : <div 
                     className='ready-overlay' 
                     onClick={ totalUsers > 1 ? userNotReady : null} 
@@ -856,6 +887,19 @@ const Party = ({ socket }) => {
                     }
                 >
                     <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/dices.png?v=1703952034117'} className='random-selected-dice' alt='Dice' />
+                </div>
+            )
+        }
+        {
+            finishEarly && (
+                <div 
+                    className='ready-overlay'
+                    style={ 
+                        // If slide down is true translate the overlay down 100vh make the transition smooth over 2 seconds
+                        slideDown ? { transform: 'translateY(100vh)', transition: 'transform 2s ease-in-out' } : null
+                    }
+                >
+                    <img src={'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/racing-flag.png?v=1719917111577'} className='flag-selected' alt='Dice' />
                 </div>
             )
         }

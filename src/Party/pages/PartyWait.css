@@ -28,6 +28,7 @@
 
 #waiting-img {
     grid-column: 1/18;
+    width: 90%;
 }
 
 .party-wait-start-btn {

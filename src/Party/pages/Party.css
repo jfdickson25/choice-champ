@@ -426,6 +426,23 @@
     transform-origin: top;
 }
 
+.flag-selected {
+    grid-column: 1/18;
+    width: 30%;
+    animation: flip-flag 1.5s linear;
+    transform-origin: top;
+}
+
+.finished-title {
+    grid-column: 1/18;
+    width: 100%;
+    text-align: center;
+    font-size: 18pt;
+    color: #FCB016;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
 @keyframes shake-base {
     0% {
       transform: translateX(0px);
@@ -459,6 +476,24 @@
     }
     99% {
       transform: translateX(0px);
+    }
+    100% {
+      display: none;
+    }
+  }
+
+  @keyframes flip-flag {
+    30% {
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+    }
+    60% {
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1);
+    }
+    99% {
+        -webkit-transform: scaleX(1);
+        transform: scaleX(1);
     }
     100% {
       display: none;
@@ -569,6 +604,10 @@
     }
 
     .random-selected-dice {
+        width: 10%;
+    }
+
+    .flag-selected {
         width: 10%;
     }
 }
