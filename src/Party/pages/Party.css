@@ -443,6 +443,24 @@
     margin-top: 20px;
 }
 
+#export-section {
+    grid-column: 3/16;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.collection-created {
+    grid-column: 2 / 17;
+    text-align: center;
+    margin: 40px 0px 10px 0px;
+}
+
+.collection-saving {
+    grid-column: 1 / 18;
+    margin-top: 40px;
+}
+
 @keyframes shake-base {
     0% {
       transform: translateX(0px);

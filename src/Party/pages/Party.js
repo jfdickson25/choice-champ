@@ -35,6 +35,9 @@ const Party = ({ socket }) => {
     const [finishEarly, setFinishEarly] = useState(false);
     const [finished, setFinished] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
+    const [newCollectionName, setNewCollectionName] = useState('');
+    const [newCollectionSaving, setNewCollectionSaving] = useState(false);
+    const [newCollectionCreated, setNewCollectionCreated] = useState(false);
 
     // Variables for watch dropdowns
     const [activeRunnerup, setActiveRunnerup] = useState({});
@@ -603,6 +606,7 @@ const Party = ({ socket }) => {
 
     const selectFlag = () => {
         socket.emit('finish-early-remote', code);
+        socket.emit('leave-room', code);
         setFinishEarly(true);
 
         setTimeout(() => {
@@ -649,7 +653,45 @@ const Party = ({ socket }) => {
     }
 
     const exportFinished = () => {
-        // TODO: Export collection items to a new collection
+        setNewCollectionSaving(true);
+
+        // Send new collection name to the backend
+        fetch(`https://choice-champ-backend.glitch.me/collections/${auth.userId}`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: newCollectionName,
+                type: mediaType,
+            })
+        }).then(response => response.json())
+        .then(body => {
+            let items = collectionItems.map(item => {
+                console.log(item);
+                return {
+                    id: item.id,
+                    title: item.title,
+                    poster: item.poster
+                }
+            });
+
+            // Add all the items to the collection
+            // fetch(`https://choice-champ-backend.glitch.me/collections/items/${body.collection._id}`,
+            fetch(`http://localhost:5000/collections/items/${body.collection._id}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify([...items])
+            })
+            .then(response => {
+                setNewCollectionSaving(false);
+                setNewCollectionCreated(true);
+            });
+        });
     }
 
   return (
@@ -708,6 +750,29 @@ const Party = ({ socket }) => {
         {
             finished && (
                 <div className='finished-title'>CHOICE CHAMPIONS!</div>
+            )
+        }
+        {
+            (finished && userType === 'owner' && !newCollectionCreated && !newCollectionSaving) && (
+                <div id="export-section">
+                    <input id='collection-name' type='text' placeholder='Collection Name' value={newCollectionName} onChange={e => setNewCollectionName(e.target.value)} />
+                    <Button className='export-btn' onClick={exportFinished}>Create Collection</Button>
+                </div>
+            )
+        }
+        {
+            newCollectionSaving && (
+                // Loading spinner
+                <div className='collection-saving'>
+                    <Loading type='beat' className='collection-saving-loading' size={20} speed={.5} />
+                </div>
+            )
+        }
+        {
+            newCollectionCreated && (
+                <div className='collection-created'>
+                    Collection <b style={{color: '#FCB016'}}>{newCollectionName}</b> has been created!
+                </div>
             )
         }
         <div className='collection-content-other'>
@@ -826,12 +891,12 @@ const Party = ({ socket }) => {
                         </div>
                     </div>
                 ) : [...collectionItems].reverse().map(item => (
-                    <div className='item-section clickable' key={item.id} onClick={changeCount.bind(this, item.id)}>
+                    <div className='item-section clickable' key={item.id} onClick={() => { if(!finished) { changeCount(item.id) }}}>
                         <img 
                             className={mediaType === 'movie' || mediaType === 'tv' ? 'item-img' : mediaType === 'game' ? 'game-img' : 'board-img'}  
                             src={item.poster} 
                             style={
-                                (item.voted) ? { border: '5px solid #FCB016' } : null
+                                (item.voted && !finished) ? { border: '5px solid #FCB016' } : null
                             }
                         />
                         { (item.votes > 0 && !secretMode) && <div className='item-votes'>{item.votes}</div> }
