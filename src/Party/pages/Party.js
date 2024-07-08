@@ -669,7 +669,6 @@ const Party = ({ socket }) => {
         }).then(response => response.json())
         .then(body => {
             let items = collectionItems.map(item => {
-                console.log(item);
                 return {
                     id: item.id,
                     title: item.title,
@@ -678,8 +677,7 @@ const Party = ({ socket }) => {
             });
 
             // Add all the items to the collection
-            // fetch(`https://choice-champ-backend.glitch.me/collections/items/${body.collection._id}`,
-            fetch(`http://localhost:5000/collections/items/${body.collection._id}`,
+            fetch(`https://choice-champ-backend.glitch.me/collections/items/${body.collection._id}`,
             {
                 method: 'POST',
                 headers: {
