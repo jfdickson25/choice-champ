@@ -199,13 +199,13 @@ const PartyWait = ({ socket }) => {
                     <div className='tip-section'>
                         <p id="tips-title">TIPS</p>
                     </div>
-                    <div class="tip-section">
+                    <div className="tip-section">
                         <img src={dice} alt="Dice symbol" className="party-wait-icon" />
                         <p className='party-wait-start-text'>
                             Select this icon for a random item to be chosen as the winner
                         </p>
                     </div>
-                    <div class="tip-section">
+                    <div className="tip-section">
                         <img src={flagImg} alt="Finish symbol" className="party-wait-icon" />
                         <p className='party-wait-start-text'>
                             Select this icon to end voting early. Remaining items can be exported to create a new collection
@@ -223,7 +223,7 @@ const PartyWait = ({ socket }) => {
         }
         {
             superChoiceEnabled &&
-                <div class="tip-section">
+                <div className="tip-section">
                     <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/star.png?v=1699066109692' alt="Dice symbol" className="party-wait-icon" />
                     <p className='party-wait-start-text'>
                         Super choices have been enabled. Double tap an item to star it and ensure

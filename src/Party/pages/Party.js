@@ -670,7 +670,7 @@ const Party = ({ socket }) => {
         .then(body => {
             let items = collectionItems.map(item => {
                 return {
-                    id: item.id,
+                    id: item.itemId,
                     title: item.title,
                     poster: item.poster
                 }
