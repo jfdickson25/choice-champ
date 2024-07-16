@@ -6,7 +6,7 @@ import './Loading.css';
 const Loading = props => {
     let type = props.type || 'bounce';
     let size = props.size || 100;
-    let color = props.color || '#FCB016';
+    let color = props.color;
     let speed = props.speed || 1;
     let loading;
 

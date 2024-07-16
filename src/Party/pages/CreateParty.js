@@ -205,7 +205,7 @@ const CreateParty = props => {
                 
                 <div className='create-party-collections'>
                     
-                { isLoading ? <Loading type='beat' className='list-loading-create' size={20} /> : 
+                { isLoading ? <Loading color='#FCB016' type='beat' className='list-loading-create' size={20} /> : 
                         collections.length > 0 ?
                             collections.map(collection => (   
                                 collection.items.length > 0 &&

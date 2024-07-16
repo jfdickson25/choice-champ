@@ -762,7 +762,7 @@ const Party = ({ socket }) => {
             newCollectionSaving && (
                 // Loading spinner
                 <div className='collection-saving'>
-                    <Loading type='beat' className='collection-saving-loading' size={20} speed={.5} />
+                    <Loading color='#FCB016' type='beat' className='collection-saving-loading' size={20} speed={.5} />
                 </div>
             )
         }
@@ -856,7 +856,7 @@ const Party = ({ socket }) => {
                                                                             )
                                                                         }
                                                                     </div> 
-                                                                ) : <Loading type='beat' className='runner-up-providers-loading' size={20} speed={.5} />
+                                                                ) : <Loading color='#FCB016' type='beat' className='runner-up-providers-loading' size={20} speed={.5} />
                                                             }
                                                         </React.Fragment>
                                                     </React.Fragment>
@@ -927,14 +927,14 @@ const Party = ({ socket }) => {
                         ? 
                             <React.Fragment>
                             <h1 className='ready-text' style={{marginBottom: '30px'}}>Filtering Items</h1>
-                            <Loading type='beat' className='ready-loading' size={20} speed={.5} />
+                            <Loading color='#FCB016' type='beat' className='ready-loading' size={20} speed={.5} />
                             </React.Fragment>
                         : 
                             <React.Fragment>
                             <h1 className='ready-text'>Ready!</h1>
                             <p className='waiting-text'>Waiting on other party members...</p>
                             <p className='waiting-text-cancel'>Click to return to voting</p>
-                            <Loading type='sync' className='ready-loading' size={20} speed={.5} />
+                            <Loading color='#FCB016' type='sync' className='ready-loading' size={20} speed={.5} />
                             </React.Fragment>
                     }
                 </div> 

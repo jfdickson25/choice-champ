@@ -185,7 +185,7 @@ const PartyWait = ({ socket }) => {
             Party Code: {code}
         </div>
         <img id="waiting-img" src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/waiting-screen.svg?v=1691033380153" />
-        <Loading type='propagate' className='list-loading' size={15} speed={.25} />
+        <Loading color='#FCB016' type='propagate' className='list-loading' size={15} speed={.25} />
         <div className='party-wait-count'>
             Party Count <span className='party-wait-count-num'>{memberCount}</span>
         </div> 

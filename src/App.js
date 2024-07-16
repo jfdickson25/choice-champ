@@ -156,7 +156,7 @@ function App() {
     routes = (
       // Using Suspense inside a switch caused issues with redirecting. Solution found in this stack overflow article:
       // https://stackoverflow.com/questions/62193855/react-lazy-loaded-route-makes-redirecting-non-matching-routes-to-404-not-work
-      <Suspense fallback={<Loading className='page-loading' size={100} />}>
+      <Suspense fallback={<Loading color='#FCB016' className='page-loading' size={100} />}>
         <Routes>
           <Route path="/welcome/info" element={<Welcome />} exact />
           <Route path="/collections" element={<Categories />} exact />
@@ -176,7 +176,7 @@ function App() {
     )
   } else {
     routes = (
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading color='#FCB016' />}>
         <Routes>
             <Route path="/" element={<Auth />} exact />
             <Route path="/party/joinParty" element={<JoinParty />} exact />
@@ -199,7 +199,7 @@ function App() {
     <AuthContext.Provider value={{isLoggedIn: isLoggedIn, userId: userId, userIdSetter: userIdSetter, login: login, logout: logout, showFooterHandler: showFooterHandler}}>
       <Router>
         <main>
-          {loading && <Loading className='page-loading' size={100} />}
+          {loading && <Loading color='#FCB016' className='page-loading' size={100} />}
           {!loading && routes}
           {
             (!loading && showInstallPrompt) && (
