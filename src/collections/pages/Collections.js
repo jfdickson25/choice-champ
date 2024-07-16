@@ -33,6 +33,7 @@ const Collections = props => {
     const [joinError, setJoinError] = useState('');
     const [navingBack, setNavingBack] = useState(false);
     const [pressingBtn, setPressingBtn] = useState(false);
+    const [collectionTypeColor, setCollectionTypeColor] = useState('#FCB016');
 
     // Empty array will only run on the initial render
     useEffect(() => {
@@ -41,12 +42,16 @@ const Collections = props => {
         // Set the title depending on the type
         if(collectionsType === 'movie') {
             setTitle('Movie Collections')
+            setCollectionTypeColor('#FCB016');
         } else if(collectionsType === 'tv') {
             setTitle('TV Collections')
+            setCollectionTypeColor('#FF4D4D');
         } else if(collectionsType === 'game') {
             setTitle('Game Collections')
+            setCollectionTypeColor('#2482C5');
         } else if(collectionsType === 'board') {
             setTitle('Board Game Collections')
+            setCollectionTypeColor('#45B859');
         }
         
         // Make a fetch post request to collections with the userId and setCollections to the response
@@ -275,7 +280,7 @@ const Collections = props => {
                 }
 
                 {
-                    isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
+                    isLoading ? <Loading color={collectionTypeColor} type='beat' className='list-loading' size={20} /> : 
                     (<div className='collections-content'>
                         {
                             collections.length > 0 ? collections.map((collection, index) => (
@@ -304,11 +309,11 @@ const Collections = props => {
                 <div className='dialog-content'>
                     <div className='dialog-sub-content'>
                         <input type="text" placeholder={"collection name"} onChange={changeCollectionHandler} ref={inputCollectionRef}/>
-                        <Button onClick={handleAddCollection}>Create Collection</Button>
+                        <Button backgroundColor={collectionTypeColor} onClick={handleAddCollection}>Create Collection</Button>
                         {nameError && <p className='error' style={{textAlign: 'center'}}>Collection must have a name</p>}
                         <p className='or'>OR</p>
                         <input type="number" min={10000} max={99999} placeholder={"share code"} onChange={changeJoinCodeHandler} ref={inputJoinRef}/>
-                        <Button onClick={handleJoinCollection}>Join Collection</Button>
+                        <Button backgroundColor={collectionTypeColor} onClick={handleJoinCollection}>Join Collection</Button>
                         <p className='error' style={{textAlign: 'center'}}>{joinError}</p>
                     </div>
                 </div>

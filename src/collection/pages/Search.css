@@ -24,7 +24,6 @@
 
 .label {
     font-weight: bold;
-    color: #FCB016;
 }
 
 .details-provider-list {
@@ -46,7 +45,6 @@
 
 .item-title {
     border-radius: 9px !important;
-    color: #FCB016;
     position: absolute;
     top: 40%;
     left: 50%;
@@ -59,10 +57,10 @@
 
 .loading-save {
     position: absolute;
-    width: auto;
-    height: auto;
-    top: 15px;
-    right: 5px;
+    top: 50%;  /* position the top  edge of the element at the middle of the parent */
+    left: 50%; /* position the left edge of the element at the middle of the parent */
+    transform: translate(-50%, -50%); /* This is a shorthand of
+                                         translateX(-50%) and translateY(-50%) */
 }
 
 .loading-save-modal {
@@ -91,7 +89,6 @@
 }
 
 .modal-header {
-    color: white;
     text-align: center;
     grid-column: 1/18;
     width: 100%;
@@ -117,7 +114,7 @@
 .MuiPaper-root {
     background-color: rgb(58, 58, 58) !important;
     border-radius: 20px;
-    border: 2px solid #fcaf16ad !important;
+    border: 2px solid #0c0c0cad !important;
 }
 
 .modal-poster {
@@ -140,8 +137,8 @@
     position: absolute;
     width: 25%;
     height: auto;
-    bottom: 5px;
-    left: 5px;
+    top: 5px;
+    right: 5px;
 }
 
 .board-details-loading {
@@ -207,6 +204,21 @@
     color: #FCB016;
 }
 
+.movie-outline {
+    border: solid 4px #FCB016;
+    border-radius: 15px;
+}
+
+.game-outline {
+    border: solid 4px #2482C5;
+    border-radius: 15px;
+}
+
+.tv-outline {
+    border: solid 4px #F04C53;
+    border-radius: 15px;
+}
+
 @media screen and (min-width: 600px){
     .modal-poster {
         width: 45%;
@@ -217,12 +229,6 @@
 @media only screen and (min-width: 900px) {
     .save-icon {
         width: 10%;
-    }
-
-    .loading-save {
-        width: 50%;
-        top: 15px;
-        right: 0px;
     }
 
     .loading-save-modal {

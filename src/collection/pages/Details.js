@@ -35,9 +35,21 @@ const Details = () => {
     const [collectionList, setCollectionList] = useState([]);
     const [loadingCollectionList, setLoadingCollectionList] = useState(false);
     const [currentCollectionExists, setCurrentCollectionExists] = useState(true);
+    const [collectionTypeColor, setCollectionTypeColor] = useState('#FCB016');
 
     useEffect(() => {
         auth.showFooterHandler(true);
+
+        if(collectionType === 'movie') {
+            setCollectionTypeColor('#FCB016');
+        } else if (collectionType === 'tv') {
+            setCollectionTypeColor('#FF4D4D');
+        } else if (collectionType === 'game') {
+            setCollectionTypeColor('#2482C5');
+        } else if (collectionType === 'board') {
+            setCollectionTypeColor('#45B859');
+        }
+
         setLoading(true);
         setLoadingCollectionList(true);
         // Get all the items in the collection to check if any items in the search are already in the collection
@@ -155,18 +167,18 @@ const Details = () => {
                 (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
             }
             { 
-                loading ? <Loading type='beat' className='list-loading' size={20} /> : 
+                loading ? <Loading color={collectionTypeColor} type='beat' className='list-loading' size={20} /> : 
                 <React.Fragment>
                     <div id="content-details">
                         <img
                             className='details-img'
                             src={details.poster}
                         />
-                        <div className='details-title'>{details.title}</div>
+                        <div className={`details-title color-${collectionType}`}>{details.title}</div>
                         {
                             collectionType !== 'game' &&
                                 <div className='details-section'>
-                                    <span className='details-section-title'>
+                                    <span className={`details-section-title color-${collectionType}`}>
                                         { collectionType === 'board' && ' Play Time:' } 
                                         { collectionType === 'movie' && ' Runtime:' }
                                         { collectionType === 'tv' && ' Seasons:' }
@@ -183,10 +195,10 @@ const Details = () => {
                             collectionType === 'board' && (
                                 <React.Fragment>
                                     <div className='details-section'>
-                                        <span className='details-section-title'>Min Players:</span> {details.minPlayers}
+                                        <span className={`details-section-title color-${collectionType}`}>Min Players:</span> {details.minPlayers}
                                     </div>
                                     <div className='details-section'>
-                                        <span className='details-section-title'>Max Players:</span> {details.maxPlayers}
+                                        <span className={`details-section-title color-${collectionType}`}>Max Players:</span> {details.maxPlayers}
                                     </div>
                                 </React.Fragment>
                             )
@@ -195,14 +207,14 @@ const Details = () => {
                             (collectionType === 'movie' || collectionType === 'tv') && (
                                 <React.Fragment>
                                     <div className='details-section'>
-                                        <span className='details-section-title'>Rating: </span>
+                                        <span className={`details-section-title color-${collectionType}`}>Rating: </span>
                                         {details.rating} / 10
                                     </div>
                                 </React.Fragment>
                             )
                         }
                         <div className='details-section'>
-                            <div className='details-section-title'>Overview:</div>
+                            <div className={`details-section-title color-${collectionType}`}>Overview:</div>
                             <div className='details-overview' dangerouslySetInnerHTML={{ __html: details.overview }}></div>
                         </div>
 
@@ -211,16 +223,16 @@ const Details = () => {
                             (collectionType === 'movie' || collectionType === 'tv') && 
                             (
                                 <React.Fragment>
-                                    <div className='details-provider-title'>Stream:</div>
+                                    <div className={`details-provider-title color-${collectionType}`}>Stream:</div>
                                     { 
                                         // Q: How can I check to see if the providers.stream array is empty?
                                         // A: Use providers.stream.length
                                         providers.stream ?
                                         (
-                                            <div className='details-provider-list'>
+                                            <div className='details-provider-list-section'>
                                                 {
                                                     providers.stream.map(provider => (
-                                                        <img key={provider.provider_name} className='provider-img' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
+                                                        <img key={provider.provider_name} className='provider-img-section' src={`https://image.tmdb.org/t/p/w500${provider.logo_path}`} alt={provider.provider_name} />
                                                     ))
                                                 }
                                             </div>
@@ -264,7 +276,7 @@ const Details = () => {
                 !loadingCollectionList ?
                     (
                         <div className='collections-list'>
-                            <div className='collections-list-title'>Collections:</div>
+                            <div className={`collections-list-title color-${collectionType}`}>Collections:</div>
                             {
                                 collectionList.map((collection, index) => (
                                     <div className='collection-item' key={collection._id} onClick={() => { 

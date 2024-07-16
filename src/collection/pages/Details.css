@@ -12,7 +12,6 @@
     font-weight: 700;
     margin-top: 20px;
     text-align: center;
-    color: #FCB016;
 }
 
 .details-overview p {
@@ -26,15 +25,16 @@
     margin-top: 10px;
 }
 
-.details-provider-list {
+.details-provider-list-section {
     display: grid;
     grid-column: 3/16;
     grid-template-columns: repeat(5, 1fr);
     margin-top: 10px;
+    justify-items: center;
 }
 
-.provider-img {
-    width: 100%;
+.provider-img-section {
+    width: 90%;
     border-radius: 15px;
 }
 
@@ -42,7 +42,6 @@
     grid-column: 3/16;
     width: 100%;
     margin-top: 20px;
-    color: #FCB016;
     font-weight: bold;
 }
 
@@ -53,7 +52,6 @@
 }
 
 .details-section-title {
-    color: #FCB016;
     margin-right: 10px;
     font-weight: bold
 }
@@ -81,7 +79,6 @@
 }
 
 .collections-list-title {
-    color: #FCB016;
     font-weight: bold;
 }
 

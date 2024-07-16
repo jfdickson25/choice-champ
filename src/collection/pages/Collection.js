@@ -50,11 +50,23 @@ const Collection = ({ socket }) => {
     });
     const [navingBack, setNavingBack] = useState(false);
     const [navingAdd, setNavingAdd] = useState(false);
+    const [collectionTypeColor, setCollectionTypeColor] = useState('#FCB016');
 
     const itemsRef = useRef(items);
 
     useEffect(() => {
         auth.showFooterHandler(true);
+
+        if(collectionType === 'movie') {
+            setCollectionTypeColor('#FCB016');
+        } else if (collectionType === 'tv') {
+            setCollectionTypeColor('#FF4D4D');
+        } else if (collectionType === 'game') {
+            setCollectionTypeColor('#2482C5');
+        } else if (collectionType === 'board') {
+            setCollectionTypeColor('#45B859');
+        }
+
         // Make a fetch get request to get all the items in a collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'GET',
@@ -314,7 +326,7 @@ const Collection = ({ socket }) => {
                     { collectionType === 'game' || collectionType === 'board' ? 'played' : 'watched'}
                 </span> 
                 {
-                    isLoading ? <Loading type='beat' className='list-loading' size={20} /> : 
+                    isLoading ? <Loading color={collectionTypeColor} type='beat' className='list-loading' size={20} /> : 
                         (
                             <div className='collection-content'>
                                 {

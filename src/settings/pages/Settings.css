@@ -34,7 +34,7 @@
 .MuiPaper-root {
     background-color: rgb(58, 58, 58) !important;
     border-radius: 20px;
-    border: 2px solid #fcaf16b5;
+    border: 2px solid #0c0c0cad !important;
 }
 
 .dialog-sub-content {

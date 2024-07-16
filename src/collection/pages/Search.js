@@ -42,6 +42,8 @@ const Search = ({ socket }) => {
     const [activeSearch, setActiveSearch] = useState(false);
     const searchRef = useRef('');
 
+    const [collectionTypeColor, setCollectionTypeColor] = useState('#FCB016');
+
     const [activeItem, setActiveItem] = useState({});
 
     // Create a ref of collection
@@ -71,6 +73,17 @@ const Search = ({ socket }) => {
 
     useEffect(() => {
         auth.showFooterHandler(true);
+
+        if(collectionType === 'movie') {
+            setCollectionTypeColor('#FCB016');
+        } else if (collectionType === 'tv') {
+            setCollectionTypeColor('#FF4D4D');
+        } else if (collectionType === 'game') {
+            setCollectionTypeColor('#2482C5');
+        } else if (collectionType === 'board') {
+            setCollectionTypeColor('#45B859');
+        }
+
         // Get all the items in the collection to check if any items in the search are already in the collection
         fetch(`https://choice-champ-backend.glitch.me/collections/items/${collectionId}`, {
             method: 'GET',
@@ -431,10 +444,10 @@ const Search = ({ socket }) => {
             </div>
             { noMatch && <p className='no-match'>No matches found</p>}
             {
-                isLoading ? <Loading type='sync' className='list-loading' size={15} speed={.5} /> :
+                isLoading ? <Loading color={collectionTypeColor} type='sync' className='list-loading' size={15} speed={.5} /> :
                 (<div className='collection-content'>
                     {items.map(item => (
-                        <div className='item-section' key={item.id} onClick={() => {
+                        <div className={`item-section ${ (item.inCollection && collectionType !== 'board') ? collectionType + '-outline' : null }`} key={item.id} onClick={() => {
                             if(!item.loadingUpdate && collectionType !== 'board') {
                                 if(!item.inCollection) {
                                         addItem(item.id, item.title, item.poster, false);
@@ -458,14 +471,9 @@ const Search = ({ socket }) => {
                                 collectionType !== "board" && (
                                     <React.Fragment>
                                     {
-                                        item.loadingUpdate ? 
+                                        item.loadingUpdate &&
                                         (
-                                            <Loading type='beat' size={15} speed={.5} className='loading-save' />
-                                        ) :
-                                        (
-                                            item.inCollection ? 
-                                            (<img src={check} alt={`${item.title} saved`} className='item-action clickable' />) :
-                                            (<img id={item.id} src={circle} alt={`${item.title} unselected`} className='item-action clickable' />)
+                                            <Loading color={collectionTypeColor} type='beat' size={15} speed={.5} className='loading-save' />
                                         )
                                     }
                                     <img src={infoImg} alt={'More info'} onClick={(e) => { e.stopPropagation(); getActiveItem(item.id, item.inCollection); setOpen(true); }} className='more-info clickable' />
@@ -480,7 +488,7 @@ const Search = ({ socket }) => {
                 <div className='dialog-content'>
                     {
                         loadingInfo ?
-                        (<Loading type='beat' className='board-details-loading' size={20} />) :
+                        (<Loading color={collectionTypeColor} type='beat' className='board-details-loading' size={20} />) :
                         (
                             <React.Fragment>
                             <div id='status-icon'>
@@ -489,7 +497,7 @@ const Search = ({ socket }) => {
                                     (
                                         activeItem.loadingUpdate ? 
                                         (
-                                            <Loading type='beat' size={15} speed={.5} className='loading-save-modal' />
+                                            <Loading color={collectionTypeColor} type='beat' size={15} speed={.5} className='loading-save-modal' />
                                         ) :
                                         (
                                             activeItem.collectionStatus ? 
@@ -500,7 +508,7 @@ const Search = ({ socket }) => {
                                 }
                             </div>
                             <img src={activeItem.poster} alt={`${activeItem.title} poster`} className='modal-poster' style={ collectionType !== 'board' ? { marginTop: '30px'} : null} />
-                                <div className='modal-header'>
+                                <div className={`modal-header color-${collectionType}`}>
                                     { activeItem.title }
                                 </div>
                                 <div className='modal-details'>
@@ -508,15 +516,15 @@ const Search = ({ socket }) => {
                                         collectionType === 'board' ?
                                         (
                                             <React.Fragment>
-                                                <p><span className='label'>Min Players:</span> {activeItem.minPlayers}</p>
-                                                <p><span className='label'>Max Players:</span> {activeItem.maxPlayers}</p>
-                                                <p><span className='label'>Play Time:</span> {activeItem.playingTime} min</p>
+                                                <p><span className={`label color-${collectionType}`}>Min Players:</span> {activeItem.minPlayers}</p>
+                                                <p><span className={`label color-${collectionType}`}>Max Players:</span> {activeItem.maxPlayers}</p>
+                                                <p><span className={`label color-${collectionType}`}>Play Time:</span> {activeItem.playingTime} min</p>
                                             </React.Fragment>
                                         ) : (
                                             collectionType === 'game' ?
                                             (
                                                 <React.Fragment>
-                                                    <p><span className='label'>Platforms:</span> {
+                                                    <p><span className={`label color-${collectionType}`}>Platforms:</span> {
                                                         activeItem.platforms && (
                                                             activeItem.platforms.map((platform, index) => (
                                                                 (<span key={platform.name}>
@@ -531,24 +539,24 @@ const Search = ({ socket }) => {
                                                         )
                                                     }
                                                     </p>
-                                                    <p><span className='label'>Overview:</span><br /> {activeItem.overview}</p>
+                                                    <p><span className={`label color-${collectionType}`}>Overview:</span><br /> {activeItem.overview}</p>
                                                 </React.Fragment>
                                             ) : (
                                                 <React.Fragment>
                                                     {
                                                         collectionType === 'tv' ? (
-                                                            <p><span className='label'>Seasons:</span> {
+                                                            <p><span className={`label color-${collectionType}`}>Seasons:</span> {
                                                                 activeItem.watchTime > 1 ? (
                                                                     activeItem.watchTime + ' seasons'
                                                                 ) : activeItem.watchTime + ' season'
                                                             }</p>
                                                         ) : (
-                                                            <p><span className='label'>Watch Time:</span> {activeItem.watchTime} min</p>
+                                                            <p><span className={`label color-${collectionType}`}>Watch Time:</span> {activeItem.watchTime} min</p>
                                                         )
                                                     }
-                                                    <p><span className='label'>Rating:</span> {activeItem.rating}</p>
+                                                    <p><span className={`label color-${collectionType}`}>Rating:</span> {activeItem.rating}</p>
                                                     <React.Fragment>
-                                                    <span className='label'>Stream:</span>
+                                                    <span className={`label color-${collectionType}`}>Stream:</span>
                                                     {
                                                         activeItem.providers ?
                                                         (
@@ -564,7 +572,7 @@ const Search = ({ socket }) => {
                                                         )
                                                     }
                                                 </React.Fragment>
-                                                    <p><span className='label'>Overview:</span><br /> {activeItem.overview}</p>
+                                                    <p><span className={`label color-${collectionType}`}>Overview:</span><br /> {activeItem.overview}</p>
                                                 </React.Fragment>
                                             )
                                         )
