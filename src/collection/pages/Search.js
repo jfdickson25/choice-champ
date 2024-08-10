@@ -29,7 +29,6 @@ const Search = ({ socket }) => {
      ***********************************************************/
     // Grab the collection name and id from the parameters
     let collectionType = useParams().type;
-    let collectionName = useParams().name;
     let collectionId = useParams().id;
 
     const [items, setItems] = useState([]);
@@ -40,6 +39,7 @@ const Search = ({ socket }) => {
     const [open, setOpen] = useState(false);
     const [loadingInfo, setLoadingInfo] = useState(false);
     const [activeSearch, setActiveSearch] = useState(false);
+    const [collectionName, setCollectionName] = useState('');
     const searchRef = useRef('');
 
     const [collectionTypeColor, setCollectionTypeColor] = useState('#FCB016');
@@ -93,6 +93,7 @@ const Search = ({ socket }) => {
         })
         .then(res => res.json())
         .then(data => {
+            setCollectionName(data.name);
             // Verify that data.items is not undefined
             if(data.items) {
                 // Set collection to the items in the collection but only the id
@@ -421,7 +422,7 @@ const Search = ({ socket }) => {
         setNavingBack(true);
         setTimeout(() => {
             setNavingBack(false);
-            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
+            navigate(`/collections/${collectionType}/${collectionId}`);
         }, 1000);
     }
 

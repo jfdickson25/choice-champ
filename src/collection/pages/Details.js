@@ -18,7 +18,6 @@ const Details = () => {
      ***********************************************************/
     // Grab the collection name and id from the parameters
     let collectionType = useParams().type;
-    let collectionName = useParams().name;
     let collectionId = useParams().collectionId;
     let itemId = useParams().itemId;
 
@@ -107,12 +106,12 @@ const Details = () => {
             setNavingBack(false);
             if(currentCollectionExists) {
                 if(filter) {
-                    navigate(`/collections/${collectionType}/${collectionName}/${collectionId}?hash=${itemId}&filter=${filter}`);
+                    navigate(`/collections/${collectionType}/${collectionId}?hash=${itemId}&filter=${filter}`);
                 } else {
-                    navigate(`/collections/${collectionType}/${collectionName}/${collectionId}?hash=${itemId}`);
+                    navigate(`/collections/${collectionType}/${collectionId}?hash=${itemId}`);
                 }
             } else {
-                navigate(`/collections/${collectionType}/${collectionName}/${collectionId}`);
+                navigate(`/collections/${collectionType}/${collectionId}`);
             }
         }, 1000);
     }

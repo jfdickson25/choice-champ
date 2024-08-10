@@ -21,7 +21,6 @@ const Collection = ({ socket }) => {
     // Grab the collection type, name and id from the parameters
     let collectionType = useParams().type;
     let collectionId = useParams().id;
-    let collectionNameParam = useParams().name;
 
     // Grab filter query parameters from the url
     const search = window.location.search;
@@ -33,7 +32,8 @@ const Collection = ({ socket }) => {
     const [isEdit, setIsEdit] = useState(false);
     const [shareCode, setShareCode] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
-    const [collectionName, setCollectionName] = useState(useParams().name);
+    const [currentCollectionName, setCurrentCollectionName] = useState('');
+    const [collectionName, setCollectionName] = useState('');
     const [showAlphabetical, setShowAlphabetical] = useState(() => {
         if(filter === 'alphabetical') {
             return true;
@@ -79,6 +79,8 @@ const Collection = ({ socket }) => {
             setItems(data.items);
             itemsRef.current = data.items;
             setShareCode(data.shareCode);
+            setCurrentCollectionName(data.name);
+            setCollectionName(data.name);
 
             // Check if there is a filter in the url if there is set the filter
             if(filter === 'alphabetical') {
@@ -150,7 +152,7 @@ const Collection = ({ socket }) => {
             // Check to make sure the collection name is not empty
             if(collectionName !== '') {
                 // If collection name has changed make a fetch post request to update the collection name
-                if(collectionName !== collectionNameParam) {
+                if(collectionName !== currentCollectionName) {
                     fetch(`https://choice-champ-backend.glitch.me/collections/name/${collectionId}`, {
                         method: 'POST',
                         headers: {
@@ -162,6 +164,7 @@ const Collection = ({ socket }) => {
                     })
                     .then(res => {
                         setIsEdit(false);
+                        setCurrentCollectionName(collectionName);
                     });
                 } else {
                     setIsEdit(false);
@@ -203,16 +206,16 @@ const Collection = ({ socket }) => {
         setNavingAdd(true);
         setTimeout(() => {
             setNavingAdd(false);
-            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/add`);
+            navigate(`/collections/${collectionType}/${collectionId}/add`);
         }, 1000);
     }
 
     const navDetails = (id) => {
         // Check if filter for alphabetical or watched is on
         if(showAlphabetical || showWatched) {
-            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/details/${id}?filter=${showAlphabetical ? 'alphabetical' : 'watched'}`);
+            navigate(`/collections/${collectionType}/${collectionId}/details/${id}?filter=${showAlphabetical ? 'alphabetical' : 'watched'}`);
         } else {
-            navigate(`/collections/${collectionType}/${collectionName}/${collectionId}/details/${id}`);
+            navigate(`/collections/${collectionType}/${collectionId}/details/${id}`);
         }
     }
 

@@ -294,7 +294,7 @@ const Collections = props => {
                                         { index !== collections.length - 1 && <img className='right' alt="right arrow" onClick={ () => { moveRight(collection._id) } } src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/right.png?v=1692161745669' /> }
                                     </div>
                                 ) : (
-                                    <Link to={`/collections/${collectionsType}/${collection.name}/${collection._id}`} className='collections-item' key={collection._id} >
+                                    <Link to={`/collections/${collectionsType}/${collection._id}`} className='collections-item' key={collection._id} >
                                         <div className={`collection-text-${collectionsType} collection-text`}>
                                             {collection.name}
                                         </div>
