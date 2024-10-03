@@ -15,7 +15,7 @@ const CollectionsHome = props => {
     return (
         <React.Fragment>
             <div className="content" style={{paddingBottom: '0px'}}>
-                <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/logo-flat.png?v=1692066714816" id="choice-champ-header" />
+                <img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Title.png?v=1727845362370" id="choice-champ-header" />
                 <div id="categories">
                     <Category id="movie" title="MOVIES" />
                     <Category id="tv" title="TV" />

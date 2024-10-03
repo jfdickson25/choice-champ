@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom';
 
 // DONE
 const Category = props => {
-    const [source, setSource] = useState('https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/movie.png?v=1682271238203') // Default source is movie
+    const [source, setSource] = useState('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20Movie%20Outline.svg?v=1727844493723') // Default source is movie
 
     useEffect(() => {
         // Set source to movie, tv, game, or board game depending on props.id
         if(props.id === 'movie') {
-            setSource('https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/movie.png?v=1682271238203');
+            setSource('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20Movie%20Outline.svg?v=1727844493723');
         } else if(props.id === 'tv') {
-            setSource('https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/tv.png?v=1682271238537');
+            setSource('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20TV%20Outline.svg?v=1727844330904');
         } else if(props.id === 'game') {
-            setSource('https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/game.png?v=1682271237845');
+            setSource('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20Video%20Game%20Outline.svg?v=1727844327632');
         } else if(props.id === 'board') {
-            setSource('https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/pawn.png?v=1691967359871');
+            setSource('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20Board%20Game%20Outline.svg?v=1727844323131');
         }
     }, []);
 

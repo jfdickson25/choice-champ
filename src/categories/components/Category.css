@@ -25,6 +25,7 @@
   .category-img {
     width: 50%;
     margin-bottom: 10px;
+    max-height: 90px;
   }
 
 @media only screen and (min-width: 800px) {

@@ -4,6 +4,7 @@ import { AuthContext } from '../../shared/context/auth-context';
 
 import './PartyHome.css';
 import Button from '../../shared/components/FormElements/Button';
+import { height } from '@fortawesome/free-solid-svg-icons/fa0';
 
 const PartyHome = props => {
     const auth = useContext(AuthContext);
