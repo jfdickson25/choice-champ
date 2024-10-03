@@ -145,22 +145,6 @@ const Settings = () => {
                     <div className='dialog-sub-content'>
                         <h2 className='modal-header'>Flaticon Attribution</h2>
                         <div className='flaticon-link'>
-                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/movie.png?v=1682271238203' />
-                            <a href="https://www.flaticon.com/free-icons/video-production" title="video production icons">Video production icons created by Uniconlabs - Flaticon</a>
-                        </div>
-                        <div className='flaticon-link'>
-                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/tv.png?v=1682271238537' />
-                            <a href="https://www.flaticon.com/free-icons/watching-tv" title="watching tv icons">Watching tv icons created by Dmytro Vyshnevskyi - Flaticon</a>
-                        </div>
-                        <div className='flaticon-link'>
-                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/game.png?v=1682271237845' />
-                            <a href="https://www.flaticon.com/free-icons/gamer" title="gamer icons">Gamer icons created by VectorPortal - Flaticon</a>
-                        </div>
-                        <div className='flaticon-link'>
-                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/pawn.png?v=1691967359871' />
-                            <a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by dr.iconsart - Flaticon</a>
-                        </div>
-                        <div className='flaticon-link'>
                             <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668' />
                             <a href="https://www.flaticon.com/free-icons/back-button" title="back button icons">Back button icons created by The Chohans - Flaticon</a>
                         </div>

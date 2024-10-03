@@ -16,7 +16,7 @@ const Category = props => {
         } else if(props.id === 'game') {
             setSource('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20Icon%20Video%20Game.svg?v=1727926982580');
         } else if(props.id === 'board') {
-            setSource('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20Board%20Game%20Outline.svg?v=1727844323131');
+            setSource('https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Category%20Icon%20Board%20Game.svg?v=1727964155663');
         }
     }, []);
 
