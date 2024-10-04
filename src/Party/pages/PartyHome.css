@@ -7,7 +7,8 @@
 }
 
 .party-img {
-    margin-top: 30px;
+    margin-top: 15vh;
+    margin-bottom: 30px;
     grid-column: 2/17;
     width: 100%;
 }

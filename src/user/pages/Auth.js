@@ -108,7 +108,7 @@ const Auth = props => {
         <div className='center'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 
-                <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Logo.png?v=1727845581462' alt="Movie Match Logo" id="logo" />
+                <img src='https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Logo.svg?v=1727964938019' alt="Choice Champ Logo" id="logo" />
                 
                 <div className='seperator' />
                 
