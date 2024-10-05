@@ -31,7 +31,7 @@ const PartyHome = props => {
             <div className='content'>
                 { online ? (
                     <React.Fragment>
-                        <img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Party%20Home%20Img.svg?v=1728052148368" className="party-img" alt='Movie night'/>
+                        <img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Party%20Home%20Img.svg?v=1728152715571" className="party-img" alt='Movie night'/>
                         <div className='party-home'>
                             <Button className="party-btn" type="button" onClick={navCreateParty}>Create Party</Button>
                         </div>

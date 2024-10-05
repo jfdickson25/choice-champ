@@ -13,8 +13,8 @@
 }
 
 .join-img {
-    width: 100%;
-    margin-top: 30px;
+    width: 80%;
+    margin-top: 20vh;
     grid-column: 2/17;
 }
 
@@ -30,13 +30,7 @@
 
 @media only screen and (min-width: 500px) {
     .join-img {
-        width: 80%;
-    }
-}
-
-@media only screen and (min-width: 700px) {
-    .join-img {
-        width: 50%;
+        width: 30%;
     }
 }
 
@@ -56,10 +50,6 @@
 
 @media only screen and (min-width: 1600px) {
     #join-party-page input {
-        width: 30%;
-    }
-
-    .join-img {
         width: 30%;
     }
 

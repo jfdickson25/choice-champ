@@ -28,28 +28,3 @@
     max-height: 90px;
   }
 
-@media only screen and (min-width: 800px) {
-    .category {
-        height: 12vw;
-    }
-
-    .category-img {
-      width: 25%;
-    }
-}
-
-@media only screen and (min-width: 1800px) {
-  .category {
-    height: 15vw;
-  }
-
-  .category-img {
-    width: 25%;
-  }
-}
-
-@media only screen and (min-width: 2400px) {
-  .category-img {
-    width: 30%;
-  }
-}

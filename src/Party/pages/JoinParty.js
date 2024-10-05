@@ -77,7 +77,7 @@ const JoinParty = (props) => {
             (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
         }
         <h2 className='title'>Join Party</h2>
-        <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032" className="join-img" alt='Join Code Image'/>
+        <img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Join%20Party%20Img%20Bubble.svg?v=1728152722935" className="join-img" alt='Join Code Image'/>
         <div id='join-party-page'>
             <input type="number" min="0" max="9999" placeholder="Join Code" ref={inputRef} onChange={changeHandler} />
             <Button className="join-btn" onClick={navToPartyWait}>Join Party</Button>
