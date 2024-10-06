@@ -185,14 +185,14 @@ const PartyWait = ({ socket }) => {
             (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button-active.png?v=1702137193420" alt="Back symbol" className="top-left clickable" style={{animation: 'button-press .75s'}} />) : 
             (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
         }
-        <div className='party-wait-code'>
-            Party Code: {code}
-        </div>
         <img src={mediaType === 'movie' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Movie%20Chosen.svg?v=1728228301150' :
                     mediaType === 'tv' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20TV%20Show%20Chosen.svg?v=1728228326729' :
                     mediaType === 'game' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Video%20Game%20Chosen.svg?v=1728228313949' :
                     mediaType === 'board' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Board%20Game%20Chosen.svg?v=1728228320682' : null }
         alt="Media type selected" id="waiting-img" />
+        <div className='party-wait-code'>
+            Party Code: {code}
+        </div>
 
         <Loading color='#FCB016' type='propagate' className='list-loading' size={15} speed={.25} />
         <div className='party-wait-count'>
