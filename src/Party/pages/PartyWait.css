@@ -66,13 +66,7 @@
 
 @media only screen and (min-width: 500px) {
     #waiting-img {
-        width: 80%;
-    }
-}
-
-@media only screen and (min-width: 700px) {
-    #waiting-img {
-        width: 50%;
+        width: 40%;
     }
 
     .party-wait-icon {
