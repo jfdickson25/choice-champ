@@ -118,23 +118,11 @@ const Settings = () => {
                     <div className='dialog-sub-content'>
                         <h2 className='modal-header'>Storyset Attribution</h2>
                         <div className='storyset-link'>
-                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/choice-party.svg?v=1681657279405' />
-                            <a href="https://storyset.com/people">People illustrations by Storyset</a>
-                        </div>
-                        <div className='storyset-link'>
-                            <img src='https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/join-code.svg?v=1681658134032' />
-                            <a href="https://storyset.com/user">User illustrations by Storyset</a>
-                        </div>
-                        <div className='storyset-link'>
                             <img src={movieNight} />
                             <a href="https://storyset.com/people">People illustrations by Storyset</a>
                         </div>
                         <div className='storyset-link'>
                             <img src={watch} />
-                            <a href="https://storyset.com/people">People illustrations by Storyset</a>
-                        </div>
-                        <div className='storyset-link'>
-                            <img src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/waiting-screen.svg?v=1691033380153" />
                             <a href="https://storyset.com/people">People illustrations by Storyset</a>
                         </div>
                     </div>

@@ -29,6 +29,8 @@ const PartyWait = ({ socket }) => {
     // Using useRef to store the memberCount so that it doesn't get reset on re-render
     const memberCountRef = useRef(memberCount);
 
+    const [mediaType, setMediaType] = useState('');
+
     // Log the collections passed from the previous page using useEffect
     useEffect(() => {
         auth.showFooterHandler(false);
@@ -45,6 +47,8 @@ const PartyWait = ({ socket }) => {
             // Increase the member count by 1 for this user the other users will
             // be updated with the member-increment socket event
             let memberCount = body.party.memberCount + 1;
+
+            setMediaType(body.party.mediaType);
 
             if(body.party.superChoice) {
                 setSuperChoiceEnabled(true);
@@ -184,7 +188,12 @@ const PartyWait = ({ socket }) => {
         <div className='party-wait-code'>
             Party Code: {code}
         </div>
-        <img id="waiting-img" src="https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/waiting-screen.svg?v=1691033380153" />
+        <img src={mediaType === 'movie' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Movie%20Chosen.svg?v=1728228301150' :
+                    mediaType === 'tv' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20TV%20Show%20Chosen.svg?v=1728228326729' :
+                    mediaType === 'game' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Video%20Game%20Chosen.svg?v=1728228313949' :
+                    mediaType === 'board' ? 'https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/Choice%20Champ%20Board%20Game%20Chosen.svg?v=1728228320682' : null }
+        alt="Media type selected" id="waiting-img" />
+
         <Loading color='#FCB016' type='propagate' className='list-loading' size={15} speed={.25} />
         <div className='party-wait-count'>
             Party Count <span className='party-wait-count-num'>{memberCount}</span>
