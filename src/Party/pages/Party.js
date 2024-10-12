@@ -7,6 +7,7 @@ import Loading from '../../shared/components/Loading';
 import { AuthContext } from '../../shared/context/auth-context';
 
 import './Party.css'; 
+import PlaceholderImg from '../../shared/components/PlaceholderImg';
 
 const Party = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -890,11 +891,14 @@ const Party = ({ socket }) => {
                     </div>
                 ) : [...collectionItems].reverse().map(item => (
                     <div className='item-section clickable' key={item.id} onClick={() => { if(!finished) { changeCount(item.id) }}}>
-                        <img 
-                            className={mediaType === 'movie' || mediaType === 'tv' ? 'item-img' : mediaType === 'game' ? 'game-img' : 'board-img'}  
+                        <PlaceholderImg 
+                            classNames='item-img'
                             src={item.poster} 
-                            style={
-                                (item.voted && !finished) ? { border: '5px solid #FCB016' } : null
+                            styleSettings={
+                                (item.voted && !finished) ? { border: '5px solid #FCB016' } : ''
+                            }
+                            collectionColor={
+                                (mediaType === 'movie' ? '#FCB016' : mediaType === 'tv' ? '#45B859' : mediaType === 'game' ? '#2482C5' : '#3a9b4c')
                             }
                         />
                         { (item.votes > 0 && !secretMode) && <div className='item-votes'>{item.votes}</div> }

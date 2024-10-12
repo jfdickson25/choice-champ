@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Loading from './Loading';
 
-const PlaceholderImg = ({ src, alt, classNames, collectionColor }) => {
+const PlaceholderImg = ({ src, alt, classNames, collectionColor, styleSettings }) => {
     const [loaded, setLoaded] = useState(false);
 
     return (
@@ -11,7 +11,7 @@ const PlaceholderImg = ({ src, alt, classNames, collectionColor }) => {
                 src={src}
                 className={classNames}
                 alt={alt}
-                style={loaded ? {} : { display: 'none' }}
+                style={loaded ? {} : { display: 'none', ...styleSettings }}
                 onLoad={() => setLoaded(true)}
             />
         </div>

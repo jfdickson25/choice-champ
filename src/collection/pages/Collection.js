@@ -348,9 +348,9 @@ const Collection = ({ socket }) => {
                                                 (<div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     { 
                                                         !isEdit ? 
-                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
+                                                            <PlaceholderImg styleSettings={''} alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
                                                             :
-                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
+                                                            <PlaceholderImg styleSettings={''} alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
                                                     }
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (
@@ -373,9 +373,9 @@ const Collection = ({ socket }) => {
                                                 (<div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     { 
                                                         !isEdit ? 
-                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
+                                                            <PlaceholderImg styleSettings={''} alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
                                                             :
-                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
+                                                            <PlaceholderImg styleSettings={''} alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
                                                     }
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (
@@ -407,9 +407,9 @@ const Collection = ({ socket }) => {
                                                     <div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                         { 
                                                             !isEdit ? 
-                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
+                                                            <PlaceholderImg styleSettings={''} alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
                                                             :
-                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
+                                                            <PlaceholderImg styleSettings={''} alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
                                                         }
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
                                                         { isEdit ? (
