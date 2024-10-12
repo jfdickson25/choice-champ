@@ -11,7 +11,7 @@ const PlaceholderImg = ({ src, alt, classNames, collectionColor, voted, finished
                 src={src}
                 className={classNames}
                 alt={alt}
-                style={(voted && !finished) ? { border: '5px solid #FCB016' } : null}
+                style={!loaded ? { display: 'none' } : (voted && !finished) ? { border: '5px solid #FCB016' } : null}
                 onLoad={() => setLoaded(true)}
             />
         </div>
