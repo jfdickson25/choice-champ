@@ -153,6 +153,7 @@
     display: grid;
     align-items: end;
     border-radius: 10px;
+    align-self: baseline;
 }
 
 .item-action-watched {

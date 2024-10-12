@@ -5,7 +5,7 @@ const PlaceholderImg = ({ src, alt, classNames, collectionColor, voted, finished
     const [loaded, setLoaded] = useState(false);
 
     return (
-        <div>
+        <React.Fragment>
             {!loaded && <Loading color={collectionColor} type='beat' className='item-loading' size={20} />}
             <img
                 src={src}
@@ -14,7 +14,7 @@ const PlaceholderImg = ({ src, alt, classNames, collectionColor, voted, finished
                 style={!loaded ? { display: 'none' } : (voted && !finished) ? { border: '5px solid #FCB016' } : null}
                 onLoad={() => setLoaded(true)}
             />
-        </div>
+        </React.Fragment>
     );
 };
 
