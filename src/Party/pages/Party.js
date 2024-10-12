@@ -893,13 +893,12 @@ const Party = ({ socket }) => {
                     <div className='item-section clickable' key={item.id} onClick={() => { if(!finished) { changeCount(item.id) }}}>
                         <PlaceholderImg 
                             classNames='item-img'
-                            src={item.poster} 
-                            styleSettings={
-                                (item.voted && !finished) ? { border: '5px solid #FCB016' } : ''
-                            }
+                            src={item.poster}
                             collectionColor={
                                 (mediaType === 'movie' ? '#FCB016' : mediaType === 'tv' ? '#45B859' : mediaType === 'game' ? '#2482C5' : '#3a9b4c')
                             }
+                            voted={item.voted}
+                            finished={finished}
                         />
                         { (item.votes > 0 && !secretMode) && <div className='item-votes'>{item.votes}</div> }
                         { 
