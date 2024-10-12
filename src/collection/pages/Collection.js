@@ -10,6 +10,7 @@ import editing from '../../shared/assets/img/editing.png';
 import searchIcon from '../../shared/assets/img/search.svg';
 
 import './Collection.css';
+import PlaceholderImg from '../../shared/components/PlaceholderImg';
 
 const Collection = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -347,9 +348,9 @@ const Collection = ({ socket }) => {
                                                 (<div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     { 
                                                         !isEdit ? 
-                                                            <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img clickable' : 'board-img clickable'} src={item.poster} />
+                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
                                                             :
-                                                            <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img' : 'board-img'} src={item.poster} />
+                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
                                                     }
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (
@@ -372,9 +373,9 @@ const Collection = ({ socket }) => {
                                                 (<div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
                                                     { 
                                                         !isEdit ? 
-                                                            <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img clickable' : 'board-img clickable'} src={item.poster} />
+                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
                                                             :
-                                                            <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img' : 'board-img'} src={item.poster} />
+                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
                                                     }
                                                     { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
                                                     { isEdit ? (
@@ -404,7 +405,12 @@ const Collection = ({ socket }) => {
                                                 .sort((a, b) => a.timestamp - b.timestamp)
                                                 .reverse().map(item => (
                                                     <div className='item-section' id={item.itemId} key={item.itemId} onClick={ !isEdit ? () => { navDetails(item.itemId) } : null } >
-                                                        <img alt={`${item.title} poster`} className={collectionType === 'movie' || collectionType === 'tv' || collectionType === 'game' ? 'item-img' : 'board-img'} src={item.poster} />
+                                                        { 
+                                                            !isEdit ? 
+                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
+                                                            :
+                                                            <PlaceholderImg alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img' src={item.poster} />
+                                                        }
                                                         { isEdit ? (<img src={'https://cdn.glitch.global/7cdfb78e-767d-42ef-b9ca-2f58981eb393/remove.png?v=1682136649433'} alt={`${item.title} poster`} className='item-action clickable' onClick={() => { removeItem(item._id) }} />) : null }
                                                         { isEdit ? (
                                                             <FontAwesomeIcon icon={collectionType === 'game' ? faGamepad : collectionType === 'board' ? faChessPawn :faEye} size="xl" 

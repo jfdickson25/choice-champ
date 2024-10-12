@@ -137,23 +137,16 @@
 
 .item-section {
     width: 100%;
+    height: 100%;
     column-count: 1;
     font-weight: bold;
     align-items: center;
     justify-items: center;
     position: relative;
+    display: grid;
 }
 
 .item-img {
-    height: auto;
-    width: 100%;
-    grid-column: 1/4;
-    display: grid;
-    align-items: end;
-    border-radius: 10px;
-}
-
-.board-img {
     height: auto;
     width: 100%;
     grid-column: 1/4;
