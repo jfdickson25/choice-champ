@@ -30,6 +30,7 @@ const Collections = props => {
 
     // State for error messages
     const [nameError, setNameError] = useState(null);
+    const [nameErrorText, setNameErrorText] = useState('');
     const [joinError, setJoinError] = useState('');
     const [navingBack, setNavingBack] = useState(false);
     const [pressingBtn, setPressingBtn] = useState(false);
@@ -126,8 +127,13 @@ const Collections = props => {
     const handleAddCollection = () => {
 
         // Only add if the input is not empty and the collection does not already exist
-        if(inputCollectionRef.current.value === '' || collections.find(collection => collection.name === inputCollectionRef.current.value)) {
+        if(inputCollectionRef.current.value === '') {
             setNameError(true);
+            setNameErrorText('Collection must have a name');
+            return;
+        } else if (collections.find(collection => collection.name === inputCollectionRef.current.value)) {
+            setNameError(true);
+            setNameErrorText('Collection with that name already exists');
             return;
         }
 
@@ -310,7 +316,7 @@ const Collections = props => {
                     <div className='dialog-sub-content'>
                         <input type="text" placeholder={"collection name"} onChange={changeCollectionHandler} ref={inputCollectionRef}/>
                         <Button backgroundColor={collectionTypeColor} onClick={handleAddCollection}>Create Collection</Button>
-                        {nameError && <p className='error' style={{textAlign: 'center'}}>Collection must have a name</p>}
+                        {nameError && <p className='error' style={{textAlign: 'center'}}>{nameErrorText}</p>}
                         <p className='or'>OR</p>
                         <input type="number" min={10000} max={99999} placeholder={"share code"} onChange={changeJoinCodeHandler} ref={inputJoinRef}/>
                         <Button backgroundColor={collectionTypeColor} onClick={handleJoinCollection}>Join Collection</Button>

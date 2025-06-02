@@ -15,7 +15,7 @@ import './Search.css';
 import circle from '../../shared/assets/img/circle.png';
 import check from '../../shared/assets/img/check.png';
 import searchIcon from '../../shared/assets/img/search.svg';
-import { set } from 'react-hook-form';
+import PlaceholderImg from '../../shared/components/PlaceholderImg'
 
 const Search = ({ socket }) => {
     const auth = useContext(AuthContext);
@@ -463,9 +463,9 @@ const Search = ({ socket }) => {
 
                             { 
                                 collectionType !== 'board' ?
-                                <img src={item.poster} alt={`${item.title} poster`} className='item-img' /> 
+                                <PlaceholderImg voted={null} finished={null} alt={`${item.title} poster`} collectionColor={collectionTypeColor} classNames='item-img clickable' src={item.poster} />
                                 :
-                                <div className='board-img-search' /> 
+                                <div className='board-img-search' />
                             }
                             { collectionType === 'board' && ( <p className='item-title'>{item.title}</p> ) }                      
                             {

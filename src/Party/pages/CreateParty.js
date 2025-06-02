@@ -10,6 +10,7 @@ import Button from '../../shared/components/FormElements/Button';
 
 import { AuthContext } from '../../shared/context/auth-context';
 import Loading from '../../shared/components/Loading';
+import { set } from 'react-hook-form';
 
 const CreateParty = props => {
     const auth = useContext(AuthContext);
@@ -23,6 +24,7 @@ const CreateParty = props => {
     const [superChoice, setSuperChoice] = useState(false);
     const [navingBack, setNavingBack] = useState(false);
     const [activeMediaType, setActiveMediaType] = useState('movie');
+    const [collectionTypeColor, setCollectionTypeColor] = useState('#FCB016');
 
     const [pressingMovie, setPressingMovie] = useState(false);
     const [pressingTv, setPressingTv] = useState(false);
@@ -151,6 +153,7 @@ const CreateParty = props => {
                     style={ pressingMovie ? {animation: 'button-press .75s', marginTop: '30px'} : { marginTop: '30px' }} 
                     onClick={() => { 
                         setActiveMediaType('movie');
+                        setCollectionTypeColor('#FCB016');
                         setPressingMovie(true);
                         mediaTypeHandler('movie') 
                         setTimeout(() => {
@@ -165,6 +168,7 @@ const CreateParty = props => {
                     style={ pressingTv ? {animation: 'button-press .75s'} : null}
                     onClick={() => { 
                         setActiveMediaType('tv');
+                        setCollectionTypeColor('#FF4D4D');
                         setPressingTv(true);
                         mediaTypeHandler('tv');
                         setTimeout(() => {
@@ -179,6 +183,7 @@ const CreateParty = props => {
                     style={ pressingGame ? {animation: 'button-press .75s'} : null}
                     onClick={() => { 
                         setActiveMediaType('game');
+                        setCollectionTypeColor('#2482C5');
                         setPressingGame(true);
                         mediaTypeHandler('game');
                         setTimeout(() => {
@@ -193,6 +198,7 @@ const CreateParty = props => {
                     style={ pressingBoard ? {animation: 'button-press .75s', marginBottom: '30px'} : { marginBottom: '30px' }}
                     onClick={() => { 
                         setActiveMediaType('board');
+                        setCollectionTypeColor('#45B859');
                         setPressingBoard(true);
                         mediaTypeHandler('board');
                         setTimeout(() => {
@@ -205,7 +211,7 @@ const CreateParty = props => {
                 
                 <div className='create-party-collections'>
                     
-                { isLoading ? <Loading color='#FCB016' type='beat' className='list-loading-create' size={20} /> : 
+                { isLoading ? <Loading color={collectionTypeColor} type='beat' className='list-loading-create' size={20} /> : 
                         collections.length > 0 ?
                             collections.map(collection => (   
                                 collection.items.length > 0 &&

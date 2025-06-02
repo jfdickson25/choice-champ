@@ -53,6 +53,8 @@
     bottom: 25px;
     width: 90%;
     z-index: 100;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .ready-btn {
@@ -552,6 +554,8 @@
 
     .finish-voting-btn {
         width: 50%;
+        margin-left: 25%;
+        margin-right: 25%;
     }
 }
 
