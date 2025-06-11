@@ -26,7 +26,7 @@ const JoinParty = (props) => {
         const joinCode = inputRef.current.value;
 
         if(joinCode.length === 4) {
-            fetch(`https://choice-champ-backend.glitch.me/party/exists/${joinCode}`,
+            fetch(`https://choice-champ-backend.onrender.com/party/exists/${joinCode}`,
             {
                 method: 'GET',
                 headers: {

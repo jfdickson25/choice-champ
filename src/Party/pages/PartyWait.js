@@ -35,7 +35,7 @@ const PartyWait = ({ socket }) => {
     useEffect(() => {
         auth.showFooterHandler(false);
         // Make a fetch request to the backend to get all the collectionItems for the party
-        fetch(`https://choice-champ-backend.glitch.me/party/${code}?userId=${auth.userId}`,
+        fetch(`https://choice-champ-backend.onrender.com/party/${code}?userId=${auth.userId}`,
         {
             method: 'GET',
             headers: {
@@ -69,7 +69,7 @@ const PartyWait = ({ socket }) => {
 
             // Make a post request to the backend to add the user to the party
             // This is because users who join will get the member count from the backend fetch request
-            fetch(`https://choice-champ-backend.glitch.me/party/add-member/${code}`,
+            fetch(`https://choice-champ-backend.onrender.com/party/add-member/${code}`,
             {
                 method: 'POST',
                 headers: {
@@ -132,7 +132,7 @@ const PartyWait = ({ socket }) => {
     const navBack = async () => {
         if(userType === 'owner') {
             // Make a fetch request to the backend delete the party
-            fetch(`https://choice-champ-backend.glitch.me/party/${code}`,
+            fetch(`https://choice-champ-backend.onrender.com/party/${code}`,
             {
                 method: 'DELETE',
                 headers: {
@@ -157,7 +157,7 @@ const PartyWait = ({ socket }) => {
             socket.emit('member-remote-decrement', `waiting${code}`);
 
             // Make a post request to the backend to remove the user from the party
-            await fetch(`https://choice-champ-backend.glitch.me/party/remove-member/${code}`,
+            await fetch(`https://choice-champ-backend.onrender.com/party/remove-member/${code}`,
             {
                 method: 'POST',
                 headers: {

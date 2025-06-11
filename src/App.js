@@ -48,7 +48,7 @@ function App() {
 
     if(storedUserId) {
       // Check if user exists in database
-      fetch('https://choice-champ-backend.glitch.me/user/checkUser', {
+      fetch('https://choice-champ-backend.onrender.com/user/checkUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const newSocket = io('https://choice-champ-backend.glitch.me');
+    const newSocket = io('https://choice-champ-backend.onrender.com');
     setSocket(newSocket);
 
     return () => newSocket.close();

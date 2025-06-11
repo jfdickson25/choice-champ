@@ -52,7 +52,7 @@ const Details = () => {
         setLoading(true);
         setLoadingCollectionList(true);
         // Get all the items in the collection to check if any items in the search are already in the collection
-        fetch(`https://choice-champ-backend.glitch.me/media/getInfo/${collectionType}/${itemId}`, {
+        fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${collectionType}/${itemId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ const Details = () => {
             setLoading(false);
         });
 
-        fetch(`https://choice-champ-backend.glitch.me/collections/collectionList/${collectionType}/${itemId}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.onrender.com/collections/collectionList/${collectionType}/${itemId}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -127,7 +127,7 @@ const Details = () => {
         }
 
         // Make a fetch post request to add an item to a collection
-        fetch(`https://choice-champ-backend.glitch.me/collections/items/${addCollectionId}`, {
+        fetch(`https://choice-champ-backend.onrender.com/collections/items/${addCollectionId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -150,7 +150,7 @@ const Details = () => {
 
     const removeFromCollection = (removeCollectionId, removeItemId) => {
         // Make a fetch delete request to remove an item from a collection
-        fetch(`https://choice-champ-backend.glitch.me/collections/items/${removeCollectionId}/${removeItemId}`, {
+        fetch(`https://choice-champ-backend.onrender.com/collections/items/${removeCollectionId}/${removeItemId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
