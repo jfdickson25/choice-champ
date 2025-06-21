@@ -26,7 +26,7 @@ const Auth = props => {
 
         // Either login or create account
         if(isLoginMode) {
-            fetch('https://choice-champ-backend.onrender.com/user/signIn', {
+            fetch('https://choice-champ-backend.vercel.app/user/signIn', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ const Auth = props => {
                 console.log(err);
             });
         } else {
-            fetch('https://choice-champ-backend.onrender.com/user', {
+            fetch('https://choice-champ-backend.vercel.app/user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

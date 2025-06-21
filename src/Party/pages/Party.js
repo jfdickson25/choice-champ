@@ -54,7 +54,7 @@ const Party = ({ socket }) => {
     useEffect(() => {
         auth.showFooterHandler(false);
         // Make a fetch request to the backend to get all the collectionItems for the party
-        fetch(`https://choice-champ-backend.onrender.com/party/${code}?userId=${auth.userId}`,
+        fetch(`https://choice-champ-backend.vercel.app/party/${code}?userId=${auth.userId}`,
         {
             method: 'GET',
             headers: {
@@ -162,7 +162,7 @@ const Party = ({ socket }) => {
 
             if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
                 // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-                let response = await fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
+                let response = await fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
                 let body = await response.json();
                 runnerUpsTemp[0].providers = body.media.providers;
@@ -183,7 +183,7 @@ const Party = ({ socket }) => {
 
                     // Grab the watch options for the winner but only if the media type is movie or tv
                     if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
-                        fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${item.itemId}`,
+                        fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${item.itemId}`,
                         {
                             method: 'GET',
                             headers: {
@@ -236,7 +236,7 @@ const Party = ({ socket }) => {
 
                         if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
                             // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-                            let response = await fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
+                            let response = await fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
                             let body = await response.json();
                             runnerUpsTemp[0].providers = body.media.providers;
@@ -260,7 +260,7 @@ const Party = ({ socket }) => {
 
                                 // Grab the watch options for the winner but only if the media type is movie or tv
                                 if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
-                                    fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${filteredItems[0].itemId}`,
+                                    fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${filteredItems[0].itemId}`,
                                     {
                                         method: 'GET',
                                         headers: {
@@ -413,7 +413,7 @@ const Party = ({ socket }) => {
 
                         if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
                             // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-                            let response = await fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
+                            let response = await fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
                             let body = await response.json();
                             runnerUpsTemp[0].providers = body.media.providers;
@@ -432,7 +432,7 @@ const Party = ({ socket }) => {
                                 window.scrollTo(0, 0);
 
                                 // Make a fetch request to delete the party from the database
-                                fetch(`https://choice-champ-backend.onrender.com/party/${code}`,
+                                fetch(`https://choice-champ-backend.vercel.app/party/${code}`,
                                 {
                                     method: 'DELETE',
                                     headers: {
@@ -442,7 +442,7 @@ const Party = ({ socket }) => {
 
                                 // Grab the watch options for the winner but only if the media type is movie or tv
                                 if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
-                                    fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${filteredItems[0].itemId}`,
+                                    fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${filteredItems[0].itemId}`,
                                     {
                                         method: 'GET',
                                         headers: {
@@ -504,7 +504,7 @@ const Party = ({ socket }) => {
     const navToParty = () => {
         if(userType === 'owner' && collectionItems.length > 1) {
             // Make a fetch request to the backend to get all the collectionItems for the party
-            fetch(`https://choice-champ-backend.onrender.com/party/${code}`,
+            fetch(`https://choice-champ-backend.vercel.app/party/${code}`,
             {
                 method: 'DELETE',
                 headers: {
@@ -557,7 +557,7 @@ const Party = ({ socket }) => {
 
         if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
             // Make a fetch request for the first item in the runnerUps array and add a provider property to it
-            let response = await fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
+            let response = await fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${runnerUpsTemp[0].itemId}`);
 
             let body = await response.json();
             runnerUpsTemp[0].providers = body.media.providers;
@@ -575,7 +575,7 @@ const Party = ({ socket }) => {
 
                 // Grab the watch options for the winner but only if the media type is movie or tv
                 if(mediaTypeRef.current === 'movie' || mediaTypeRef.current === 'tv') {
-                    fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${randomItem.itemId}`,
+                    fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${randomItem.itemId}`,
                     {
                         method: 'GET',
                         headers: {
@@ -592,7 +592,7 @@ const Party = ({ socket }) => {
                 window.scrollTo(0, 0);
                 setRandomSelected(false);
 
-                fetch(`https://choice-champ-backend.onrender.com/party/${code}`,
+                fetch(`https://choice-champ-backend.vercel.app/party/${code}`,
                 {
                     method: 'DELETE',
                     headers: {
@@ -634,7 +634,7 @@ const Party = ({ socket }) => {
                 activeItem.active = false;
                 item.active = true;
                 setLoadingRunnerUpProviders(true);
-                fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${mediaTypeRef.current}/${item.itemId}`,
+                fetch(`https://choice-champ-backend.vercel.app/media/getInfo/${mediaTypeRef.current}/${item.itemId}`,
                 {
                     method: 'GET',
                     headers: {
@@ -657,7 +657,7 @@ const Party = ({ socket }) => {
         setNewCollectionSaving(true);
 
         // Send new collection name to the backend
-        fetch(`https://choice-champ-backend.onrender.com/collections/${auth.userId}`,
+        fetch(`https://choice-champ-backend.vercel.app/collections/${auth.userId}`,
         {
             method: 'POST',
             headers: {
@@ -678,7 +678,7 @@ const Party = ({ socket }) => {
             });
 
             // Add all the items to the collection
-            fetch(`https://choice-champ-backend.onrender.com/collections/items/${body.collection._id}`,
+            fetch(`https://choice-champ-backend.vercel.app/collections/items/${body.collection._id}`,
             {
                 method: 'POST',
                 headers: {
