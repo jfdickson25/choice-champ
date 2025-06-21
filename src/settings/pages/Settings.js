@@ -47,7 +47,7 @@ const Settings = () => {
     }
 
     const deleteAccount = () => {
-        fetch(`https://choice-champ-backend.vercel.app/user/${auth.userId}`, {
+        fetch(`https://choice-champ-backend.onrender.com/user/${auth.userId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

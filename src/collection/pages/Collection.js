@@ -69,7 +69,7 @@ const Collection = ({ socket }) => {
         }
 
         // Make a fetch get request to get all the items in a collection
-        fetch(`https://choice-champ-backend.vercel.app/collections/items/${collectionId}`, {
+        fetch(`https://choice-champ-backend.onrender.com/collections/items/${collectionId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -154,7 +154,7 @@ const Collection = ({ socket }) => {
             if(collectionName !== '') {
                 // If collection name has changed make a fetch post request to update the collection name
                 if(collectionName !== currentCollectionName) {
-                    fetch(`https://choice-champ-backend.vercel.app/collections/name/${collectionId}`, {
+                    fetch(`https://choice-champ-backend.onrender.com/collections/name/${collectionId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -180,7 +180,7 @@ const Collection = ({ socket }) => {
 
     const removeItem = (id) => {
         // Make a fetch delete request to remove an item from a collection
-        fetch(`https://choice-champ-backend.vercel.app/collections/items/${collectionId}/${id}`, {
+        fetch(`https://choice-champ-backend.onrender.com/collections/items/${collectionId}/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -222,7 +222,7 @@ const Collection = ({ socket }) => {
 
     const updateWatched = (id, watched) => {
         // Make a fetch post request to update the watched status of an item
-        fetch(`https://choice-champ-backend.vercel.app/collections/items/${collectionId}/${id}`, {
+        fetch(`https://choice-champ-backend.onrender.com/collections/items/${collectionId}/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
