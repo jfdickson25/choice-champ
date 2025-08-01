@@ -85,7 +85,7 @@ const Search = ({ socket }) => {
         }
 
         // Get all the items in the collection to check if any items in the search are already in the collection
-        fetch(`https://choice-champ-backend.onrender.com/collections/items/${collectionId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/items/${collectionId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -119,7 +119,7 @@ const Search = ({ socket }) => {
         }
 
         // Make a fetch request to get all movies that match the search
-        fetch(`https://choice-champ-backend.onrender.com/media/${collectionType}/${search}/1`)
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/media/${collectionType}/${search}/1`)
         .then(res => res.json())
         .then(res => {
             if(res.media.results.length === 0) {
@@ -252,7 +252,7 @@ const Search = ({ socket }) => {
             });
         }
 
-        fetch(`https://choice-champ-backend.onrender.com/collections/items/${collectionId}/${collectionItem.mongoId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/items/${collectionId}/${collectionItem.mongoId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -319,7 +319,7 @@ const Search = ({ socket }) => {
         }
 
         // Make a fetch post request to add an item to a collection
-        fetch(`https://choice-champ-backend.onrender.com/collections/items/${collectionId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/items/${collectionId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -373,7 +373,7 @@ const Search = ({ socket }) => {
         setOpen(true);
         
         // Get all the items in the collection to check if any items in the search are already in the collection
-        fetch(`https://choice-champ-backend.onrender.com/media/getInfo/${collectionType}/${itemId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/media/getInfo/${collectionType}/${itemId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

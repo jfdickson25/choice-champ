@@ -36,7 +36,7 @@ const CreateParty = props => {
     useEffect(() => {
         auth.showFooterHandler(true);
         // Make a fetch post request to collections with the userId and setCollections to the response
-        fetch(`https://choice-champ-backend.onrender.com/collections/movie/${auth.userId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/movie/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ const CreateParty = props => {
 
         const collectionIds = selectedCollections.map(collection => collection._id);
 
-        fetch('https://choice-champ-backend.onrender.com/party', {
+        fetch('https://choice-champ-backend-181ffd005e9f.herokuapp.com/party', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ const CreateParty = props => {
         setMediaType(type);
 
         // Make a fetch post request to collections with the userId and setCollections to the response
-        fetch(`https://choice-champ-backend.onrender.com/collections/${type}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/${type}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

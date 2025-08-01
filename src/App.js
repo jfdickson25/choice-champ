@@ -48,7 +48,7 @@ function App() {
 
     if(storedUserId) {
       // Check if user exists in database
-      fetch('https://choice-champ-backend.onrender.com/user/checkUser', {
+      fetch('https://choice-champ-backend-181ffd005e9f.herokuapp.com/user/checkUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -109,7 +109,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const newSocket = io('https://choice-champ-backend.onrender.com');
+    const newSocket = io('https://choice-champ-backend-181ffd005e9f.herokuapp.com');
     setSocket(newSocket);
 
     return () => newSocket.close();

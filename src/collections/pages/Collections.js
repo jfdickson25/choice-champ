@@ -56,7 +56,7 @@ const Collections = props => {
         }
         
         // Make a fetch post request to collections with the userId and setCollections to the response
-        fetch(`https://choice-champ-backend.onrender.com/collections/${collectionsType}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/${collectionsType}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -76,7 +76,7 @@ const Collections = props => {
 
      const handleRemoveCollection = (id) => {
             // Send a fetch delete request to collections with the userId and the collection id
-            fetch(`https://choice-champ-backend.onrender.com/collections/${collectionsType}/${auth.userId}/${id}`, {
+            fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/${collectionsType}/${auth.userId}/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -138,7 +138,7 @@ const Collections = props => {
         }
 
         // Send a fetch post request to collections with the userId and the new collection name
-        fetch(`https://choice-champ-backend.onrender.com/collections/${auth.userId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/${auth.userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -171,7 +171,7 @@ const Collections = props => {
         }
 
         // Send a fetch post request to collections with the userId and the new collection name
-        fetch(`https://choice-champ-backend.onrender.com/collections/join/${inputJoinRef.current.value}/${collectionsType}/${auth.userId}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/join/${inputJoinRef.current.value}/${collectionsType}/${auth.userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -216,7 +216,7 @@ const Collections = props => {
         setCollections(newCollections);
 
         // Send a fetch post request with the userId and the collection id to move the collection left
-        fetch(`https://choice-champ-backend.onrender.com/collections/moveLeft/${collectionsType}/${auth.userId}/${id}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/moveLeft/${collectionsType}/${auth.userId}/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -244,7 +244,7 @@ const Collections = props => {
         setCollections(newCollections);
 
         // Send a fetch post with the userId and collection id to move the collection to the right
-        fetch(`https://choice-champ-backend.onrender.com/collections/moveRight/${collectionsType}/${auth.userId}/${id}`, {
+        fetch(`https://choice-champ-backend-181ffd005e9f.herokuapp.com/collections/moveRight/${collectionsType}/${auth.userId}/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
