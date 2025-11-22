@@ -31,7 +31,7 @@ const PartyHome = props => {
             <div className='content'>
                 { online ? (
                     <React.Fragment>
-                        <img src={`${process.env.PUBLIC_URL}/img/Choice-Champ-Party-Home-Img`} className="party-img" alt='Movie night'/>
+                        <img src={`${process.env.PUBLIC_URL}/img/Choice-Champ-Party-Home-Img.png`} className="party-img" alt='Movie night'/>
                         <div className='party-home'>
                             <Button className="party-btn" type="button" onClick={navCreateParty}>Create Party</Button>
                         </div>
