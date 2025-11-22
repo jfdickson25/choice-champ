@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/choice-champ/static/css/main.d82d55ec.css",
-    "main.js": "/choice-champ/static/js/main.3867f3f8.js",
+    "main.js": "/choice-champ/static/js/main.8a0ffd08.js",
     "static/css/715.d068a619.chunk.css": "/choice-champ/static/css/715.d068a619.chunk.css",
     "static/js/715.91d8a141.chunk.js": "/choice-champ/static/js/715.91d8a141.chunk.js",
     "static/css/699.9d574e50.chunk.css": "/choice-champ/static/css/699.9d574e50.chunk.css",
@@ -25,7 +25,7 @@
     "static/css/386.436d3c17.chunk.css": "/choice-champ/static/css/386.436d3c17.chunk.css",
     "static/js/386.c65e85e3.chunk.js": "/choice-champ/static/js/386.c65e85e3.chunk.js",
     "static/css/195.9846294f.chunk.css": "/choice-champ/static/css/195.9846294f.chunk.css",
-    "static/js/195.f2b31b58.chunk.js": "/choice-champ/static/js/195.f2b31b58.chunk.js",
+    "static/js/195.9793c9fd.chunk.js": "/choice-champ/static/js/195.9793c9fd.chunk.js",
     "static/css/651.e3512ae5.chunk.css": "/choice-champ/static/css/651.e3512ae5.chunk.css",
     "static/js/651.23ca786c.chunk.js": "/choice-champ/static/js/651.23ca786c.chunk.js",
     "static/js/214.9e94c537.chunk.js": "/choice-champ/static/js/214.9e94c537.chunk.js",
@@ -46,7 +46,7 @@
     "static/media/search.svg": "/choice-champ/static/media/search.1769d7a66264f66c9ae9cfe98c03017d.svg",
     "static/media/back.svg": "/choice-champ/static/media/back.130646437979786be8370a1fdf68655a.svg",
     "main.d82d55ec.css.map": "/choice-champ/static/css/main.d82d55ec.css.map",
-    "main.3867f3f8.js.map": "/choice-champ/static/js/main.3867f3f8.js.map",
+    "main.8a0ffd08.js.map": "/choice-champ/static/js/main.8a0ffd08.js.map",
     "715.d068a619.chunk.css.map": "/choice-champ/static/css/715.d068a619.chunk.css.map",
     "715.91d8a141.chunk.js.map": "/choice-champ/static/js/715.91d8a141.chunk.js.map",
     "699.9d574e50.chunk.css.map": "/choice-champ/static/css/699.9d574e50.chunk.css.map",
@@ -70,7 +70,7 @@
     "386.436d3c17.chunk.css.map": "/choice-champ/static/css/386.436d3c17.chunk.css.map",
     "386.c65e85e3.chunk.js.map": "/choice-champ/static/js/386.c65e85e3.chunk.js.map",
     "195.9846294f.chunk.css.map": "/choice-champ/static/css/195.9846294f.chunk.css.map",
-    "195.f2b31b58.chunk.js.map": "/choice-champ/static/js/195.f2b31b58.chunk.js.map",
+    "195.9793c9fd.chunk.js.map": "/choice-champ/static/js/195.9793c9fd.chunk.js.map",
     "651.e3512ae5.chunk.css.map": "/choice-champ/static/css/651.e3512ae5.chunk.css.map",
     "651.23ca786c.chunk.js.map": "/choice-champ/static/js/651.23ca786c.chunk.js.map",
     "214.9e94c537.chunk.js.map": "/choice-champ/static/js/214.9e94c537.chunk.js.map",
@@ -81,6 +81,6 @@
   },
   "entrypoints": [
     "static/css/main.d82d55ec.css",
-    "static/js/main.3867f3f8.js"
+    "static/js/main.8a0ffd08.js"
   ]
 }
