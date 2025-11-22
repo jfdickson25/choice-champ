@@ -49,6 +49,10 @@ button {
   font-family: 'Oxanium', cursive;
 }
 
+input {
+  font-family: 'Oxanium', cursive;
+}
+
 #download-banner {
   position: fixed;
   bottom: 10vh;
