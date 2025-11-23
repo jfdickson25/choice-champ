@@ -51,23 +51,26 @@
 }
 
 .option-text {
-    grid-column: 4/12;
-    text-align: center;
+    grid-column: 2/9;
+    text-align: left;
     font-weight: bold;
+    width: 100%;
 }
 
 .option-subtext {
-    grid-column: 2/16;
-    text-align: center;
+    grid-column: 2/14;
+    text-align: left;
     margin: 0;
     font-size: 9pt;
     color: grey;
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .option-img {
-    grid-column: 12/14;
-    width: 70%;
+    grid-column: 15/17;
+    grid-row: span 2;
+    width: 80%;
     cursor: pointer;
 }
 
@@ -118,12 +121,6 @@
     background-color: #45B859 !important;
 }
 
-@media screen and (min-width: 600px) {
-    .option-img {
-        width: 40%;
-    }
-}
-
 @media screen and (min-width: 1000px) {
     .media-type-btn {
         grid-column: 6/13;
@@ -138,12 +135,17 @@
     }
 
     .option-text {
-        grid-column: 8/10;
+        grid-column: 6/12;
     }
 
     .option-subtext {
-        grid-column: 4/14;
+        grid-column: 6/12;
         font-size: 9pt;
+    }
+
+    .option-img {
+        grid-column: 12;
+        width: 70%;
     }
 
     .radio-btn-label {
@@ -152,19 +154,6 @@
     
     .radio-btn {
         grid-column: 10;
-    }
-
-    .option-img {
-        width: 50%;
-        grid-column: 10;
-    }
-}
-
-@media screen and (min-width: 1400px) {
-    .option-img {
-        grid-column: 10;
-        margin-bottom: 10px;
-        width: 40%;
     }
 }
 
