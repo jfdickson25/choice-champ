@@ -166,7 +166,7 @@ const Details = () => {
                 (<img src="https://cdn.glitch.global/ebf12691-ad1e-4a83-81e2-641b9d7c5f64/back-button.png?v=1702137134668" alt="Back symbol" className="top-left clickable" onClick={navBack} />)
             }
             { 
-                loading ? <Loading color={collectionTypeColor} type='beat' className='list-loading' size={20} /> : 
+                loading || loadingCollectionList ? <Loading color={collectionTypeColor} type='beat' className='list-loading' size={20} /> : 
                 <React.Fragment>
                     <div id="content-details">
                         <img
@@ -268,12 +268,7 @@ const Details = () => {
                                 </React.Fragment>
                             )
                         }
-                    </div>
-                </React.Fragment>
-            }
-            {
-                !loadingCollectionList ?
-                    (
+                    
                         <div className='collections-list'>
                             <div className={`collections-list-title color-${collectionType}`}>Collections:</div>
                             {
@@ -305,7 +300,8 @@ const Details = () => {
                                 ))
                             }
                         </div>
-                    ) : null
+                </div>
+                </React.Fragment>
             }
         </div>
     );
